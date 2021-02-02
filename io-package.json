@@ -72,8 +72,8 @@
     "installedFrom": "/home/iobroker/ioBroker.bluesound"
   },
   "native": {
-    "option1": true,
-    "option2": "42"
+    "IP": "",
+    "Name": ""
   },
   "objects": [],
   "instanceObjects": []
