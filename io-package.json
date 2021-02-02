@@ -1,0 +1,80 @@
+{
+  "common": {
+    "name": "bluesound",
+    "version": "0.0.1",
+    "news": {
+      "0.0.1": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "zh-cn": "首次出版"
+      }
+    },
+    "title": "Bluesound",
+    "titleLang": {
+      "en": "Bluesound",
+      "de": "Bluesound",
+      "ru": "Bluesound",
+      "pt": "Bluesound",
+      "nl": "Bluesound",
+      "fr": "Bluesound",
+      "it": "Bluesound",
+      "es": "Bluesound",
+      "pl": "Bluesound",
+      "zh-cn": "Bluesound"
+    },
+    "desc": {
+      "en": "Control Bluesound device",
+      "de": "Control Bluesound device",
+      "ru": "Control Bluesound device",
+      "pt": "Control Bluesound device",
+      "nl": "Control Bluesound device",
+      "fr": "Control Bluesound device",
+      "it": "Control Bluesound device",
+      "es": "Control Bluesound device",
+      "pl": "Control Bluesound device",
+      "zh-cn": "Control Bluesound device"
+    },
+    "authors": [
+      "uwe1958 <uwenagel@kabelmail.de>"
+    ],
+    "keywords": [
+      "ioBroker",
+      "template",
+      "Smart Home",
+      "home automation"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "bluesound.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/uwe1958/ioBroker.bluesound/master/admin/bluesound.png",
+    "readme": "https://github.com/uwe1958/ioBroker.bluesound/blob/master/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "infrastructure",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "assumption",
+    "materialize": true,
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
+    ],
+    "installedFrom": "/home/iobroker/ioBroker.bluesound"
+  },
+  "native": {
+    "option1": true,
+    "option2": "42"
+  },
+  "objects": [],
+  "instanceObjects": []
+}
