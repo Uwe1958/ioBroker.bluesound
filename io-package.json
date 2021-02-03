@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "news": {
+      "0.0.2": {
+        "en": "initial release",
+        "de": "Parameter geändert",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "zh-cn": "首次出版"
+      },
       "0.0.1": {
         "en": "initial release",
         "de": "Erstveröffentlichung",
@@ -15,6 +27,7 @@
         "pl": "Pierwsze wydanie",
         "zh-cn": "首次出版"
       }
+
     },
     "title": "Bluesound",
     "titleLang": {
@@ -55,7 +68,7 @@
     "main": "main.js",
     "icon": "bluesound.png",
     "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/uwe1958/ioBroker.bluesound/master/admin/bluesound.png",
+    "extIcon": "https://raw.githubusercontent.com/uwe1958/ioBroker.bluesound/master/admin/bluesoundlogo.png",
     "readme": "https://github.com/uwe1958/ioBroker.bluesound/blob/master/README.md",
     "loglevel": "info",
     "mode": "daemon",
