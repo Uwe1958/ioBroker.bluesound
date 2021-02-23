@@ -95,6 +95,9 @@ For later updates, the above procedure is not necessary. Just do the following:
 
 ## Changelog
 
+### 0.0.5 Start/Stop/Pause implemented
+### 0.0.4 Presets created as states
+### 0.0.3 Device info created as states
 ### 0.0.1
 * (uwe1958) initial release
 

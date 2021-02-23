@@ -222,7 +222,7 @@ class Bluesound extends utils.Adapter {
 									let preset = status.val;
 									try {
 										require("request")(`http://${ip}:11000/Preset?id=${preset}`, function (error, response, result) {
-										this.log.info(`Preset${preset} started`);
+//										this.log.info(`Preset${preset} started`);
 										}).on("error", function (e) {this.log.error(e);});
 									} catch (e) { this.log.error(e); }
 								}
@@ -231,9 +231,20 @@ class Bluesound extends utils.Adapter {
 							this.log.info('Keine Verbindung');
 						}
 						break;
+					case 'pause':
+						try {
+							require("request")(`http://${ip}:11000/Pause?toggle=1`, function (error, response, result) {
+							}).on("error", function (e) {this.log.error(e);});
+						} catch (e) { this.log.error(e);}
+						break;
+					case 'stop':
+						try {
+							require("request")(`http://${ip}:11000/Stop`, function (error, response, result) {
+							}).on("error", function (e) {this.log.error(e);});
+						} catch (e) {this.log.error(e);}
+						break;
 					default:
 				}
-				
 			}
 			
 		} else {
@@ -287,6 +298,6 @@ if (module.parent) {
 	module.exports = (options) => new Bluesound(options);
 } else {
 	// otherwise start the instance directly
-	new Bluesound();
+	var adapter = new Bluesound();
 }
 
