@@ -3,10 +3,14 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.0.4 IP added, Device name creation added, Added creation of objects
 
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
+const helper = require(`${__dirname}/lib/utils`);
+const requestPromise = require(`request-promise-native`);
+var ip;
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -36,28 +40,106 @@ class Bluesound extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.info('config IP: ' + this.config.IP);
-		this.log.info('config Name: ' + this.config.Name);
-
+		if (this.config.IP) {
+			ip = this.config.IP;
+			this.log.info('[Start] Starting adapter bluesound with: ' + this.config.IP);
+		}
+		else {
+			this.log.warn('[Start] No IP Address set');
+		}
+		
 		/*
 		For every state in the system there has to be also an object of type state
 		Here a simple template for a boolean variable named "testVariable"
 		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 		*/
-		await this.setObjectNotExistsAsync('testVariable', {
-			type: 'state',
+		await this.setObjectNotExistsAsync(this.namespace, {
+			type: 'device',
 			common: {
-				name: 'testVariable',
-				type: 'boolean',
-				role: 'indicator',
-				read: true,
-				write: true,
+				name: 'Bluesound device'
 			},
 			native: {},
 		});
 
+		// create objects
+		const promises = [];
+		for (const obj of helper.States) {
+			const id = obj._id;
+			delete obj._id;
+			promises.push(this.setObjectNotExistsAsync(id, obj));
+		}
+		
+		await Promise.all(promises);
+		
+		let sNameTag = this.name +'.' + this.instance + '.info.name';
+		this.subscribeStates(sNameTag);
+		let sModelNameTag = this.name +'.' + this.instance + '.info.modelname';
+		this.subscribeStates(sModelNameTag);
+		
+		
+		// get Info
+		try {
+		  const result = await requestPromise({url:`http://${ip}:11000/SyncStatus`});
+		  var parser = new RegExp('name="(.+)(?=" etag)');
+		  var sName = parser.exec(result)[1];
+		  this.log.info("Set Name to: " + sName);
+	      this.setState(sNameTag,sName,true);
+		  var parser1 = new RegExp('modelName="(.+)(?=" model)');
+          var sModelName = parser1.exec(result)[1];
+		  this.log.info("Set Model to: " + sModelName);
+	      this.setState(sModelNameTag,sModelName,true);
+		} catch (e) { this.log.error(e);}
+		
+		// get Presets
+		try {
+		    const result = await requestPromise({url:`http://${ip}:11000/Presets`});
+		    parser = RegExp('preset(.+)\n','g');
+		    let data = [];
+		    let i = 1;
+		    while((data = parser.exec(result)) != null){
+				if (data[1].substring(0,4) == ' url') {
+					let parser1 = RegExp('id="(.+)(?=" name)');
+					var sPresetID = parser1.exec(data[1])[1];
+					parser1 = RegExp('name="(.+)(?=" image)');
+					var sPresetName = parser1.exec(data[1])[1];
+					parser1 = RegExp('image="(.+)(?="\/)');
+					var sPresetImage = parser1.exec(data[1])[1];
+					const data1 = {
+						id:   sPresetID,
+						name: sPresetName,
+						url:  sPresetImage,
+						start: false,
+						stop: false,
+						pause: false  
+					};
+
+					const objs = helper.getPresets(i);
+				  
+					for (const obj of objs){
+						const id = obj._id;
+						delete obj._id;
+						promises.push(this.setObjectNotExistsAsync(id,obj));
+						if (obj.type != 'channel'){
+							var sTag = this.name + '.' + this.instance + `.presets.preset${i}.${obj.common.name}`;
+							for (let x in data1){
+								if (x == obj.common.name) {
+//									this.log.info(data1[x]);
+									this.subscribeStates(sTag);
+									this.setState(sTag,data1[x],true);
+								}
+							}
+						}
+
+					}
+					i=i+1;
+				}
+			}
+			await Promise.all(promises);
+		}
+		catch (e) { this.log.error(e);}
+				
 		// In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-		this.subscribeStates('testVariable');
+//		this.subscribeStates('testVariable');
 		// You can also add a subscription for multiple states. The following line watches all states starting with "lights."
 		// this.subscribeStates('lights.*');
 		// Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
@@ -68,14 +150,14 @@ class Bluesound extends utils.Adapter {
 			you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
 		*/
 		// the variable testVariable is set to true as command (ack=false)
-		await this.setStateAsync('testVariable', true);
+//		await this.setStateAsync('testVariable', true);
 
 		// same thing, but the value is flagged "ack"
 		// ack should be always set to true if the value is received from or acknowledged from the target system
-		await this.setStateAsync('testVariable', { val: true, ack: true });
+//		await this.setStateAsync('testVariable', { val: true, ack: true });
 
 		// same thing, but the state is deleted after 30s (getState will return null afterwards)
-		await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
+//		await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
 
 		// examples for the checkPassword/checkGroup functions
 		let result = await this.checkPasswordAsync('admin', 'Neureut');
@@ -129,6 +211,31 @@ class Bluesound extends utils.Adapter {
 		if (state) {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+			if (state.val) {
+				let pos = id.lastIndexOf('.');
+				switch (id.substring(pos+1))
+				{
+					case 'start':
+						try {
+							this.getState(id.substring(0,pos)+'.id',(err, status) => {
+								if (status || status.val){
+									let preset = status.val;
+									try {
+										require("request")(`http://${ip}:11000/Preset?id=${preset}`, function (error, response, result) {
+										this.log.info(`Preset${preset} started`);
+										}).on("error", function (e) {this.log.error(e);});
+									} catch (e) { this.log.error(e); }
+								}
+							});
+						} catch(e) {
+							this.log.info('Keine Verbindung');
+						}
+						break;
+					default:
+				}
+				
+			}
+			
 		} else {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
@@ -152,7 +259,23 @@ class Bluesound extends utils.Adapter {
 	// 		}
 	// 	}
 	// }
-
+	
+	async getInfo() {
+		var result;
+		var sTag = this +'.info.name';
+		this.subscribeStates(sTag);
+		try {
+		  require("request")('http://' + ip + ':11000/SyncStatus', function (error, response, result) {
+		      var parser = new RegExp('name=(.+)(?=etag)');
+		      var sName = parser.exec(result)[1];
+		      this.log.info("Set Tag: " + sTag + "to " + sName);
+//		      setState("bluesound.0.info.name",sName);
+			  this.setState(sTag, sName, true );
+		  
+		  }).on("error", function (e) {this.log.error(e);});
+		} catch (e) { this.log.error(e);}
+	}
+	
 }
 
 // @ts-ignore parent is a valid property on module
@@ -166,3 +289,4 @@ if (module.parent) {
 	// otherwise start the instance directly
 	new Bluesound();
 }
+

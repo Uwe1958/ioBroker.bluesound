@@ -1,4 +1,4 @@
-![Logo](admin/bluesound.png)
+![Logo](admin/bluesoundlogo.png)
 # ioBroker.bluesound
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.bluesound.svg)](https://www.npmjs.com/package/iobroker.bluesound)
