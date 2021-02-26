@@ -3,6 +3,8 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.0.6 Volume control added
+// version 0.0.5 Presets added
 // version 0.0.4 IP added, Device name creation added, Added creation of objects
 
 // The adapter-core module gives you access to the core ioBroker functions
@@ -71,26 +73,49 @@ class Bluesound extends utils.Adapter {
 		
 		await Promise.all(promises);
 		
-		let sNameTag = this.name +'.' + this.instance + '.info.name';
+		let sNameTag = adapter.namespace + '.info.name';
 		this.subscribeStates(sNameTag);
-		let sModelNameTag = this.name +'.' + this.instance + '.info.modelname';
+		let sModelNameTag = adapter.namespace + '.info.modelname';
 		this.subscribeStates(sModelNameTag);
 		
 		
-		// get Info
+		// set Info
+		
 		try {
 		  const result = await requestPromise({url:`http://${ip}:11000/SyncStatus`});
 		  var parser = new RegExp('name="(.+)(?=" etag)');
 		  var sName = parser.exec(result)[1];
-		  this.log.info("Set Name to: " + sName);
 	      this.setState(sNameTag,sName,true);
 		  var parser1 = new RegExp('modelName="(.+)(?=" model)');
           var sModelName = parser1.exec(result)[1];
-		  this.log.info("Set Model to: " + sModelName);
 	      this.setState(sModelNameTag,sModelName,true);
 		} catch (e) { this.log.error(e);}
 		
-		// get Presets
+		// Initialize Control
+		
+		// stop = false
+		sNameTag = adapter.namespace + '.control.stop';
+		this.subscribeStates(sNameTag);
+		this.setState(sNameTag,false,true);
+		// pause = false
+		sNameTag = adapter.namespace + '.control.pause';
+		this.subscribeStates(sNameTag);
+		this.setState(sNameTag,false,true);
+		// play = false
+		sNameTag = adapter.namespace + '.control.play';
+		this.subscribeStates(sNameTag);
+		this.setState(sNameTag,false,true);
+		try {
+			// volume from player
+			const result = await requestPromise({url:`http://${ip}:11000/Volume`});
+			let parser1 = RegExp('>(.+)(?=<)');
+			sNameTag = adapter.namespace + '.control.volume';
+			this.subscribeStates(sNameTag);
+			this.setState(sNameTag,parser1.exec(result)[1],true);
+		} catch (e) { this.log.error(e);}
+
+		// Presets
+		
 		try {
 		    const result = await requestPromise({url:`http://${ip}:11000/Presets`});
 		    parser = RegExp('preset(.+)\n','g');
@@ -107,10 +132,8 @@ class Bluesound extends utils.Adapter {
 					const data1 = {
 						id:   sPresetID,
 						name: sPresetName,
-						url:  sPresetImage,
-						start: false,
-						stop: false,
-						pause: false  
+						image:  sPresetImage,
+						start: false 
 					};
 
 					const objs = helper.getPresets(i);
@@ -120,10 +143,9 @@ class Bluesound extends utils.Adapter {
 						delete obj._id;
 						promises.push(this.setObjectNotExistsAsync(id,obj));
 						if (obj.type != 'channel'){
-							var sTag = this.name + '.' + this.instance + `.presets.preset${i}.${obj.common.name}`;
+							var sTag = adapter.namespace + `.presets.preset${i}.${obj.common.name}`;
 							for (let x in data1){
 								if (x == obj.common.name) {
-//									this.log.info(data1[x]);
 									this.subscribeStates(sTag);
 									this.setState(sTag,data1[x],true);
 								}
@@ -160,11 +182,11 @@ class Bluesound extends utils.Adapter {
 //		await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
 
 		// examples for the checkPassword/checkGroup functions
-		let result = await this.checkPasswordAsync('admin', 'Neureut');
-		this.log.info('check user admin pw iobroker: ' + result);
+//		let result = await this.checkPasswordAsync('', '');
+//		this.log.info('check user admin pw iobroker: ' + result);
 
-		result = await this.checkGroupAsync('admin', 'admin');
-		this.log.info('check group user admin group admin: ' + result);
+//		result = await this.checkGroupAsync('admin', 'admin');
+//		this.log.info('check group user admin group admin: ' + result);
 	}
 
 	/**
@@ -217,35 +239,35 @@ class Bluesound extends utils.Adapter {
 				{
 					case 'start':
 						try {
-							this.getState(id.substring(0,pos)+'.id',(err, status) => {
+							this.getState(id.substring(0,pos) + '.id',(err, status) => {
 								if (status || status.val){
 									let preset = status.val;
-									try {
-										require("request")(`http://${ip}:11000/Preset?id=${preset}`, function (error, response, result) {
-//										this.log.info(`Preset${preset} started`);
-										}).on("error", function (e) {this.log.error(e);});
-									} catch (e) { this.log.error(e); }
+									require("request")(`http://${ip}:11000/Preset?id=${preset}`, function (error, response, result) {
+									}).on("error", function (e) {this.log.error(e);});
 								}
 							});
-						} catch(e) {
-							this.log.info('Keine Verbindung');
-						}
+						} catch(e) { this.log.info('Keine Verbindung');	}
 						break;
 					case 'pause':
-						try {
-							require("request")(`http://${ip}:11000/Pause?toggle=1`, function (error, response, result) {
-							}).on("error", function (e) {this.log.error(e);});
-						} catch (e) { this.log.error(e);}
+						require("request")(`http://${ip}:11000/Pause?toggle=1`, function (error, response, result) {
+						}).on("error", function (e) {this.log.error(e);});
 						break;
 					case 'stop':
-						try {
-							require("request")(`http://${ip}:11000/Stop`, function (error, response, result) {
-							}).on("error", function (e) {this.log.error(e);});
-						} catch (e) {this.log.error(e);}
+						require("request")(`http://${ip}:11000/Stop`, function (error, response, result) {
+						}).on("error", function (e) {this.log.error(e);});
+						break;
+					case 'play':
+						require("request")(`http://${ip}:11000/Play`, function (error, response, result) {
+						}).on("error", function (e) {this.log.error(e);});
+						break;
+					case 'volume':
+						require("request")(`http://${ip}:11000/Volume?level=${state.val}`, function (error, response, result) {
+						}).on("error", function (e) {this.log.error(e);});
 						break;
 					default:
 				}
 			}
+			
 			
 		} else {
 			// The state was deleted
@@ -270,22 +292,6 @@ class Bluesound extends utils.Adapter {
 	// 		}
 	// 	}
 	// }
-	
-	async getInfo() {
-		var result;
-		var sTag = this +'.info.name';
-		this.subscribeStates(sTag);
-		try {
-		  require("request")('http://' + ip + ':11000/SyncStatus', function (error, response, result) {
-		      var parser = new RegExp('name=(.+)(?=etag)');
-		      var sName = parser.exec(result)[1];
-		      this.log.info("Set Tag: " + sTag + "to " + sName);
-//		      setState("bluesound.0.info.name",sName);
-			  this.setState(sTag, sName, true );
-		  
-		  }).on("error", function (e) {this.log.error(e);});
-		} catch (e) { this.log.error(e);}
-	}
 	
 }
 
