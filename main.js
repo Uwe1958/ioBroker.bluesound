@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.0.7 Status polling added
 // version 0.0.6 Volume control added
 // version 0.0.5 Presets added
 // version 0.0.4 IP added, Device name creation added, Added creation of objects
@@ -13,6 +14,8 @@ const utils = require('@iobroker/adapter-core');
 const helper = require(`${__dirname}/lib/utils`);
 const requestPromise = require(`request-promise-native`);
 var ip;
+let polling;
+let pollingTime;
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -50,11 +53,14 @@ class Bluesound extends utils.Adapter {
 			this.log.warn('[Start] No IP Address set');
 		}
 		
+		pollingTime = adapter.config.pollingtime || 30000 ;
+		
 		/*
 		For every state in the system there has to be also an object of type state
 		Here a simple template for a boolean variable named "testVariable"
 		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 		*/
+		
 		await this.setObjectNotExistsAsync(this.namespace, {
 			type: 'device',
 			common: {
@@ -146,8 +152,8 @@ class Bluesound extends utils.Adapter {
 							var sTag = adapter.namespace + `.presets.preset${i}.${obj.common.name}`;
 							for (let x in data1){
 								if (x == obj.common.name) {
-									this.subscribeStates(sTag);
-									this.setState(sTag,data1[x],true);
+									adapter.subscribeStates(sTag);
+									adapter.setState(sTag,data1[x],true);
 								}
 							}
 						}
@@ -158,8 +164,20 @@ class Bluesound extends utils.Adapter {
 			}
 			await Promise.all(promises);
 		}
-		catch (e) { this.log.error(e);}
-				
+		catch (e) { adapter.log.error(e);}
+		
+		// Status
+
+		try{
+			await readPlayerStatus();
+		}
+		catch (e) { adapter.log.error(e);}
+		
+		// Polling
+		
+		startPolling(pollingTime);
+		
+		 
 		// In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
 //		this.subscribeStates('testVariable');
 		// You can also add a subscription for multiple states. The following line watches all states starting with "lights."
@@ -232,7 +250,6 @@ class Bluesound extends utils.Adapter {
 	onStateChange(id, state) {
 		if (state) {
 			// The state was changed
-			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 			if (state.val) {
 				let pos = id.lastIndexOf('.');
 				switch (id.substring(pos+1))
@@ -243,30 +260,69 @@ class Bluesound extends utils.Adapter {
 								if (status || status.val){
 									let preset = status.val;
 									require("request")(`http://${ip}:11000/Preset?id=${preset}`, function (error, response, result) {
-									}).on("error", function (e) {this.log.error(e);});
+										let parser1 = RegExp('<state>(.+)(?=<)');
+										let sStateTag = adapter.namespace + '.control.state';
+										adapter.subscribeStates(sStateTag);
+										adapter.setState(sStateTag,parser1.exec(result)[1],true);
+										adapter.log.info(`${adapter.namespace} Preset${preset} Start`);
+									}).on("error", function (e) {adapter.log.error(e);});
+									setTimeout(function (){
+										readPlayerStatus();
+									},2000);
+//									if (!polling) startPolling(pollingTime);
 								}
 							});
 						} catch(e) { this.log.info('Keine Verbindung');	}
 						break;
 					case 'pause':
 						require("request")(`http://${ip}:11000/Pause?toggle=1`, function (error, response, result) {
-						}).on("error", function (e) {this.log.error(e);});
+							let parser1 = RegExp('<state>(.+)(?=<)');
+							let sStateTag = adapter.namespace + '.control.state';
+							adapter.subscribeStates(sStateTag);
+							adapter.setState(sStateTag,parser1.exec(result)[1],true);
+							adapter.log.info(`${adapter.namespace} Pause`);
+						}).on("error", function (e) {adapter.log.error(e);});
+						setTimeout(function (){
+							readPlayerStatus();
+						},2000);
+//						if (polling) stopPolling();
 						break;
 					case 'stop':
 						require("request")(`http://${ip}:11000/Stop`, function (error, response, result) {
-						}).on("error", function (e) {this.log.error(e);});
+							let parser1 = RegExp('<state>(.+)(?=<)');
+							let sStateTag = adapter.namespace + '.control.state';
+							adapter.subscribeStates(sStateTag);
+							adapter.setState(sStateTag,parser1.exec(result)[1],true);
+							adapter.log.info(`${adapter.namespace} Stop`);
+						}).on("error", function (e) {adapter.log.error(e);});
+						clearPlayerStatus();
+//						if (polling) stopPolling();
 						break;
 					case 'play':
 						require("request")(`http://${ip}:11000/Play`, function (error, response, result) {
-						}).on("error", function (e) {this.log.error(e);});
+							let parser1 = RegExp('<state>(.+)(?=<)');
+							let sStateTag = adapter.namespace + '.control.state';
+							adapter.subscribeStates(sStateTag);
+							adapter.setState(sStateTag,parser1.exec(result)[1],true);
+							adapter.log.info(`${adapter.namespace} Play`);
+						}).on("error", function (e) {adapter.log.error(e);});
+						setTimeout(function (){
+							readPlayerStatus();
+						},2000);
+//						if (!polling) startPolling(pollingTime);
 						break;
 					case 'volume':
 						require("request")(`http://${ip}:11000/Volume?level=${state.val}`, function (error, response, result) {
-						}).on("error", function (e) {this.log.error(e);});
+						}).on("error", function (e) {adapter.log.error(e);});
 						break;
 					default:
+						adapter.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+
 				}
+			} else {
+				adapter.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 			}
+			
 			
 			
 		} else {
@@ -292,8 +348,70 @@ class Bluesound extends utils.Adapter {
 	// 		}
 	// 	}
 	// }
-	
 }
+	async function readPlayerStatus(){
+		const promises = [];
+		let title = [];
+		let i;
+		for (i=1; i<4; i++){
+			title[i] = "";
+		}
+		try{
+			const result = await requestPromise({url:`http://${ip}:11000/Status`});
+			let parser = RegExp('title(.+)(?=<)','g');
+			let data = [];
+			while ((data = await parser.exec(result)) != null) {
+				i = data[1].substring(0,1);
+				title[i] = data[1].substring(2);
+			}
+			
+			await Promise.all(promises);
+
+			parser = RegExp('<state>(.+)(?=<)','g');
+			const pState = await parser.exec(result)[1];
+			
+			let sStateTag = adapter.namespace + '.control.state';
+			adapter.subscribeStates(sStateTag);
+			await adapter.setStateAsync(sStateTag,pState);
+
+			if ( pState == 'stream' || pState == 'play') {
+				adapter.subscribeStates(adapter.namespace+'.info.title*');
+
+				for (i=1; i<4; i++){
+					sStateTag = adapter.namespace + `.info.title${i}`;
+					await adapter.setStateAsync(sStateTag,title[i]);
+				}
+			}
+		}
+		catch (e) { adapter.log.error(e);}
+
+	}
+	
+	async function clearPlayerStatus(){
+		let i;
+		adapter.subscribeStates(adapter.namespace+'.info.title*');
+		for (i=1;i<4; i++){
+			let sStateTag = adapter.namespace + `.info.title${i}`;
+			await adapter.setStateAsync(sStateTag,"");
+		}
+	}
+	
+	async function startPolling(pTime) {
+		if (!polling) {
+			polling = adapter.setInterval(async => {
+				try {
+					readPlayerStatus();
+				} catch (e) {adapter.log.error(e);}
+			},pTime);
+		}
+	}
+	
+	async function stopPolling() {
+		adapter.clearInterval(polling);
+		polling = null;
+	}
+		
+	
 
 // @ts-ignore parent is a valid property on module
 if (module.parent) {

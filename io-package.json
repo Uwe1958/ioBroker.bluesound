@@ -3,6 +3,18 @@
     "name": "bluesound",
     "version": "0.0.5",
     "news": {
+      "0.0.7": {
+        "en": "Status polling added",
+        "de": "Zyklische Statusabfrage implementiert",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "zh-cn": "首次出版"
+      },
       "0.0.6": {
         "en": "Volume implemented",
         "de": "Lautstärke implemntiert",
@@ -133,7 +145,8 @@
     "installedFrom": "/home/iobroker/ioBroker.bluesound"
   },
   "native": {
-    "IP": ""
+    "IP": "",
+    "PollingTime": ""
   },
   "objects": [],
   "instanceObjects": []

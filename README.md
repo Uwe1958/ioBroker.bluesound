@@ -95,12 +95,30 @@ For later updates, the above procedure is not necessary. Just do the following:
 
 ## Changelog
 
+### 0.0.7 Status polling added
 ### 0.0.6 Volume control implemented
 ### 0.0.5 Start/Stop/Pause implemented
 ### 0.0.4 Presets created as states
 ### 0.0.3 Device info created as states
-### 0.0.1
-* (uwe1958) initial release
+### 0.0.1 (uwe1958) initial release
+
+## Functions included
+
+The adapter uses API calls in the format: http://--playerAPI--:11000/xxx
+
+At startup the presets are read and added to the 'presets' channel.
+Player model and name are stored in the 'info' channel.
+When player is playing the titles are set in the 'info' channel.
+The player status is polled in the interval set by '.config.pollingtime' and the result is stored in '.control.state'. 
+
+The following functions are implemented:
+
+Player stop (triggered by setting '.control.stop' to true)
+Player start (triggered by setting '.control.start' to true)
+Player Pause (triggered by setting '.control.pause' to true, toggle mode)
+Play Presetxxx (triggered by setting '.presets.preset(x).start' to true)
+Change Volume (triggered by changing '.control.volume')
+
 
 ## License
 MIT License
