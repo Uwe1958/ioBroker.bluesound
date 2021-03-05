@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.0.5",
+    "version": "0.0.8",
     "news": {
+      "0.0.8": {
+        "en": "Slight modifications after adapter check",
+        "de": "Geringfügige Änderungen aufgrund des Adapter Checks",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "zh-cn": "首次出版"
+      },
       "0.0.7": {
         "en": "Status polling added",
         "de": "Zyklische Statusabfrage implementiert",
@@ -141,8 +153,7 @@
       {
         "js-controller": ">=2.0.0"
       }
-    ],
-    "installedFrom": "/home/iobroker/ioBroker.bluesound"
+    ]
   },
   "native": {
     "IP": "",

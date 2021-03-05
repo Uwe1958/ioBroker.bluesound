@@ -95,6 +95,7 @@ For later updates, the above procedure is not necessary. Just do the following:
 
 ## Changelog
 
+### 0.0.8 Slight changes due to adapter check
 ### 0.0.7 Status polling added
 ### 0.0.6 Volume control implemented
 ### 0.0.5 Start/Stop/Pause implemented

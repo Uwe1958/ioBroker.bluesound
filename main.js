@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.0.8 Slight modifications due to adapter check
 // version 0.0.7 Status polling added
 // version 0.0.6 Volume control added
 // version 0.0.5 Presets added
@@ -111,6 +112,10 @@ class Bluesound extends utils.Adapter {
 		sNameTag = adapter.namespace + '.control.play';
 		this.subscribeStates(sNameTag);
 		this.setState(sNameTag,false,true);
+		// state = ""
+		sNameTag = adapter.namespace + '.control.state';
+		this.subscribeStates(sNameTag);
+		this.setState(sNameTag,"",true);
 		try {
 			// volume from player
 			const result = await requestPromise({url:`http://${ip}:11000/Volume`});
@@ -175,7 +180,7 @@ class Bluesound extends utils.Adapter {
 		
 		// Polling
 		
-		startPolling(pollingTime);
+		await startPolling(pollingTime);
 		
 		 
 		// In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
@@ -362,26 +367,35 @@ class Bluesound extends utils.Adapter {
 			let data = [];
 			while ((data = await parser.exec(result)) != null) {
 				i = data[1].substring(0,1);
-				title[i] = data[1].substring(2);
+				title[i] = stripHTML(data[1].substring(2));
 			}
 			
 			await Promise.all(promises);
 
 			parser = RegExp('<state>(.+)(?=<)','g');
 			const pState = await parser.exec(result)[1];
+
+			var pStateOld = await adapter.getStateAsync(adapter.namespace + '.control.state');
 			
-			let sStateTag = adapter.namespace + '.control.state';
-			adapter.subscribeStates(sStateTag);
-			await adapter.setStateAsync(sStateTag,pState);
+//			adapter.log.info(`Old: ${pStateOld.val}, New: ${pState}`);
+			
+			if (pState != pStateOld.val) {
+				
+				let sStateTag = adapter.namespace + '.control.state';
+				adapter.subscribeStates(sStateTag);
+				await adapter.setStateAsync(sStateTag,pState);
+			
+			}
 
 			if ( pState == 'stream' || pState == 'play') {
 				adapter.subscribeStates(adapter.namespace+'.info.title*');
 
 				for (i=1; i<4; i++){
-					sStateTag = adapter.namespace + `.info.title${i}`;
+					let sStateTag = adapter.namespace + `.info.title${i}`;
 					await adapter.setStateAsync(sStateTag,title[i]);
 				}
 			}
+			
 		}
 		catch (e) { adapter.log.error(e);}
 
@@ -410,7 +424,11 @@ class Bluesound extends utils.Adapter {
 		adapter.clearInterval(polling);
 		polling = null;
 	}
-		
+	
+	function stripHTML(str) {
+		let strneu = str.replace("&amp;","&");
+		return strneu;
+	}
 	
 
 // @ts-ignore parent is a valid property on module
