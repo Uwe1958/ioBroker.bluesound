@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.0.10 ACK warning at startup eliminated
 // version 0.0.8 Slight modifications due to adapter check
 // version 0.0.7 Status polling added
 // version 0.0.6 Volume control added
@@ -383,7 +384,7 @@ class Bluesound extends utils.Adapter {
 				
 				let sStateTag = adapter.namespace + '.control.state';
 				adapter.subscribeStates(sStateTag);
-				await adapter.setStateAsync(sStateTag,pState);
+				await adapter.setStateAsync(sStateTag,pState,true);
 			
 			}
 
