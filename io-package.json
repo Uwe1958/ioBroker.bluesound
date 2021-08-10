@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "news": {
+      "0.0.11": {
+        "en": "Eliminated all ACK warning (due to JS controller 3.3)",
+        "de": "Alle ACK Warnungen (wegen JS controller 3.3) eliminiert",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "zh-cn": "首次出版"
+      },
       "0.0.10": {
         "en": "Eliminated ACK warning (Control.state) at start up",
         "de": "ACK Warnung (Control.state) beim STart eliminiert",

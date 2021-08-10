@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.0.11 all ACK warnings eliminated (jscontroller 3.3)
 // version 0.0.10 ACK warning at startup eliminated
 // version 0.0.8 Slight modifications due to adapter check
 // version 0.0.7 Status polling added
@@ -384,7 +385,7 @@ class Bluesound extends utils.Adapter {
 				
 				let sStateTag = adapter.namespace + '.control.state';
 				adapter.subscribeStates(sStateTag);
-				await adapter.setStateAsync(sStateTag,pState,true);
+				await adapter.setStateAsync(sStateTag,{val:pState,ack:true});
 			
 			}
 
@@ -393,7 +394,7 @@ class Bluesound extends utils.Adapter {
 
 				for (i=1; i<4; i++){
 					let sStateTag = adapter.namespace + `.info.title${i}`;
-					await adapter.setStateAsync(sStateTag,title[i]);
+					await adapter.setStateAsync(sStateTag,{val:title[i],ack:true});
 				}
 			}
 			
@@ -407,7 +408,7 @@ class Bluesound extends utils.Adapter {
 		adapter.subscribeStates(adapter.namespace+'.info.title*');
 		for (i=1;i<4; i++){
 			let sStateTag = adapter.namespace + `.info.title${i}`;
-			await adapter.setStateAsync(sStateTag,"");
+			await adapter.setStateAsync(sStateTag,{val:"",ack:true});
 		}
 	}
 	
