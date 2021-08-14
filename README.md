@@ -95,6 +95,7 @@ For later updates, the above procedure is not necessary. Just do the following:
 
 ## Changelog
 
+### 0.0.12 Bump parse-path from 1.0.6 to 1.0.7
 ### 0.0.11 ACK warnings (due to JS controller 3.3) eliminated
 ### 0.0.8 Slight changes due to adapter check
 ### 0.0.7 Status polling added
