@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "news": {
+      "0.0.14": {
+        "en": "Solved dependabot alerts",
+        "de": "Dependabot-Warnungen behoben",
+        "ru": "Решенный зависимых предупреждений",
+        "pt": "Alertas de dependebot resolvidos",
+        "nl": "Opgeloste dependabot-waarschuwingen",
+        "fr": "Alertes de dependabot résolues",
+        "it": "Risolti avvisi di dependabot",
+        "es": "Alertas de dependabot resueltas",
+        "pl": "Rozwiązany alerty dependabot",
+        "zh-cn": "解决了dependabot警报"
+      },
       "0.0.13": {
         "en": "package-lock.json changed (follow-redirects)",
         "de": "package-lock.json geändert (follow-redirects)",
