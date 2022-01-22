@@ -95,6 +95,7 @@ For later updates, the above procedure is not necessary. Just do the following:
 
 ## Changelog
 
+### 0.0.13 follow-redirect vulnerability eliminated
 ### 0.0.12 Bump parse-path from 1.0.6 to 1.0.7
 ### 0.0.11 ACK warnings (due to JS controller 3.3) eliminated
 ### 0.0.8 Slight changes due to adapter check
@@ -126,7 +127,7 @@ Change Volume (triggered by changing '.control.volume')
 ## License
 MIT License
 
-Copyright (c) 2021 uwe1958 <uwenagel@kabelmail.de>
+Copyright (c) 2022 uwe1958 <uwenagel@kabelmail.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

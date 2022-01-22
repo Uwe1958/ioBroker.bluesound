@@ -1,6 +1,6 @@
 {
   "name": "iobroker.bluesound",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Control Bluesound device",
   "author": {
     "name": "uwe1958",
@@ -19,7 +19,8 @@
     "url": "https://github.com/uwe1958/ioBroker.bluesound"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.4.0"
+    "@iobroker/adapter-core": "^2.4.0",
+    "follow-redirects": ">=1.14.7"
   },
   "devDependencies": {
     "@iobroker/testing": "^2.4.2",
@@ -46,7 +47,6 @@
   "scripts": {
     "test:js": "mocha --config test/mocharc.custom.json \"{!(node_modules|test)/**/*.test.js,*.test.js,test/**/test!(PackageFiles|Startup).js}\"",
     "test:package": "mocha test/package --exit",
-    "test:unit": "mocha test/unit --exit",
     "test:integration": "mocha test/integration --exit",
     "test": "npm run test:js && npm run test:package",
     "check": "tsc --noEmit -p tsconfig.check.json",

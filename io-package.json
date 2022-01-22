@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "news": {
+      "0.0.13": {
+        "en": "package-lock.json changed (follow-redirects)",
+        "de": "package-lock.json geändert (follow-redirects)",
+        "ru": "package-lock.json изменен (follow-redirects)",
+        "pt": "package-lock.json alterado (follow-redirects)",
+        "nl": "package-lock.json gewijzigd (follow-redirects)",
+        "fr": "package-lock.json modifié (follow-redirects)",
+        "it": "package-lock.json modificato (follow-redirect)",
+        "es": "package-lock.json cambiado (follow-redirects)",
+        "pl": "zmieniony pakiet-lock.json (follow-redirects)",
+        "zh-cn": "package-lock.json 更改（follow-redirects）"
+      },
       "0.0.12": {
         "en": "Bump parse-path from 1.0.6 to 1.0.7",
         "de": "parse-path auf Version 1.0.7 erhöht",

@@ -56,7 +56,7 @@ class Bluesound extends utils.Adapter {
 			this.log.warn('[Start] No IP Address set');
 		}
 		
-		pollingTime = adapter.config.pollingtime || 30000 ;
+		pollingTime = adapter.config.PollingTime || 30000 ;
 		
 		/*
 		For every state in the system there has to be also an object of type state
@@ -94,7 +94,7 @@ class Bluesound extends utils.Adapter {
 		  const result = await requestPromise({url:`http://${ip}:11000/SyncStatus`});
 		  var parser = new RegExp('name="(.+)(?=" etag)');
 		  var sName = parser.exec(result)[1];
-	      this.setState(sNameTag,sName,true);
+		  this.setState(sNameTag,sName,true);
 		  var parser1 = new RegExp('modelName="(.+)(?=" model)');
           var sModelName = parser1.exec(result)[1];
 	      this.setState(sModelNameTag,sModelName,true);
