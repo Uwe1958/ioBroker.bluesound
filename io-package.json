@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.0.14",
+    "version": "0.1.0",
     "news": {
+      "0.1.0": {
+        "en": "All `request` calls changed to `axios` (`request-promise-native` deprecated)",
+        "de": "Alle `request`Aufrufe durch `axios`ersetzt (`request-promise-native` veraltet)",
+        "ru": "Решенный зависимых предупреждений",
+        "pt": "Alertas de dependebot resolvidos",
+        "nl": "Opgeloste dependabot-waarschuwingen",
+        "fr": "Alertes de dependabot résolues",
+        "it": "Risolti avvisi di dependabot",
+        "es": "Alertas de dependabot resueltas",
+        "pl": "Rozwiązany alerty dependabot",
+        "zh-cn": "解决了dependabot警报"
+      },
       "0.0.14": {
         "en": "Solved dependabot alerts",
         "de": "Dependabot-Warnungen behoben",

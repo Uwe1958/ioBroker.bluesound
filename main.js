@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.1.0 All `request` calls changed to `axios` (`request-promise-native` deprecated)
 // version 0.0.11 all ACK warnings eliminated (jscontroller 3.3)
 // version 0.0.10 ACK warning at startup eliminated
 // version 0.0.8 Slight modifications due to adapter check
@@ -15,7 +16,8 @@
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 const helper = require(`${__dirname}/lib/utils`);
-const requestPromise = require(`request-promise-native`);
+//const requestPromise = require(`request-promise-native`);
+const axios = require(`axios`);
 var ip;
 let polling;
 let pollingTime;
@@ -90,15 +92,22 @@ class Bluesound extends utils.Adapter {
 		
 		// set Info
 		
-		try {
-		  const result = await requestPromise({url:`http://${ip}:11000/SyncStatus`});
-		  var parser = new RegExp('name="(.+)(?=" etag)');
-		  var sName = parser.exec(result)[1];
-		  this.setState(sNameTag,sName,true);
-		  var parser1 = new RegExp('modelName="(.+)(?=" model)');
-          var sModelName = parser1.exec(result)[1];
-	      this.setState(sModelNameTag,sModelName,true);
-		} catch (e) { this.log.error(e);}
+		try {const response = await axios.get(`http://${ip}:11000/SyncStatus`);
+			if (response.status === 200) {
+				const data = response.data;
+				var parser = new RegExp('name="(.+)(?=" etag)');
+				var sName = parser.exec(data)[1];
+				this.setState(sNameTag,sName,true);
+				var parser1 = new RegExp('modelName="(.+)(?=" model)');
+				var sModelName = parser1.exec(data)[1];
+				this.setState(sModelNameTag,sModelName,true);
+			}
+			else {
+				this.log.error("Could not retrieve data, Status code " + response.status);  
+			}
+		} catch(e) {
+			console.error("Could not retrieve data: " + e.message);
+		}
 		
 		// Initialize Control
 		
@@ -118,60 +127,74 @@ class Bluesound extends utils.Adapter {
 		sNameTag = adapter.namespace + '.control.state';
 		this.subscribeStates(sNameTag);
 		this.setState(sNameTag,"",true);
-		try {
-			// volume from player
-			const result = await requestPromise({url:`http://${ip}:11000/Volume`});
-			let parser1 = RegExp('>(.+)(?=<)');
-			sNameTag = adapter.namespace + '.control.volume';
-			this.subscribeStates(sNameTag);
-			this.setState(sNameTag,parser1.exec(result)[1],true);
-		} catch (e) { this.log.error(e);}
+
+		// volume from player
+		try {const response = await axios.get(`http://${ip}:11000/Volume`);
+			if (response.status === 200) {
+				const data = response.data;
+				let parser1 = RegExp('>(.+)(?=<)');
+				sNameTag = adapter.namespace + '.control.volume';
+				this.subscribeStates(sNameTag);
+				this.setState(sNameTag,parser1.exec(data)[1],true);
+			}
+			else {
+				this.log.error("Could not retrieve data, Status code " + response.status);  
+			}
+		} catch(e) {
+			console.error("Could not retrieve data: " + e.message);
+		}
 
 		// Presets
 		
-		try {
-		    const result = await requestPromise({url:`http://${ip}:11000/Presets`});
-		    parser = RegExp('preset(.+)\n','g');
-		    let data = [];
-		    let i = 1;
-		    while((data = parser.exec(result)) != null){
-				if (data[1].substring(0,4) == ' url') {
-					let parser1 = RegExp('id="(.+)(?=" name)');
-					var sPresetID = parser1.exec(data[1])[1];
-					parser1 = RegExp('name="(.+)(?=" image)');
-					var sPresetName = parser1.exec(data[1])[1];
-					parser1 = RegExp('image="(.+)(?="\/)');
-					var sPresetImage = parser1.exec(data[1])[1];
-					const data1 = {
-						id:   sPresetID,
-						name: sPresetName,
-						image:  sPresetImage,
-						start: false 
-					};
+		try {const response = await axios.get(`http://${ip}:11000/Presets`);
+			if (response.status === 200) {
+				const result = response.data;
+				parser = RegExp('preset(.+)\n','g');
+				let data = [];
+				let i = 1;
+				while((data = parser.exec(result)) != null){
+					if (data[1].substring(0,4) == ' url') {
+						let parser1 = RegExp('id="(.+)(?=" name)');
+						var sPresetID = parser1.exec(data[1])[1];
+						parser1 = RegExp('name="(.+)(?=" image)');
+						var sPresetName = parser1.exec(data[1])[1];
+						parser1 = RegExp('image="(.+)(?="\/)');
+						var sPresetImage = parser1.exec(data[1])[1];
+						const data1 = {
+							id:   sPresetID,
+							name: sPresetName,
+							image:  sPresetImage,
+							start: false 
+						};
 
-					const objs = helper.getPresets(i);
+						const objs = helper.getPresets(i);
 				  
-					for (const obj of objs){
-						const id = obj._id;
-						delete obj._id;
-						promises.push(this.setObjectNotExistsAsync(id,obj));
-						if (obj.type != 'channel'){
-							var sTag = adapter.namespace + `.presets.preset${i}.${obj.common.name}`;
-							for (let x in data1){
-								if (x == obj.common.name) {
-									adapter.subscribeStates(sTag);
-									adapter.setState(sTag,data1[x],true);
+						for (const obj of objs){
+							const id = obj._id;
+							delete obj._id;
+							promises.push(this.setObjectNotExistsAsync(id,obj));
+							if (obj.type != 'channel'){
+								var sTag = adapter.namespace + `.presets.preset${i}.${obj.common.name}`;
+								for (let x in data1){
+									if (x == obj.common.name) {
+										adapter.subscribeStates(sTag);
+										adapter.setState(sTag,data1[x],true);
+									}
 								}
 							}
-						}
 
+						}
+						i=i+1;
 					}
-					i=i+1;
 				}
+				await Promise.all(promises);
 			}
-			await Promise.all(promises);
+			else {
+				this.log.error("Could not retrieve data, Status code " + response.status);  
+			}
+		} catch(e) {
+			console.error("Could not retrieve data: " + e.message);
 		}
-		catch (e) { adapter.log.error(e);}
 		
 		// Status
 
@@ -262,69 +285,101 @@ class Bluesound extends utils.Adapter {
 				switch (id.substring(pos+1))
 				{
 					case 'start':
-						try {
-							this.getState(id.substring(0,pos) + '.id',(err, status) => {
-								if (status || status.val){
-									let preset = status.val;
-									require("request")(`http://${ip}:11000/Preset?id=${preset}`, function (error, response, result) {
-										let parser1 = RegExp('<state>(.+)(?=<)');
-										let sStateTag = adapter.namespace + '.control.state';
-										adapter.subscribeStates(sStateTag);
-										adapter.setState(sStateTag,parser1.exec(result)[1],true);
-										adapter.log.info(`${adapter.namespace} Preset${preset} Start`);
-									}).on("error", function (e) {adapter.log.error(e);});
-									setTimeout(function (){
-										readPlayerStatus();
-									},2000);
+						this.getState(id.substring(0,pos) + '.id',(err, status) => {
+							if (status || status.val){
+								let preset = status.val;
+								axios.get(`http://${ip}:11000/Preset?id=${preset}`)
+									.then(response => {
+									// Handle response
+									const result = response.data;
+									let parser1 = RegExp('<state>(.+)(?=<)');
+									let sStateTag = adapter.namespace + '.control.state';
+									adapter.subscribeStates(sStateTag);
+									adapter.setState(sStateTag,parser1.exec(result)[1],true);
+									adapter.log.info(`${adapter.namespace} Preset${preset} Start`);
+								})
+								.catch(err => {
+									// Handle errors
+									adapter.log.error("Could not start preset, Status code " + response.status);  
+								});
+								setTimeout(function (){
+									readPlayerStatus();
+								},2000);
 //									if (!polling) startPolling(pollingTime);
-								}
-							});
-						} catch(e) { this.log.info('Keine Verbindung');	}
+							}
+						});
 						break;
 					case 'pause':
-						require("request")(`http://${ip}:11000/Pause?toggle=1`, function (error, response, result) {
-							let parser1 = RegExp('<state>(.+)(?=<)');
-							let sStateTag = adapter.namespace + '.control.state';
-							adapter.subscribeStates(sStateTag);
-							adapter.setState(sStateTag,parser1.exec(result)[1],true);
-							adapter.log.info(`${adapter.namespace} Pause`);
-						}).on("error", function (e) {adapter.log.error(e);});
+						axios.get(`http://${ip}:11000/Pause?toggle=1`)
+							.then(response => {
+								// Handle response
+								const result = response.data;
+								let parser1 = RegExp('<state>(.+)(?=<)');
+								let sStateTag = adapter.namespace + '.control.state';
+								adapter.subscribeStates(sStateTag);
+								adapter.setState(sStateTag,parser1.exec(result)[1],true);
+								adapter.log.info(`${adapter.namespace} Pause`);
+							})
+							.catch(err => {
+								// Handle errors
+								adapter.log.error("Could not retrieve data, Status code " + response.status);  
+						});
 						setTimeout(function (){
 							readPlayerStatus();
 						},2000);
 //						if (polling) stopPolling();
 						break;
 					case 'stop':
-						require("request")(`http://${ip}:11000/Stop`, function (error, response, result) {
-							let parser1 = RegExp('<state>(.+)(?=<)');
-							let sStateTag = adapter.namespace + '.control.state';
-							adapter.subscribeStates(sStateTag);
-							adapter.setState(sStateTag,parser1.exec(result)[1],true);
-							adapter.log.info(`${adapter.namespace} Stop`);
-						}).on("error", function (e) {adapter.log.error(e);});
+						axios.get(`http://${ip}:11000/Stop`)
+							.then(response => {
+								// Handle response
+								const result = response.data;
+								let parser1 = RegExp('<state>(.+)(?=<)');
+								let sStateTag = adapter.namespace + '.control.state';
+								adapter.subscribeStates(sStateTag);
+								adapter.setState(sStateTag,parser1.exec(result)[1],true);
+								adapter.log.info(`${adapter.namespace} Stop`);
+							})
+							.catch(err => {
+								// Handle errors
+								adapter.log.error("Could not retrieve data, Status code " + response.status);  
+						});
 						clearPlayerStatus();
 //						if (polling) stopPolling();
 						break;
 					case 'play':
-						require("request")(`http://${ip}:11000/Play`, function (error, response, result) {
-							let parser1 = RegExp('<state>(.+)(?=<)');
-							let sStateTag = adapter.namespace + '.control.state';
-							adapter.subscribeStates(sStateTag);
-							adapter.setState(sStateTag,parser1.exec(result)[1],true);
-							adapter.log.info(`${adapter.namespace} Play`);
-						}).on("error", function (e) {adapter.log.error(e);});
+						axios.get(`http://${ip}:11000/Play`)
+							.then(response => {
+								// Handle response
+								const result = response.data;
+								let parser1 = RegExp('<state>(.+)(?=<)');
+								let sStateTag = adapter.namespace + '.control.state';
+								adapter.subscribeStates(sStateTag);
+								adapter.setState(sStateTag,parser1.exec(result)[1],true);
+								adapter.log.info(`${adapter.namespace} Play`);
+							})
+							.catch(err => {
+								// Handle errors
+								adapter.log.error("Could not retrieve data, Status code " + response.status);  
+						});
 						setTimeout(function (){
 							readPlayerStatus();
 						},2000);
 //						if (!polling) startPolling(pollingTime);
 						break;
 					case 'volume':
-						require("request")(`http://${ip}:11000/Volume?level=${state.val}`, function (error, response, result) {
-						}).on("error", function (e) {adapter.log.error(e);});
+						axios.get(`http://${ip}:11000/Volume?level=${state.val}`)
+							.then(response => {
+								// Handle response
+								const result = response.data;
+							})
+							.catch(err => {
+								// Handle errors
+								adapter.log.error("Could not retrieve data, Status code " + response.status);  
+						});
 						break;
 					default:
 						adapter.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-
 				}
 			} else {
 				adapter.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
@@ -363,43 +418,48 @@ class Bluesound extends utils.Adapter {
 		for (i=1; i<4; i++){
 			title[i] = "";
 		}
-		try{
-			const result = await requestPromise({url:`http://${ip}:11000/Status`});
-			let parser = RegExp('title(.+)(?=<)','g');
-			let data = [];
-			while ((data = await parser.exec(result)) != null) {
-				i = data[1].substring(0,1);
-				title[i] = stripHTML(data[1].substring(2));
-			}
+		try {const response = await axios.get(`http://${ip}:11000/Status`);
+			if (response.status === 200) {
+				const result = response.data;
+				let parser = RegExp('title(.+)(?=<)','g');
+				let data = [];
+				while ((data = await parser.exec(result)) != null) {
+					i = data[1].substring(0,1);
+					title[i] = stripHTML(data[1].substring(2));
+				}
 			
-			await Promise.all(promises);
+				await Promise.all(promises);
 
-			parser = RegExp('<state>(.+)(?=<)','g');
-			const pState = await parser.exec(result)[1];
+				parser = RegExp('<state>(.+)(?=<)','g');
+				const pState = await parser.exec(result)[1];
 
-			var pStateOld = await adapter.getStateAsync(adapter.namespace + '.control.state');
+				var pStateOld = await adapter.getStateAsync(adapter.namespace + '.control.state');
 			
 //			adapter.log.info(`Old: ${pStateOld.val}, New: ${pState}`);
 			
-			if (pState != pStateOld.val) {
+				if (pState != pStateOld.val) {
 				
-				let sStateTag = adapter.namespace + '.control.state';
-				adapter.subscribeStates(sStateTag);
-				await adapter.setStateAsync(sStateTag,{val:pState,ack:true});
+					let sStateTag = adapter.namespace + '.control.state';
+					adapter.subscribeStates(sStateTag);
+					await adapter.setStateAsync(sStateTag,{val:pState,ack:true});
 			
-			}
+				}
 
-			if ( pState == 'stream' || pState == 'play') {
-				adapter.subscribeStates(adapter.namespace+'.info.title*');
+				if ( pState == 'stream' || pState == 'play') {
+					adapter.subscribeStates(adapter.namespace+'.info.title*');
 
-				for (i=1; i<4; i++){
-					let sStateTag = adapter.namespace + `.info.title${i}`;
-					await adapter.setStateAsync(sStateTag,{val:title[i],ack:true});
+					for (i=1; i<4; i++){
+						let sStateTag = adapter.namespace + `.info.title${i}`;
+						await adapter.setStateAsync(sStateTag,{val:title[i],ack:true});
+					}
 				}
 			}
-			
+			else {
+				adapter.log.error("Could not retrieve data, Status code " + response.status);  
+			}
+		} catch(e) {
+			adapter.log.error("Could not retrieve data: " + e.message);
 		}
-		catch (e) { adapter.log.error(e);}
 
 	}
 	
