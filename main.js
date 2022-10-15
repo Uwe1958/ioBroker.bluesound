@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.1.1 Info for current title retrieved and stored
 // version 0.1.0 All `request` calls changed to `axios` (`request-promise-native` deprecated)
 // version 0.0.11 all ACK warnings eliminated (jscontroller 3.3)
 // version 0.0.10 ACK warning at startup eliminated
@@ -16,7 +17,6 @@
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 const helper = require(`${__dirname}/lib/utils`);
-//const requestPromise = require(`request-promise-native`);
 const axios = require(`axios`);
 var ip;
 let polling;
@@ -427,12 +427,20 @@ class Bluesound extends utils.Adapter {
 					i = data[1].substring(0,1);
 					title[i] = stripHTML(data[1].substring(2));
 				}
+				
+				parser = RegExp('<secs>(.+)(?=<)','g');
+				let varSecs = parser.exec(result)[1];
+				
+				parser = RegExp('<totlen>(.+)(?=<)','g');
+				let varTotLen = parser.exec(result)[1];
+
+				parser = RegExp('<image>(.+)(?=<)','g');
+				let imageUrl = parser.exec(result)[1];
 			
 				await Promise.all(promises);
 
 				parser = RegExp('<state>(.+)(?=<)','g');
 				const pState = await parser.exec(result)[1];
-
 				var pStateOld = await adapter.getStateAsync(adapter.namespace + '.control.state');
 			
 //			adapter.log.info(`Old: ${pStateOld.val}, New: ${pState}`);
@@ -452,6 +460,39 @@ class Bluesound extends utils.Adapter {
 						let sStateTag = adapter.namespace + `.info.title${i}`;
 						await adapter.setStateAsync(sStateTag,{val:title[i],ack:true});
 					}
+					
+					let sStateTag = adapter.namespace + '.info.secs';
+					adapter.subscribeStates(sStateTag);
+					await adapter.setStateAsync(sStateTag,{val:parseInt(varSecs),ack:true});
+					
+					sStateTag = adapter.namespace + '.info.totlen';
+					adapter.subscribeStates(sStateTag);
+					await adapter.setStateAsync(sStateTag,{val:parseInt(varTotLen),ack:true});
+
+					sStateTag = adapter.namespace + '.info.image';
+					adapter.subscribeStates(sStateTag);
+					await adapter.setStateAsync(sStateTag,{val:imageUrl,ack:true});
+
+				}
+				else {
+
+					for (i=1; i<4; i++){
+						let sStateTag = adapter.namespace + `.info.title${i}`;
+						await adapter.setStateAsync(sStateTag,{val:"",ack:true});
+					}
+					
+					let sStateTag = adapter.namespace + '.info.secs';
+					adapter.subscribeStates(sStateTag);
+					await adapter.setStateAsync(sStateTag,{val:0,ack:true});
+					
+					sStateTag = adapter.namespace + '.info.totlen';
+					adapter.subscribeStates(sStateTag);
+					await adapter.setStateAsync(sStateTag,{val:0,ack:true});
+
+					sStateTag = adapter.namespace + '.info.image';
+					adapter.subscribeStates(sStateTag);
+					await adapter.setStateAsync(sStateTag,{val:'',ack:true});
+
 				}
 			}
 			else {
