@@ -1,8 +1,32 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.1.1",
+    "version": "0.1.3",
     "news": {
+      "0.1.3": {
+        "en": "Try to resolve glob-parent vulnerability",
+        "de": "glob-parent Abhängigkeit gelöst",
+        "ru": "Решенный зависимых предупреждений",
+        "pt": "Alertas de dependebot resolvidos",
+        "nl": "Opgeloste dependabot-waarschuwingen",
+        "fr": "Alertes de dependabot résolues",
+        "it": "Risolti avvisi di dependabot",
+        "es": "Alertas de dependabot resueltas",
+        "pl": "Rozwiązany alerty dependabot",
+        "zh-cn": "解决了dependabot警报"
+      },
+      "0.1.2": {
+        "en": "Url for images of local files now correctly stored",
+        "de": "Bildadresse für lokale Audiodateien wird nun korrekt gespeichert",
+        "ru": "Решенный зависимых предупреждений",
+        "pt": "Alertas de dependebot resolvidos",
+        "nl": "Opgeloste dependabot-waarschuwingen",
+        "fr": "Alertes de dependabot résolues",
+        "it": "Risolti avvisi di dependabot",
+        "es": "Alertas de dependabot resueltas",
+        "pl": "Rozwiązany alerty dependabot",
+        "zh-cn": "解决了dependabot警报"
+      },
       "0.1.1": {
         "en": "Info for current title retrieved and stored",
         "de": "Informationen des aktuellen Titels werden geholt und abgespeichert",

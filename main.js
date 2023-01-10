@@ -3,6 +3,8 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.1.3 Solved glob-parent vulnerability
+// version 0.1.2 Url for images of local files now correctly stored
 // version 0.1.1 Info for current title retrieved and stored
 // version 0.1.0 All `request` calls changed to `axios` (`request-promise-native` deprecated)
 // version 0.0.11 all ACK warnings eliminated (jscontroller 3.3)
@@ -17,10 +19,10 @@
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 const helper = require(`${__dirname}/lib/utils`);
-const axios = require(`axios`);
+const axios = require(`axios`).default;
 var ip;
 let polling;
-let pollingTime;
+var pollingTime;
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -58,7 +60,10 @@ class Bluesound extends utils.Adapter {
 			this.log.warn('[Start] No IP Address set');
 		}
 		
-		pollingTime = adapter.config.PollingTime || 30000 ;
+		pollingTime = this.config.PollingTime;
+		this.log.info("PollingTime: " + pollingTime);
+		pollingTime = pollingTime || 30000 ;
+		this.log.info("PollingTime: " + pollingTime);
 		
 		/*
 		For every state in the system there has to be also an object of type state
@@ -106,7 +111,7 @@ class Bluesound extends utils.Adapter {
 				this.log.error("Could not retrieve data, Status code " + response.status);  
 			}
 		} catch(e) {
-			console.error("Could not retrieve data: " + e.message);
+			console.error("Could not retrieve data: " + e);
 		}
 		
 		// Initialize Control
@@ -141,7 +146,7 @@ class Bluesound extends utils.Adapter {
 				this.log.error("Could not retrieve data, Status code " + response.status);  
 			}
 		} catch(e) {
-			console.error("Could not retrieve data: " + e.message);
+			this.log.error("Could not retrieve data: " + e);
 		}
 
 		// Presets
@@ -193,15 +198,12 @@ class Bluesound extends utils.Adapter {
 				this.log.error("Could not retrieve data, Status code " + response.status);  
 			}
 		} catch(e) {
-			console.error("Could not retrieve data: " + e.message);
+			this.log.error("Could not retrieve data: " + e);
 		}
 		
 		// Status
 
-		try{
-			await readPlayerStatus();
-		}
-		catch (e) { adapter.log.error(e);}
+		await readPlayerStatus();
 		
 		// Polling
 		
@@ -300,7 +302,8 @@ class Bluesound extends utils.Adapter {
 								})
 								.catch(err => {
 									// Handle errors
-									adapter.log.error("Could not start preset, Status code " + response.status);  
+//									adapter.log.error("Could not start preset, Status code " + response.status);  
+									adapter.log.error("Could not start preset, Status code " + err);  
 								});
 								setTimeout(function (){
 									readPlayerStatus();
@@ -322,7 +325,7 @@ class Bluesound extends utils.Adapter {
 							})
 							.catch(err => {
 								// Handle errors
-								adapter.log.error("Could not retrieve data, Status code " + response.status);  
+								adapter.log.error("Could not retrieve data, Status code " + err);  
 						});
 						setTimeout(function (){
 							readPlayerStatus();
@@ -342,7 +345,7 @@ class Bluesound extends utils.Adapter {
 							})
 							.catch(err => {
 								// Handle errors
-								adapter.log.error("Could not retrieve data, Status code " + response.status);  
+								adapter.log.error("Could not retrieve data, Status code " + err);  
 						});
 						clearPlayerStatus();
 //						if (polling) stopPolling();
@@ -360,7 +363,7 @@ class Bluesound extends utils.Adapter {
 							})
 							.catch(err => {
 								// Handle errors
-								adapter.log.error("Could not retrieve data, Status code " + response.status);  
+								adapter.log.error("Could not retrieve data, Status code " + err);  
 						});
 						setTimeout(function (){
 							readPlayerStatus();
@@ -375,7 +378,7 @@ class Bluesound extends utils.Adapter {
 							})
 							.catch(err => {
 								// Handle errors
-								adapter.log.error("Could not retrieve data, Status code " + response.status);  
+								adapter.log.error("Could not retrieve data, Status code " + err);  
 						});
 						break;
 					default:
@@ -436,6 +439,10 @@ class Bluesound extends utils.Adapter {
 
 				parser = RegExp('<image>(.+)(?=<)','g');
 				let imageUrl = parser.exec(result)[1];
+				
+				if (imageUrl.substring(0,4) != 'http'){
+					imageUrl = `http://${ip}:11000` + imageUrl;
+				}
 			
 				await Promise.all(promises);
 
@@ -499,7 +506,7 @@ class Bluesound extends utils.Adapter {
 				adapter.log.error("Could not retrieve data, Status code " + response.status);  
 			}
 		} catch(e) {
-			adapter.log.error("Could not retrieve data: " + e.message);
+			adapter.log.error("Could not retrieve data: " + e);
 		}
 
 	}
@@ -516,9 +523,7 @@ class Bluesound extends utils.Adapter {
 	async function startPolling(pTime) {
 		if (!polling) {
 			polling = adapter.setInterval(async => {
-				try {
-					readPlayerStatus();
-				} catch (e) {adapter.log.error(e);}
+				readPlayerStatus();
 			},pTime);
 		}
 	}
