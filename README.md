@@ -94,6 +94,7 @@ For later updates, the above procedure is not necessary. Just do the following:
 
 ## Changelog
 
+### 0.1.4 pollingtime is now correctly read from config page
 ### 0.1.0 All `request` calls changed to `axios` (`request-promise-native` deprecated)
 ### 0.0.14 Solved dependabot alerts
 ### 0.0.13 follow-redirect vulnerability eliminated

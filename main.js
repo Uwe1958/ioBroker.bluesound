@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.1.4 pollingtime is now correctly read from config page
 // version 0.1.3 Solved glob-parent vulnerability
 // version 0.1.2 Url for images of local files now correctly stored
 // version 0.1.1 Info for current title retrieved and stored
@@ -60,10 +61,9 @@ class Bluesound extends utils.Adapter {
 			this.log.warn('[Start] No IP Address set');
 		}
 		
-		pollingTime = this.config.PollingTime;
-		this.log.info("PollingTime: " + pollingTime);
+		pollingTime = this.config.pollingtime;
 		pollingTime = pollingTime || 30000 ;
-		this.log.info("PollingTime: " + pollingTime);
+		this.log.info("[Start] PollingTime: " + pollingTime);
 		
 		/*
 		For every state in the system there has to be also an object of type state
@@ -140,7 +140,7 @@ class Bluesound extends utils.Adapter {
 				let parser1 = RegExp('>(.+)(?=<)');
 				sNameTag = adapter.namespace + '.control.volume';
 				this.subscribeStates(sNameTag);
-				this.setState(sNameTag,parser1.exec(data)[1],true);
+				this.setState(sNameTag,parseInt(parser1.exec(data)[1]),true);
 			}
 			else {
 				this.log.error("Could not retrieve data, Status code " + response.status);  
