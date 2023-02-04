@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "news": {
+      "0.1.5": {
+        "en": "Solved error message, when totlen is not reported in /Status",
+        "de": "Fehlermeldung behoben, wenn totlen nicht in /Status gemeldet wird",
+        "ru": "Решено сообщение об ошибке, когда totlen не сообщается в /Status",
+        "pt": "Resolvida mensagem de erro, quando totlen não é informado em /Status",
+        "nl": "Foutmelding opgelost, wanneer totlen niet wordt gerapporteerd in /Status",
+        "fr": "Message d'erreur résolu, lorsque totlen n'est pas signalé dans / Status",
+        "it": "Messaggio di errore risolto, quando totlen non è riportato in /Status",
+        "es": "Mensaje de error resuelto, cuando no se informa totlen en /Estado",
+        "pl": "Rozwiązany komunikat o błędzie, gdy totlen nie jest zgłaszany w /Status",
+        "zh-cn": "當 /Status 中未報告 totlen 時，解決了錯誤消息"
+      },
       "0.1.4": {
         "en": "pollingtime is now correctly read from config page",
         "de": "pollingtime wird nun richtig von config gelesen",

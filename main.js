@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.1.5 Solved error message, when totlen is not reported in /Status
 // version 0.1.4 pollingtime is now correctly read from config page
 // version 0.1.3 Solved glob-parent vulnerability
 // version 0.1.2 Url for images of local files now correctly stored
@@ -424,20 +425,30 @@ class Bluesound extends utils.Adapter {
 		try {const response = await axios.get(`http://${ip}:11000/Status`);
 			if (response.status === 200) {
 				const result = response.data;
-				let parser = RegExp('title(.+)(?=<)','g');
+				let sstr = 'title(.+)(?=<)';
+				let parser = RegExp(sstr,'g');
 				let data = [];
 				while ((data = await parser.exec(result)) != null) {
 					i = data[1].substring(0,1);
 					title[i] = stripHTML(data[1].substring(2));
 				}
 				
-				parser = RegExp('<secs>(.+)(?=<)','g');
+				sstr = '<secs>(.+)(?=<)';
+				parser = RegExp(sstr);
 				let varSecs = parser.exec(result)[1];
 				
-				parser = RegExp('<totlen>(.+)(?=<)','g');
-				let varTotLen = parser.exec(result)[1];
+				sstr = '<totlen>(.+)(?=<)';
+				parser = RegExp(sstr);
+				
+				if (parser.test(result){
+					let varTotLen = parser.exec(result)[1];
+				}
+				else {
+					let varTotLen = 28800;
+				}
 
-				parser = RegExp('<image>(.+)(?=<)','g');
+				sstr = '<image>(.+)(?=<)';
+				parser = RegExp(sstr);
 				let imageUrl = parser.exec(result)[1];
 				
 				if (imageUrl.substring(0,4) != 'http'){
@@ -446,7 +457,8 @@ class Bluesound extends utils.Adapter {
 			
 				await Promise.all(promises);
 
-				parser = RegExp('<state>(.+)(?=<)','g');
+				sstr = '<state>(.+)(?=<)';
+				parser = RegExp(sstr,'g');
 				const pState = await parser.exec(result)[1];
 				var pStateOld = await adapter.getStateAsync(adapter.namespace + '.control.state');
 			
