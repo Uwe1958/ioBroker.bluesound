@@ -440,7 +440,7 @@ class Bluesound extends utils.Adapter {
 				sstr = '<totlen>(.+)(?=<)';
 				parser = RegExp(sstr);
 				
-				if (parser.test(result){
+				if (parser.test(result)){
 					let varTotLen = parser.exec(result)[1];
 				}
 				else {
