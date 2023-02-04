@@ -440,11 +440,9 @@ class Bluesound extends utils.Adapter {
 				sstr = '<totlen>(.+)(?=<)';
 				parser = RegExp(sstr);
 				
+				let varTotLen = 28800;
 				if (parser.test(result)){
-					let varTotLen = parser.exec(result)[1];
-				}
-				else {
-					let varTotLen = 28800;
+					varTotLen = parser.exec(result)[1];
 				}
 
 				sstr = '<image>(.+)(?=<)';
