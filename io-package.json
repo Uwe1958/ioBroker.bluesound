@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "news": {
+      "0.1.6": {
+        "en": "Added secs and totlen also as string object",
+        "de": "secs und totlen auch als String-Objekt hinzugefügt",
+        "ru": "Добавлены секунды и тотлен также как строковый объект",
+        "pt": "Adicionado segundos e totlen também como objeto de string",
+        "nl": "Secs en totlen ook toegevoegd als stringobject",
+        "fr": "Ajout de secs et totlen également en tant qu'objet chaîne",
+        "it": "Aggiunti secs e totlen anche come oggetto stringa",
+        "es": "Se agregaron secs y totlen también como objeto de cadena",
+        "pl": "Dodano secs i totlen również jako obiekt typu string",
+        "zh-cn": "添加 secs 和 totlen 也作为字符串对象"
+      },
       "0.1.5": {
         "en": "Solved error message, when totlen is not reported in /Status",
         "de": "Fehlermeldung behoben, wenn totlen nicht in /Status gemeldet wird",

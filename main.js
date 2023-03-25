@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.1.6 Added secs and totlen also as string object
 // version 0.1.5 Solved error message, when totlen is not reported in /Status
 // version 0.1.4 pollingtime is now correctly read from config page
 // version 0.1.3 Solved glob-parent vulnerability
@@ -436,6 +437,7 @@ class Bluesound extends utils.Adapter {
 				sstr = '<secs>(.+)(?=<)';
 				parser = RegExp(sstr);
 				let varSecs = parser.exec(result)[1];
+				let strSecs = convertSecs(varSecs);
 				
 				sstr = '<totlen>(.+)(?=<)';
 				parser = RegExp(sstr);
@@ -444,6 +446,7 @@ class Bluesound extends utils.Adapter {
 				if (parser.test(result)){
 					varTotLen = parser.exec(result)[1];
 				}
+				let strTotLen = convertSecs(varTotLen);
 
 				sstr = '<image>(.+)(?=<)';
 				parser = RegExp(sstr);
@@ -485,6 +488,14 @@ class Bluesound extends utils.Adapter {
 					sStateTag = adapter.namespace + '.info.totlen';
 					adapter.subscribeStates(sStateTag);
 					await adapter.setStateAsync(sStateTag,{val:parseInt(varTotLen),ack:true});
+
+					sStateTag = adapter.namespace + '.info.str_secs';
+					adapter.subscribeStates(sStateTag);
+					await adapter.setStateAsync(sStateTag,{val:strSecs,ack:true});
+					
+					sStateTag = adapter.namespace + '.info.str_totlen';
+					adapter.subscribeStates(sStateTag);
+					await adapter.setStateAsync(sStateTag,{val:strTotLen,ack:true});
 
 					sStateTag = adapter.namespace + '.info.image';
 					adapter.subscribeStates(sStateTag);
@@ -546,6 +557,23 @@ class Bluesound extends utils.Adapter {
 	function stripHTML(str) {
 		let strneu = str.replace("&amp;","&");
 		return strneu;
+	}
+	
+	function convertSecs(secs) {
+		
+		const date = new Date(null);
+		date.setSeconds(secs);
+		
+		let res = "";
+		
+		if ( secs >=3600) {
+			res = date.toISOString().slice(11,19);
+		}
+		else {
+			res = date.toISOString().slice(14,19);
+		}
+			
+		return res;
 	}
 	
 
