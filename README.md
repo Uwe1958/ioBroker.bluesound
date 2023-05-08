@@ -94,6 +94,7 @@ For later updates, the above procedure is not necessary. Just do the following:
 
 ## Changelog
 
+### 0.1.7 Issue #11: Volume is now read from player and stored into .info.volume
 ### 0.1.6 Added secs and totlen also as string object
 ### 0.1.5 Solved error message, when totlen is not reported in /Status
 ### 0.1.4 pollingtime is now correctly read from config page
@@ -117,7 +118,7 @@ The adapter uses API calls in the format: http://--playerAPI--:11000/xxx
 At startup the presets are read and added to the 'presets' channel.
 Player model and name are stored in the 'info' channel.
 When player is playing the titles are set in the 'info' channel.
-The player status is polled in the interval set by '.config.pollingtime' and the result is stored in '.control.state'. 
+The player status is polled in the interval set by '.config.pollingtime' and the result is stored in '.control.state' as well as in '.info.*'.
 
 The following functions are implemented:
 
@@ -131,7 +132,7 @@ Change Volume (triggered by changing '.control.volume')
 ## License
 MIT License
 
-Copyright (c) 2022 uwe1958 <uwenagel@kabelmail.de>
+Copyright (c) 2023 uwe1958 <uwenagel@kabelmail.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
