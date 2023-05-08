@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "news": {
+      "0.1.7": {
+        "en": "Issue #11: Volume is now read from player",
+        "de": "Issue#11: Die Lautstärke wird jetzt vom Player gelesen",
+        "ru": "Проблема №11: Громкость теперь считывается из плеера",
+        "pt": "Problema nº 11: o volume agora é lido do player",
+        "nl": "Probleem #11: Volume wordt nu gelezen van de speler",
+        "fr": "Problème n° 11 : le volume est maintenant lu à partir du lecteur",
+        "it": "Problema n. 11: il volume viene ora letto dal lettore",
+        "es": "Problema n.º 11: ahora se lee el volumen del reproductor",
+        "pl": "Problem #11: Wolumin jest teraz odczytywany z odtwarzacza",
+        "zh-cn": "问题 #11：现在从播放器读取音量"
+      },
       "0.1.6": {
         "en": "Added secs and totlen also as string object",
         "de": "secs und totlen auch als String-Objekt hinzugefügt",
@@ -86,176 +98,7 @@
         "es": "Alertas de dependabot resueltas",
         "pl": "Rozwiązany alerty dependabot",
         "zh-cn": "解决了dependabot警报"
-      },
-      "0.0.14": {
-        "en": "Solved dependabot alerts",
-        "de": "Dependabot-Warnungen behoben",
-        "ru": "Решенный зависимых предупреждений",
-        "pt": "Alertas de dependebot resolvidos",
-        "nl": "Opgeloste dependabot-waarschuwingen",
-        "fr": "Alertes de dependabot résolues",
-        "it": "Risolti avvisi di dependabot",
-        "es": "Alertas de dependabot resueltas",
-        "pl": "Rozwiązany alerty dependabot",
-        "zh-cn": "解决了dependabot警报"
-      },
-      "0.0.13": {
-        "en": "package-lock.json changed (follow-redirects)",
-        "de": "package-lock.json geändert (follow-redirects)",
-        "ru": "package-lock.json изменен (follow-redirects)",
-        "pt": "package-lock.json alterado (follow-redirects)",
-        "nl": "package-lock.json gewijzigd (follow-redirects)",
-        "fr": "package-lock.json modifié (follow-redirects)",
-        "it": "package-lock.json modificato (follow-redirect)",
-        "es": "package-lock.json cambiado (follow-redirects)",
-        "pl": "zmieniony pakiet-lock.json (follow-redirects)",
-        "zh-cn": "package-lock.json 更改（follow-redirects）"
-      },
-      "0.0.12": {
-        "en": "Bump parse-path from 1.0.6 to 1.0.7",
-        "de": "parse-path auf Version 1.0.7 erhöht",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-	  "0.0.11": {
-        "en": "Eliminated all ACK warning (due to JS controller 3.3)",
-        "de": "Alle ACK Warnungen (wegen JS controller 3.3) eliminiert",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-      "0.0.10": {
-        "en": "Eliminated ACK warning (Control.state) at start up",
-        "de": "ACK Warnung (Control.state) beim STart eliminiert",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-      "0.0.9": {
-        "en": "package-lock.json changed (lodash)",
-        "de": "package-lock.json geändert (lodash)",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-      "0.0.8": {
-        "en": "Slight modifications after adapter check",
-        "de": "Geringfügige Änderungen aufgrund des Adapter Checks",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-      "0.0.7": {
-        "en": "Status polling added",
-        "de": "Zyklische Statusabfrage implementiert",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-      "0.0.6": {
-        "en": "Volume implemented",
-        "de": "Lautstärke implemntiert",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-      "0.0.5": {
-        "en": "Remote Start/Stop/Pause implemented",
-        "de": "Start/STop/Pause implemntiert",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-      "0.0.4": {
-        "en": "initial release",
-        "de": "Startup routine",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-      "0.0.3": {
-        "en": "initial release",
-        "de": "Config geändert",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-      "0.0.2": {
-        "en": "initial release",
-        "de": "Parameter geändert",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
-      },
-      "0.0.1": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
       }
-
     },
     "title": "Bluesound",
     "titleLang": {

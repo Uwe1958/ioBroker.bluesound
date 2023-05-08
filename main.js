@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.1.7 Issue #11: Volume is now read from player and stored into .info.volume
 // version 0.1.6 Added secs and totlen also as string object
 // version 0.1.5 Solved error message, when totlen is not reported in /Status
 // version 0.1.4 pollingtime is now correctly read from config page
@@ -136,11 +137,17 @@ class Bluesound extends utils.Adapter {
 		this.setState(sNameTag,"",true);
 
 		// volume from player
+		
 		try {const response = await axios.get(`http://${ip}:11000/Volume`);
 			if (response.status === 200) {
 				const data = response.data;
 				let parser1 = RegExp('>(.+)(?=<)');
+				
 				sNameTag = adapter.namespace + '.control.volume';
+				this.subscribeStates(sNameTag);
+				this.setState(sNameTag,parseInt(parser1.exec(data)[1]),true);
+				
+				sNameTag = adapter.namespace + '.info.volume';
 				this.subscribeStates(sNameTag);
 				this.setState(sNameTag,parseInt(parser1.exec(data)[1]),true);
 			}
@@ -150,7 +157,7 @@ class Bluesound extends utils.Adapter {
 		} catch(e) {
 			this.log.error("Could not retrieve data: " + e);
 		}
-
+		
 		// Presets
 		
 		try {const response = await axios.get(`http://${ip}:11000/Presets`);
@@ -455,6 +462,10 @@ class Bluesound extends utils.Adapter {
 				if (imageUrl.substring(0,4) != 'http'){
 					imageUrl = `http://${ip}:11000` + imageUrl;
 				}
+				
+				sstr = '<volume>(.+)(?=<)';
+				parser = RegExp(sstr);
+				let varVolume = parser.exec(result)[1];
 			
 				await Promise.all(promises);
 
@@ -500,6 +511,10 @@ class Bluesound extends utils.Adapter {
 					sStateTag = adapter.namespace + '.info.image';
 					adapter.subscribeStates(sStateTag);
 					await adapter.setStateAsync(sStateTag,{val:imageUrl,ack:true});
+					
+					sStateTag = adapter.namespace + '.info.volume';
+					adapter.subscribeStates(sStateTag);
+					await adapter.setStateAsync(sStateTag,{val:parseInt(varVolume),ack:true});
 
 				}
 				else {
