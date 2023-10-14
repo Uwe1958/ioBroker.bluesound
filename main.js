@@ -3,6 +3,7 @@
 /*
  * Created with @iobroker/create-adapter v1.31.0
  */
+// version 0.1.8 Fixed type error (PollingTime) after updating to javascript 5
 // version 0.1.7 Issue #11: Volume is now read from player and stored into .info.volume
 // version 0.1.6 Added secs and totlen also as string object
 // version 0.1.5 Solved error message, when totlen is not reported in /Status
@@ -64,7 +65,7 @@ class Bluesound extends utils.Adapter {
 			this.log.warn('[Start] No IP Address set');
 		}
 		
-		pollingTime = this.config.pollingtime;
+		pollingTime = parseFloat(this.config.pollingtime);
 		pollingTime = pollingTime || 30000 ;
 		this.log.info("[Start] PollingTime: " + pollingTime);
 		

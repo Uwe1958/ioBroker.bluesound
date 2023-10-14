@@ -94,6 +94,7 @@ For later updates, the above procedure is not necessary. Just do the following:
 
 ## Changelog
 
+### 0.1.8 Fixed type error (PollingTime) after updating to javascript 5.
 ### 0.1.7 Issue #11: Volume is now read from player and stored into .info.volume
 ### 0.1.6 Added secs and totlen also as string object
 ### 0.1.5 Solved error message, when totlen is not reported in /Status

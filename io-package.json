@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "news": {
+      "0.1.8": {
+        "en": "Fixed type error (PollingTime) after updating to javascript 5",
+        "de": "Typfehler (PollingTime) nach dem Update auf Javascript 5 behoben",
+        "ru": "Исправлена ошибка типа (PollingTime) после обновления до javascript 5.",
+        "pt": "Corrigido erro de tipo (PollingTime) após atualização para javascript 5",
+        "nl": "Vaste typefout (PollingTime) na updaten naar javascript 5",
+        "fr": "Correction d'une erreur de type (PollingTime) après la mise à jour vers javascript 5",
+        "it": "Risolto errore di tipo (PollingTime) dopo l'aggiornamento a Javascript 5",
+        "es": "Se corrigió el error de tipo (PollingTime) después de actualizar a javascript 5",
+        "pl": "Naprawiono błąd typu (PollingTime) po aktualizacji do JavaScript 5",
+        "zh-cn": "修复了更新到 javascript 5 后的类型错误 (PollingTime)"
+      },
       "0.1.7": {
         "en": "Issue #11: Volume is now read from player",
         "de": "Issue#11: Die Lautstärke wird jetzt vom Player gelesen",
