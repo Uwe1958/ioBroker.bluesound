@@ -12,6 +12,8 @@ const utils = require('@iobroker/adapter-core');
 // @ts-ignore
 const helper = require(`${__dirname}/lib/utils`);
 const axios = require(`axios`);
+const { parseString } = require('xml2js');
+
 let ip;
 let apiClient;
 
@@ -434,6 +436,8 @@ class Bluesound extends utils.Adapter {
         const promises = [];
         const title = [];
         let i;
+        let varSecs;
+        let strSecs;
 
         for (i = 1; i < 4; i++) {
             title[i] = '';
@@ -442,18 +446,29 @@ class Bluesound extends utils.Adapter {
             const response = await apiClient.get('/Status');
             if (response.status === 200) {
                 const result = response.data;
-                let parser = RegExp('title(.+)(?=<)', 'g');
+                parseString(response.data, (err, result) => {
+                    if (err) {
+                        this.log.error('Error parsing XML:' + err);
+                        return;
+                    }
+                    title[1] = result.status.title1[0];
+                    title[2] = result.status.title2[0];
+                    title[3] = result.status.title3[0];
+                    varSecs = result.status.secs[0];
+                    strSecs = this.convertSecs(varSecs);
+                });
+                /*                let parser = RegExp('title(.+)(?=<)', 'g');
                 let data = [];
                 while ((data = await parser.exec(result)) != null) {
                     i = data[1].substring(0, 1);
                     title[i] = this.stripHTML(data[1].substring(2));
                 }
 
-                parser = RegExp('<secs>(.+)(?=<)');
+                let parser = RegExp('<secs>(.+)(?=<)');
                 const varSecs = parser.exec(result)[1];
                 const strSecs = this.convertSecs(varSecs);
-
-                parser = RegExp('<totlen>(.+)(?=<)');
+*/
+                let parser = RegExp('<totlen>(.+)(?=<)');
 
                 let varTotLen = 28800;
                 if (parser.test(result)) {
