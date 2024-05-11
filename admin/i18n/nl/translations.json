@@ -1,5 +1,23 @@
 {
     "bluesound adapter settings": "Adapterinstellingen voor bluesound",
-    "option1": "Optie 1",
-    "option2": "Optie 2"
+    "IP": "IK P",
+    "PollingTime": "Polling-interval",
+    "Modelname from player": "Modelnaam van speler",
+    "Name from player": "Naam van speler",
+    "Title1 from player": "Titel1 van speler",
+    "Title2 from player": "Titel2 van speler",
+    "Title3 from player": "Titel3 van speler",
+    "Picture of current title": "Afbeelding van de huidige titel",
+    "Seconds played for current title": "Seconden gespeeld voor de huidige titel",
+    "Length of current title": "Lengte van huidige titel",
+    "Player volume": "Spelervolume",
+    "Pause": "Pauze",
+    "Volume": "Volume",
+    "Information": "Informatie",
+    "Device or service connected": "Apparaat of dienst verbonden",
+    "Device control": "Apparaatcontrole",
+    "Plays current audio source": "Speelt de huidige audiobron af",
+    "Toggles Stop": "Schakelt tussen stoppen",
+    "Toggles Pause": "Schakelt tussen pauzeren",
+    "Current player state": "Huidige spelerstatus"
 }

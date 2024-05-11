@@ -1,5 +1,23 @@
 {
     "bluesound adapter settings": "Налаштування адаптера для bluesound",
-    "option1": "варіант1",
-    "option2": "варіант2"
+    "IP": "IP",
+    "PollingTime": "Інтервал опитування",
+    "Modelname from player": "Назва моделі від гравця",
+    "Name from player": "Ім'я від гравця",
+    "Title1 from player": "Назва 1 від гравця",
+    "Title2 from player": "Title2 від гравця",
+    "Title3 from player": "Назва 3 від гравця",
+    "Picture of current title": "Зображення поточної назви",
+    "Seconds played for current title": "Секунди, зіграні за поточний титул",
+    "Length of current title": "Довжина поточної назви",
+    "Player volume": "Гучність плеєра",
+    "Pause": "Пауза",
+    "Volume": "Обсяг",
+    "Information": "Інформація",
+    "Device or service connected": "Пристрій або послугу підключено",
+    "Device control": "Контроль пристрою",
+    "Plays current audio source": "Відтворення поточного аудіоджерела",
+    "Toggles Stop": "Перемикає зупинку",
+    "Toggles Pause": "Перемикає паузу",
+    "Current player state": "Поточний стан гравця"
 }

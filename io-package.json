@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "bluesound",
-        "version": "0.0.1",
+        "version": "0.2.0",
         "news": {
-            "0.0.1": {
+            "0.2.0": {
                 "en": "initial release",
                 "de": "Erstveröffentlichung",
                 "ru": "Начальная версия",
@@ -79,8 +79,8 @@
         ]
     },
     "native": {
-        "option1": true,
-        "option2": "42"
+        "IP": "",
+        "PollingTime": ""
     },
     "objects": [],
     "instanceObjects": [
@@ -102,6 +102,213 @@
                 "read": true,
                 "write": false,
                 "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.modelname",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Player Model",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": "Modelname from player"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.name",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Player Name",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": "Name from player"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.title1",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Title1",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": "Title1 from player"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.title2",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Title2",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": "Title2 from player"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.title3",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Title3",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": "Title3 from player"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.image",
+            "type": "state",
+            "common": {
+                "role": "url",
+                "name": "Image",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": "Picture of current title"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.secs",
+            "type": "state",
+            "common": {
+                "name": "secs",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "desc": "Seconds played for current title"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.totlen",
+            "type": "state",
+            "common": {
+                "name": "totlen",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "desc": "Length of current title"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.str_secs",
+            "type": "state",
+            "common": {
+                "name": "str_secs",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": "Seconds played for current title"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.str_totlen",
+            "type": "state",
+            "common": {
+                "name": "str_totlen",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": "Length of current title"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.volume",
+            "type": "state",
+            "common": {
+                "name": "volume",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "desc": "Player volume"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control",
+            "type": "channel",
+            "common": {
+                "name": "Device control"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.play",
+            "type": "state",
+            "common": {
+                "name": "Play",
+                "type": "boolean",
+                "read": true,
+                "write": true,
+                "desc": "Plays current audio source"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.stop",
+            "type": "state",
+            "common": {
+                "name": "Stop",
+                "type": "boolean",
+                "read": true,
+                "write": true,
+                "desc": "Toggles Stop"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.pause",
+            "type": "state",
+            "common": {
+                "name": "Pause",
+                "type": "boolean",
+                "read": true,
+                "write": true,
+                "desc": "Toggles Pause"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.volume",
+            "type": "state",
+            "common": {
+                "name": "Volume",
+                "type": "number",
+                "read": true,
+                "write": true,
+                "desc": "Player Volume"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.state",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "State",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": "Current player state"
             },
             "native": {}
         }

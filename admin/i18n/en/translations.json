@@ -1,5 +1,23 @@
 {
     "bluesound adapter settings": "Adapter settings for bluesound",
-    "option1": "option1",
-    "option2": "option2"
+    "IP": "IP",
+    "PollingTime": "Polling Interval",
+    "Modelname from player": "Modelname from player",
+    "Name from player": "Name from player",
+    "Title1 from player": "Title1 from player",
+    "Title2 from player": "Title2 from player",
+    "Title3 from player": "Title3 from player",
+    "Picture of current title": "Picture of current title",
+    "Seconds played for current title": "Seconds played for current title",
+    "Length of current title": "Length of current title",
+    "Player volume": "Player volume",
+    "Pause": "Pause",
+    "Volume": "Volume",
+    "Information": "Information",
+    "Device or service connected": "Device or service connected",
+    "Device control": "Device control",
+    "Plays current audio source": "Plays current audio source",
+    "Toggles Stop": "Toggles Stop",
+    "Toggles Pause": "Toggles Pause",
+    "Current player state": "Current player state"
 }

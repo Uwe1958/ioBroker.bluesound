@@ -1,5 +1,23 @@
 {
     "bluesound adapter settings": "Ustawienia adaptera dla bluesound",
-    "option1": "opcja 1",
-    "option2": "Opcja 2"
+    "IP": "IP",
+    "PollingTime": "Interwał odpytywania",
+    "Modelname from player": "Nazwa modelu z odtwarzacza",
+    "Name from player": "Imię od gracza",
+    "Title1 from player": "Tytuł 1 od gracza",
+    "Title2 from player": "Tytuł2 od gracza",
+    "Title3 from player": "Tytuł 3 od gracza",
+    "Picture of current title": "Zdjęcie aktualnego tytułu",
+    "Seconds played for current title": "Sekundy rozegrane dla bieżącego tytułu",
+    "Length of current title": "Długość bieżącego tytułu",
+    "Player volume": "Głośność odtwarzacza",
+    "Pause": "Pauza",
+    "Volume": "Tom",
+    "Information": "Informacja",
+    "Device or service connected": "Podłączone urządzenie lub usługa",
+    "Device control": "Kontrola urządzenia",
+    "Plays current audio source": "Odtwarza bieżące źródło dźwięku",
+    "Toggles Stop": "Przełącza zatrzymanie",
+    "Toggles Pause": "Przełącza pauzę",
+    "Current player state": "Aktualny stan gracza"
 }

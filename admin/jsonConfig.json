@@ -2,14 +2,20 @@
     "i18n": true,
     "type": "panel",
     "items": {
-        "option1": {
-            "type": "checkbox",
-            "label": "option1",
+        "IP": {
+            "type": "text",
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "label": "IP",
             "newLine": true
         },
-        "option2": {
+        "PollingTime": {
             "type": "text",
-            "label": "option2",
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "label": "Polling Interval",
             "newLine": true
         }
     }

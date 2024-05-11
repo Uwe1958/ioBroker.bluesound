@@ -1,5 +1,23 @@
 {
     "bluesound adapter settings": "bluesound的适配器设置",
-    "option1": "选项1",
-    "option2": "选项2"
+    "IP": "知识产权",
+    "PollingTime": "轮询间隔",
+    "Modelname from player": "玩家的型号名称",
+    "Name from player": "玩家姓名",
+    "Title1 from player": "玩家的标题1",
+    "Title2 from player": "玩家的标题2",
+    "Title3 from player": "玩家的标题3",
+    "Picture of current title": "当前标题的图片",
+    "Seconds played for current title": "当前游戏的播放秒数",
+    "Length of current title": "当前标题的长度",
+    "Player volume": "播放器音量",
+    "Pause": "暂停",
+    "Volume": "体积",
+    "Information": "信息",
+    "Device or service connected": "连接的设备或服务",
+    "Device control": "设备控制",
+    "Plays current audio source": "播放当前音频源",
+    "Toggles Stop": "切换停止",
+    "Toggles Pause": "切换暂停",
+    "Current player state": "当前玩家状态"
 }
