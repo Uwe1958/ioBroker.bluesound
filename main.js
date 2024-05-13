@@ -303,12 +303,16 @@ class Bluesound extends utils.Adapter {
                                     .get(`/Preset?id=${preset}`)
                                     .then((response) => {
                                         // Handle response
-                                        const result = response.data;
-                                        const parser1 = RegExp('<state>(.+)(?=<)');
-                                        const sStateTag = this.namespace + '.control.state';
-                                        this.subscribeStates(sStateTag);
-                                        this.setState(sStateTag, parser1.exec(result)[1], true);
-                                        this.log.info(`${this.namespace} Preset${preset} Start`);
+                                        parseString(response.data, (err, result) => {
+                                            if (err) {
+                                                this.log.error('Error parsing Preset XML: ' + err);
+                                                return;
+                                            }
+                                            const sStateTag = this.namespace + '.control.state';
+                                            this.subscribeStates(sStateTag);
+                                            this.setState(sStateTag, result.state, true);
+                                            this.log.info(`${this.namespace} Preset${preset} Start`);
+                                        });
                                     })
                                     .catch((err) => {
                                         // Handle errors
@@ -324,12 +328,16 @@ class Bluesound extends utils.Adapter {
                             .get('/Pause?toggle=1')
                             .then((response) => {
                                 // Handle response
-                                const result = response.data;
-                                const parser1 = RegExp('<state>(.+)(?=<)');
-                                const sStateTag = this.namespace + '.control.state';
-                                this.subscribeStates(sStateTag);
-                                this.setState(sStateTag, parser1.exec(result)[1], true);
-                                this.log.info(`${this.namespace} Pause`);
+                                parseString(response.data, (err, result) => {
+                                    if (err) {
+                                        this.log.error('Error parsing Pause XML: ' + err);
+                                        return;
+                                    }
+                                    const sStateTag = this.namespace + '.control.state';
+                                    this.subscribeStates(sStateTag);
+                                    this.setState(sStateTag, result.state, true);
+                                    this.log.info(`${this.namespace} Pause`);
+                                });
                             })
                             .catch((err) => {
                                 // Handle errors
@@ -342,12 +350,16 @@ class Bluesound extends utils.Adapter {
                             .get('/Stop')
                             .then((response) => {
                                 // Handle response
-                                const result = response.data;
-                                const parser1 = RegExp('<state>(.+)(?=<)');
-                                const sStateTag = this.namespace + '.control.state';
-                                this.subscribeStates(sStateTag);
-                                this.setState(sStateTag, parser1.exec(result)[1], true);
-                                this.log.info(`${this.namespace} Stop`);
+                                parseString(response.data, (err, result) => {
+                                    if (err) {
+                                        this.log.error('Error parsing Stop XML: ' + err);
+                                        return;
+                                    }
+                                    const sStateTag = this.namespace + '.control.state';
+                                    this.subscribeStates(sStateTag);
+                                    this.setState(sStateTag, result.state, true);
+                                    this.log.info(`${this.namespace} Stop`);
+                                });
                             })
                             .catch((err) => {
                                 // Handle errors
@@ -361,12 +373,16 @@ class Bluesound extends utils.Adapter {
                             .get('/Play')
                             .then((response) => {
                                 // Handle response
-                                const result = response.data;
-                                const parser1 = RegExp('<state>(.+)(?=<)');
-                                const sStateTag = this.namespace + '.control.state';
-                                this.subscribeStates(sStateTag);
-                                this.setState(sStateTag, parser1.exec(result)[1], true);
-                                this.log.info(`${this.namespace} Play`);
+                                parseString(response.data, (err, result) => {
+                                    if (err) {
+                                        this.log.error('Error parsing Play XML: ' + err);
+                                        return;
+                                    }
+                                    const sStateTag = this.namespace + '.control.state';
+                                    this.subscribeStates(sStateTag);
+                                    this.setState(sStateTag, result.state, true);
+                                    this.log.info(`${this.namespace} Play`);
+                                });
                             })
                             .catch((err) => {
                                 // Handle errors
@@ -449,12 +465,12 @@ class Bluesound extends utils.Adapter {
                 //const result = response.data;
                 parseString(response.data, (err, result) => {
                     if (err) {
-                        this.log.error('Error parsing XML:' + err);
+                        this.log.error('Error parsing Status XML:' + err);
                         return;
                     }
                     title[1] = result.status.title1[0];
 
-                    if (result.toString().lastIndexOf('title2') === -1) {
+                    if (response.data.toString().lastIndexOf('title2') === -1) {
                         title[2] = '';
                     } else {
                         title[2] = result.status.title2[0];
@@ -464,7 +480,7 @@ class Bluesound extends utils.Adapter {
                     varSecs = result.status.secs[0];
                     strSecs = this.convertSecs(varSecs);
 
-                    if (result.toString().lastIndexOf('totlen') === -1) {
+                    if (response.data.toString().lastIndexOf('totlen') === -1) {
                         varTotLen = 28800;
                     } else {
                         varTotLen = result.status.totlen[0];
