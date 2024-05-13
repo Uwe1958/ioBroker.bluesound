@@ -293,7 +293,7 @@ class Bluesound extends utils.Adapter {
             // The state was changed
             // @ts-ignore
             if (state.val) {
-                const pos = id.lastIndexOf('.');
+                const pos = id.toString().lastIndexOf('.');
                 switch (id.substring(pos + 1)) {
                     case 'start':
                         this.getState(id.substring(0, pos) + '.id', (err, status) => {
@@ -315,9 +315,9 @@ class Bluesound extends utils.Adapter {
                                         //									adapter.log.error("Could not start preset, Status code " + response.status);
                                         this.log.error('Could not start preset, Status code ' + err);
                                     });
-                                this.readPlayerStatus();
                             }
                         });
+                        this.readPlayerStatus();
                         break;
                     case 'pause':
                         apiClient
@@ -438,6 +438,7 @@ class Bluesound extends utils.Adapter {
         let i;
         let varSecs;
         let strSecs;
+        let varTotLen, strTotLen, imageUrl, varVolume, pState;
 
         for (i = 1; i < 4; i++) {
             title[i] = '';
@@ -445,51 +446,43 @@ class Bluesound extends utils.Adapter {
         try {
             const response = await apiClient.get('/Status');
             if (response.status === 200) {
-                const result = response.data;
+                //const result = response.data;
                 parseString(response.data, (err, result) => {
                     if (err) {
                         this.log.error('Error parsing XML:' + err);
                         return;
                     }
                     title[1] = result.status.title1[0];
-                    title[2] = result.status.title2[0];
+
+                    if (result.toString().lastIndexOf('title2') === -1) {
+                        title[2] = '';
+                    } else {
+                        title[2] = result.status.title2[0];
+                    }
                     title[3] = result.status.title3[0];
+
                     varSecs = result.status.secs[0];
                     strSecs = this.convertSecs(varSecs);
+
+                    if (result.toString().lastIndexOf('totlen') === -1) {
+                        varTotLen = 28800;
+                    } else {
+                        varTotLen = result.status.totlen[0];
+                    }
+
+                    imageUrl = result.status.image[0];
+                    varVolume = result.status.volume[0];
+                    pState = result.status.state[0];
                 });
-                /*                let parser = RegExp('title(.+)(?=<)', 'g');
-                let data = [];
-                while ((data = await parser.exec(result)) != null) {
-                    i = data[1].substring(0, 1);
-                    title[i] = this.stripHTML(data[1].substring(2));
-                }
 
-                let parser = RegExp('<secs>(.+)(?=<)');
-                const varSecs = parser.exec(result)[1];
-                const strSecs = this.convertSecs(varSecs);
-*/
-                let parser = RegExp('<totlen>(.+)(?=<)');
-
-                let varTotLen = 28800;
-                if (parser.test(result)) {
-                    varTotLen = parser.exec(result)[1];
-                }
-                const strTotLen = this.convertSecs(varTotLen);
-
-                parser = RegExp('<image>(.+)(?=<)');
-                let imageUrl = parser.exec(result)[1];
+                strTotLen = this.convertSecs(varTotLen);
 
                 if (imageUrl.substring(0, 4) != 'http') {
                     imageUrl = `http://${ip}:11000` + imageUrl;
                 }
 
-                parser = RegExp('<volume>(.+)(?=<)');
-                const varVolume = parser.exec(result)[1];
-
                 await Promise.all(promises);
 
-                parser = RegExp('<state>(.+)(?=<)', 'g');
-                const pState = await parser.exec(result)[1];
                 const pStateOld = await this.getStateAsync(this.namespace + '.control.state');
 
                 //			adapter.log.info(`Old: ${pStateOld.val}, New: ${pState}`);
