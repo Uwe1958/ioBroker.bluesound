@@ -93,10 +93,10 @@ class Bluesound extends utils.Adapter {
                     this.setState(sModelNameTag, result.SyncStatus.modelName, true);
                 });
             } else {
-                this.log.error('Could not retrieve data, Status code ' + response.status);
+                this.log.error('Could not retrieve SyncStatus data, Status code ' + response.status);
             }
         } catch (e) {
-            console.error('Could not retrieve data: ' + e);
+            console.error('Could not retrieve SyncStatus data: ' + e);
         }
 
         // Initialize Control
@@ -123,7 +123,20 @@ class Bluesound extends utils.Adapter {
         try {
             const response = await apiClient.get('/Volume');
             if (response.status === 200) {
-                const data = response.data;
+                parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
+                    if (err) {
+                        console.log('Error parsing Volume XML:' + err);
+                        return;
+                    }
+                    sNameTag = this.namespace + '.control.volume';
+                    this.subscribeStates(sNameTag);
+                    this.setState(sNameTag, parseInt(result.volume._), true);
+
+                    sNameTag = this.namespace + '.info.volume';
+                    this.subscribeStates(sNameTag);
+                    this.setState(sNameTag, parseInt(result.volume._), true);
+                });
+                /*                const data = response.data;
                 const parser1 = RegExp('>(.+)(?=<)');
 
                 sNameTag = this.namespace + '.control.volume';
@@ -132,12 +145,12 @@ class Bluesound extends utils.Adapter {
 
                 sNameTag = this.namespace + '.info.volume';
                 this.subscribeStates(sNameTag);
-                this.setState(sNameTag, parseInt(parser1.exec(data)[1]), true);
+                this.setState(sNameTag, parseInt(parser1.exec(data)[1]), true);*/
             } else {
-                this.log.error('Could not retrieve data, Status code ' + response.status);
+                this.log.error('Could not retrieve Volume data, Status code ' + response.status);
             }
         } catch (e) {
-            this.log.error('Could not retrieve data: ' + e);
+            this.log.error('Could not retrieve Volume data: ' + e);
         }
 
         // Presets
@@ -182,10 +195,10 @@ class Bluesound extends utils.Adapter {
                     }
                 });
             } else {
-                this.log.error('Could not retrieve data, Status code ' + response.status);
+                this.log.error('Could not retrieve Presets data, Status code ' + response.status);
             }
         } catch (e) {
-            this.log.error('Could not retrieve data: ' + e);
+            this.log.error('Could not retrieve Presets data: ' + e);
         }
 
         // Status
@@ -323,7 +336,7 @@ class Bluesound extends utils.Adapter {
                             })
                             .catch((err) => {
                                 // Handle errors
-                                this.log.error('Could not retrieve data, Status code ' + err);
+                                this.log.error('Could not set Pause, Status code ' + err);
                             });
                         this.readPlayerStatus();
                         break;
@@ -345,7 +358,7 @@ class Bluesound extends utils.Adapter {
                             })
                             .catch((err) => {
                                 // Handle errors
-                                this.log.error('Could not retrieve data, Status code ' + err);
+                                this.log.error('Could not set stop, Status code ' + err);
                             });
                         this.clearPlayerStatus();
                         break;
@@ -368,7 +381,7 @@ class Bluesound extends utils.Adapter {
                             })
                             .catch((err) => {
                                 // Handle errors
-                                this.log.error('Could not retrieve data, Status code ' + err);
+                                this.log.error('Could not set play, Status code ' + err);
                             });
                         this.readPlayerStatus();
                         break;
@@ -378,7 +391,7 @@ class Bluesound extends utils.Adapter {
                             .then()
                             .catch((err) => {
                                 // Handle errors
-                                this.log.error('Could not retrieve data, Status code ' + err);
+                                this.log.error('Could not set volume, Status code ' + err);
                             });
                         break;
                     default:
@@ -553,10 +566,10 @@ class Bluesound extends utils.Adapter {
                     await this.setStateAsync(sStateTag, { val: '', ack: true });
                 }
             } else {
-                this.log.error('Could not retrieve data, Status code ' + response.status);
+                this.log.error('Could not retrieve status data, Status code ' + response.status);
             }
         } catch (e) {
-            this.log.error('Could not retrieve data: ' + e);
+            this.log.error('Could not retrieve status data: ' + e);
         }
         return true;
     }
