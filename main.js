@@ -74,13 +74,7 @@ class Bluesound extends utils.Adapter {
             resonseType: 'xml',
             resonseEncoding: 'utf8',
         });
-        /*        this.apiClient = axios.create({
-            baseURL: `http://${ip}:11000/`,
-            timeout: 1000,
-            resonseType: 'xml',
-            resonseEncoding: 'utf8',
-        });
-        */
+
         // set Info
 
         let sNameTag = this.namespace + '.info.name';
@@ -90,13 +84,14 @@ class Bluesound extends utils.Adapter {
         try {
             const response = await apiClient.get('/SyncStatus');
             if (response.status === 200) {
-                const data = response.data;
-                const parser = new RegExp('name="(.+)(?=" etag)');
-                const sName = parser.exec(data)[1];
-                this.setState(sNameTag, sName, true);
-                const parser1 = new RegExp('modelName="(.+)(?=" model)');
-                const sModelName = parser1.exec(data)[1];
-                this.setState(sModelNameTag, sModelName, true);
+                parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
+                    if (err) {
+                        this.log('Error parsing SyncStatus XML:' + err);
+                        return;
+                    }
+                    this.setState(sNameTag, result.SyncStatus.name, true);
+                    this.setState(sModelNameTag, result.SyncStatus.modelName, true);
+                });
             } else {
                 this.log.error('Could not retrieve data, Status code ' + response.status);
             }
@@ -400,7 +395,7 @@ class Bluesound extends utils.Adapter {
                             });
                         break;
                     default:
-                        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+                    //                        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
                 }
             }
         } else {
@@ -514,7 +509,11 @@ class Bluesound extends utils.Adapter {
 
                     for (i = 1; i < 4; i++) {
                         const sStateTag = this.namespace + `.info.title${i}`;
-                        await this.setStateAsync(sStateTag, { val: title[i], ack: true });
+                        const valOld = await this.getStateAsync(sStateTag);
+                        if (valOld.val != title[i]) {
+                            await this.setStateAsync(sStateTag, { val: title[i], ack: true });
+                            this.log.info(`title${i} changed: ` + title[i]);
+                        }
                     }
 
                     let sStateTag = this.namespace + '.info.secs';
@@ -535,11 +534,19 @@ class Bluesound extends utils.Adapter {
 
                     sStateTag = this.namespace + '.info.image';
                     this.subscribeStates(sStateTag);
-                    await this.setStateAsync(sStateTag, { val: imageUrl, ack: true });
+                    let valOld = await this.getStateAsync(sStateTag);
+                    if (valOld.val != imageUrl) {
+                        await this.setStateAsync(sStateTag, { val: imageUrl, ack: true });
+                        this.log.info('Image changed: ' + imageUrl);
+                    }
 
                     sStateTag = this.namespace + '.info.volume';
                     this.subscribeStates(sStateTag);
-                    await this.setStateAsync(sStateTag, { val: parseInt(varVolume), ack: true });
+                    valOld = await this.getStateAsync(sStateTag);
+                    if (valOld.val != varVolume) {
+                        await this.setStateAsync(sStateTag, { val: parseInt(varVolume), ack: true });
+                        this.log.info('Volume changed: ' + varVolume);
+                    }
                 } else {
                     for (i = 1; i < 4; i++) {
                         const sStateTag = this.namespace + `.info.title${i}`;
