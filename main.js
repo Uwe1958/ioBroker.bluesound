@@ -145,39 +145,28 @@ class Bluesound extends utils.Adapter {
         try {
             const response = await apiClient.get('/Presets');
             if (response.status == 200) {
-                const result = response.data;
-                // eslint-disable-next-line no-control-regex
-                const parser = RegExp('preset(.+)\n', 'g');
-                // @ts-ignore
-                let data = [];
-                // @ts-ignore
-                let i = 1;
-                while ((data = parser.exec(result)) != null) {
-                    if (data[1].substring(0, 4) == ' url') {
-                        let parser1 = RegExp('id="(.+)(?=" name)');
-                        // @ts-ignore
-                        const sPresetID = parser1.exec(data[1])[1];
-                        parser1 = RegExp('name="(.+)(?=" image)');
-                        // @ts-ignore
-                        const sPresetName = parser1.exec(data[1])[1];
-                        parser1 = RegExp('image="(.+)(?="/)');
-                        // @ts-ignore
-                        const sPresetImage = parser1.exec(data[1])[1];
-                        // @ts-ignore
+                parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
+                    if (err) {
+                        this.log.error('Error parsing Presets XML:' + err);
+                        return;
+                    }
+                    for (const objPreset of result.presets.preset) {
+                        const sPresetID = objPreset.id;
+                        const sPresetName = objPreset.name;
+                        const sPresetImage = objPreset.image;
                         const data1 = {
                             id: sPresetID,
                             name: sPresetName,
                             image: sPresetImage,
                             start: false,
                         };
-                        const objs = helper.getPresets(i);
-
+                        const objs = helper.getPresets(sPresetID);
                         for (const obj of objs) {
                             const id = obj._id;
                             delete obj._id;
                             promises.push(this.setObjectNotExistsAsync(id, obj));
                             if (obj.type != 'channel') {
-                                const sTag = this.namespace + `.presets.preset${i}.${obj.common.name}`;
+                                const sTag = this.namespace + `.presets.preset${sPresetID}.${obj.common.name}`;
                                 for (const x in data1) {
                                     if (x == obj.common.name) {
                                         this.subscribeStates(sTag);
@@ -190,10 +179,8 @@ class Bluesound extends utils.Adapter {
                                 }
                             }
                         }
-                        i = i + 1;
                     }
-                }
-                await Promise.all(promises);
+                });
             } else {
                 this.log.error('Could not retrieve data, Status code ' + response.status);
             }
