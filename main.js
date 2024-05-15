@@ -136,16 +136,6 @@ class Bluesound extends utils.Adapter {
                     this.subscribeStates(sNameTag);
                     this.setState(sNameTag, parseInt(result.volume._), true);
                 });
-                /*                const data = response.data;
-                const parser1 = RegExp('>(.+)(?=<)');
-
-                sNameTag = this.namespace + '.control.volume';
-                this.subscribeStates(sNameTag);
-                this.setState(sNameTag, parseInt(parser1.exec(data)[1]), true);
-
-                sNameTag = this.namespace + '.info.volume';
-                this.subscribeStates(sNameTag);
-                this.setState(sNameTag, parseInt(parser1.exec(data)[1]), true);*/
             } else {
                 this.log.error('Could not retrieve Volume data, Status code ' + response.status);
             }
