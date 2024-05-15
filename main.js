@@ -71,8 +71,8 @@ class Bluesound extends utils.Adapter {
         apiClient = axios.create({
             baseURL: `http://${ip}:11000/`,
             timeout: 1000,
-            resonseType: 'xml',
-            resonseEncoding: 'utf8',
+            responseType: 'xml',
+            responseEncoding: 'utf8',
         });
 
         // set Info
