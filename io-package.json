@@ -46,7 +46,6 @@
         },
         "authors": ["Uwe Nagel <uwenagel@kabelmail.de>"],
         "keywords": ["multimedia", "control"],
-        "license": "MIT",
         "licenseInformation": {
             "type": "free",
             "license": "MIT"
