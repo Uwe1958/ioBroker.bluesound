@@ -1,315 +1,333 @@
 {
-    "common": {
-        "name": "bluesound",
-        "version": "0.2.0",
-        "news": {
-            "0.2.0": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "uk": "Початкова версія",
-                "zh-cn": "首次出版"
-            }
-        },
-        "title": "Bluesound Control",
-        "titleLang": {
-            "en": "Bluesound Control",
-            "de": "Bluesound-Steuerung",
-            "ru": "Управление Bluesound",
-            "pt": "Controle de som azul",
-            "nl": "Bluesound-controle",
-            "fr": "Contrôle du son bleu",
-            "it": "Controllo Bluesound",
-            "es": "Control de sonido azul",
-            "pl": "Sterowanie Bluesoundem",
-            "uk": "Управління Bluesound",
-            "zh-cn": "蓝声控制"
-        },
-        "desc": {
-            "en": "Adapter to control Bluesound devices",
-            "de": "Adapter zur Steuerung von Bluesound-Geräten",
-            "ru": "Адаптер для управления устройствами Bluesound",
-            "pt": "Adaptador para controlar dispositivos Bluesound",
-            "nl": "Adapter om Bluesound-apparaten te bedienen",
-            "fr": "Adaptateur pour contrôler les appareils Bluesound",
-            "it": "Adattatore per controllare i dispositivi Bluesound",
-            "es": "Adaptador para controlar dispositivos Bluesound",
-            "pl": "Adapter do sterowania urządzeniami Bluesound",
-            "uk": "Адаптер для управління пристроями Bluesound",
-            "zh-cn": "用于控制 Bluesound 设备的适配器"
-        },
-        "authors": ["Uwe Nagel <uwenagel@kabelmail.de>"],
-        "keywords": ["multimedia", "control"],
-        "licenseInformation": {
-            "type": "free",
-            "license": "MIT"
-        },
-        "platform": "Javascript/Node.js",
-        "main": "main.js",
-        "icon": "bluesound.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Uwe1958/ioBroker.bluesound/main/admin/bluesound.png",
-        "readme": "https://github.com/Uwe1958/ioBroker.bluesound/blob/main/README.md",
-        "loglevel": "info",
-        "tier": 3,
-        "mode": "daemon",
-        "type": "multimedia",
-        "compact": true,
-        "connectionType": "local",
-        "dataSource": "assumption",
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=3.3.22"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.1.13"
-            }
-        ]
+  "common": {
+    "name": "bluesound",
+    "version": "1.0.0",
+    "news": {
+      "1.0.0": {
+        "en": "initial release",
+        "de": "erstausstrahlung",
+        "ru": "первоначальный выпуск",
+        "pt": "lançamento inicial",
+        "nl": "eerste release",
+        "fr": "libération initiale",
+        "it": "rilascio iniziale",
+        "es": "liberación inicial",
+        "pl": "początkowe zwolnienie",
+        "uk": "початковий реліз",
+        "zh-cn": "初步释放"
+      },
+      "0.2.0": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "uk": "Початкова версія",
+        "zh-cn": "首次出版"
+      }
     },
-    "native": {
-        "IP": "",
-        "PollingTime": ""
+    "title": "Bluesound Control",
+    "titleLang": {
+      "en": "Bluesound Control",
+      "de": "Bluesound-Steuerung",
+      "ru": "Управление Bluesound",
+      "pt": "Controle de som azul",
+      "nl": "Bluesound-controle",
+      "fr": "Contrôle du son bleu",
+      "it": "Controllo Bluesound",
+      "es": "Control de sonido azul",
+      "pl": "Sterowanie Bluesoundem",
+      "uk": "Управління Bluesound",
+      "zh-cn": "蓝声控制"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "Device or service connected",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.modelname",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "Player Model",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "desc": "Modelname from player"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.name",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "Player Name",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "desc": "Name from player"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.title1",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "Title1",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "desc": "Title1 from player"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.title2",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "Title2",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "desc": "Title2 from player"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.title3",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "Title3",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "desc": "Title3 from player"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.image",
-            "type": "state",
-            "common": {
-                "role": "url",
-                "name": "Image",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "desc": "Picture of current title"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.secs",
-            "type": "state",
-            "common": {
-                "name": "secs",
-                "type": "number",
-                "read": true,
-                "write": false,
-                "desc": "Seconds played for current title"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.totlen",
-            "type": "state",
-            "common": {
-                "name": "totlen",
-                "type": "number",
-                "read": true,
-                "write": false,
-                "desc": "Length of current title"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.str_secs",
-            "type": "state",
-            "common": {
-                "name": "str_secs",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "desc": "Seconds played for current title"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.str_totlen",
-            "type": "state",
-            "common": {
-                "name": "str_totlen",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "desc": "Length of current title"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.volume",
-            "type": "state",
-            "common": {
-                "name": "volume",
-                "type": "number",
-                "read": true,
-                "write": false,
-                "desc": "Player volume"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control",
-            "type": "channel",
-            "common": {
-                "name": "Device control"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.play",
-            "type": "state",
-            "common": {
-                "name": "Play",
-                "type": "boolean",
-                "read": true,
-                "write": true,
-                "desc": "Plays current audio source"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.stop",
-            "type": "state",
-            "common": {
-                "name": "Stop",
-                "type": "boolean",
-                "read": true,
-                "write": true,
-                "desc": "Toggles Stop"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.pause",
-            "type": "state",
-            "common": {
-                "name": "Pause",
-                "type": "boolean",
-                "read": true,
-                "write": true,
-                "desc": "Toggles Pause"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.volume",
-            "type": "state",
-            "common": {
-                "name": "Volume",
-                "type": "number",
-                "read": true,
-                "write": true,
-                "desc": "Player Volume"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.state",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "State",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "desc": "Current player state"
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "Adapter to control Bluesound devices",
+      "de": "Adapter zur Steuerung von Bluesound-Geräten",
+      "ru": "Адаптер для управления устройствами Bluesound",
+      "pt": "Adaptador para controlar dispositivos Bluesound",
+      "nl": "Adapter om Bluesound-apparaten te bedienen",
+      "fr": "Adaptateur pour contrôler les appareils Bluesound",
+      "it": "Adattatore per controllare i dispositivi Bluesound",
+      "es": "Adaptador para controlar dispositivos Bluesound",
+      "pl": "Adapter do sterowania urządzeniami Bluesound",
+      "uk": "Адаптер для управління пристроями Bluesound",
+      "zh-cn": "用于控制 Bluesound 设备的适配器"
+    },
+    "authors": [
+      "Uwe Nagel <uwenagel@kabelmail.de>"
+    ],
+    "keywords": [
+      "multimedia",
+      "control"
+    ],
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "bluesound.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Uwe1958/ioBroker.bluesound/main/admin/bluesound.png",
+    "readme": "https://github.com/Uwe1958/ioBroker.bluesound/blob/main/README.md",
+    "loglevel": "info",
+    "tier": 3,
+    "mode": "daemon",
+    "type": "multimedia",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "assumption",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=3.3.22"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.13"
+      }
     ]
+  },
+  "native": {
+    "IP": "",
+    "PollingTime": ""
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Device or service connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.modelname",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Player Model",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "desc": "Modelname from player"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.name",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Player Name",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "desc": "Name from player"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.title1",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Title1",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "desc": "Title1 from player"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.title2",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Title2",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "desc": "Title2 from player"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.title3",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Title3",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "desc": "Title3 from player"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.image",
+      "type": "state",
+      "common": {
+        "role": "url",
+        "name": "Image",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "desc": "Picture of current title"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.secs",
+      "type": "state",
+      "common": {
+        "name": "secs",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "desc": "Seconds played for current title"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.totlen",
+      "type": "state",
+      "common": {
+        "name": "totlen",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "desc": "Length of current title"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.str_secs",
+      "type": "state",
+      "common": {
+        "name": "str_secs",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "desc": "Seconds played for current title"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.str_totlen",
+      "type": "state",
+      "common": {
+        "name": "str_totlen",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "desc": "Length of current title"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.volume",
+      "type": "state",
+      "common": {
+        "name": "volume",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "desc": "Player volume"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control",
+      "type": "channel",
+      "common": {
+        "name": "Device control"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.play",
+      "type": "state",
+      "common": {
+        "name": "Play",
+        "type": "boolean",
+        "read": true,
+        "write": true,
+        "desc": "Plays current audio source"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.stop",
+      "type": "state",
+      "common": {
+        "name": "Stop",
+        "type": "boolean",
+        "read": true,
+        "write": true,
+        "desc": "Toggles Stop"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.pause",
+      "type": "state",
+      "common": {
+        "name": "Pause",
+        "type": "boolean",
+        "read": true,
+        "write": true,
+        "desc": "Toggles Pause"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.volume",
+      "type": "state",
+      "common": {
+        "name": "Volume",
+        "type": "number",
+        "read": true,
+        "write": true,
+        "desc": "Player Volume"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.state",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "State",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "desc": "Current player state"
+      },
+      "native": {}
+    }
+  ]
 }

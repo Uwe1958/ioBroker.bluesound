@@ -1,6 +1,6 @@
 {
   "name": "iobroker.bluesound",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Adapter to control Bluesound devices",
   "author": {
     "name": "Uwe Nagel",

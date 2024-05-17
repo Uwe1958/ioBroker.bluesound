@@ -55,8 +55,7 @@ Change Volume (triggered by changing '.control.volume')
     ### 0.0.3 Device info created as states
     ### 0.0.1 (uwe1958) initial release
 -->
-
-### **WORK IN PROGRESS**
+### 1.0.0 (2024-05-17)
 
 -   (Uwe Nagel) initial release
 
