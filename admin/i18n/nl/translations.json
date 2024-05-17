@@ -19,5 +19,7 @@
     "Plays current audio source": "Speelt de huidige audiobron af",
     "Toggles Stop": "Schakelt tussen stoppen",
     "Toggles Pause": "Schakelt tussen pauzeren",
-    "Current player state": "Huidige spelerstatus"
+    "Current player state": "Huidige spelerstatus",
+    "IP or hostname of Device": "IP of hostnaam van apparaat",
+    "Pollinginterval [msec]": "Pollinginterval [msec]"
 }

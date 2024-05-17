@@ -19,5 +19,7 @@
     "Plays current audio source": "Відтворення поточного аудіоджерела",
     "Toggles Stop": "Перемикає зупинку",
     "Toggles Pause": "Перемикає паузу",
-    "Current player state": "Поточний стан гравця"
+    "Current player state": "Поточний стан гравця",
+    "IP or hostname of Device": "IP або ім’я хоста пристрою",
+    "Pollinginterval [msec]": "Інтервал опитування [мс]"
 }

@@ -8,6 +8,7 @@
             "md": 6,
             "lg": 6,
             "label": "IP",
+            "help": "IP or hostname of Device",
             "newLine": true
         },
         "PollingTime": {
@@ -16,6 +17,7 @@
             "md": 6,
             "lg": 6,
             "label": "Polling Interval",
+            "help": "Pollinginterval [msec]",
             "newLine": true
         }
     }

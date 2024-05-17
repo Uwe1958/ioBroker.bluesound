@@ -19,5 +19,7 @@
     "Plays current audio source": "Spielt die aktuelle Audioquelle ab",
     "Toggles Stop": "Schaltet Stopp um",
     "Toggles Pause": "Schaltet Pause um",
-    "Current player state": "Aktueller Spielerstatus"
+    "Current player state": "Aktueller Spielerstatus",
+    "IP or hostname of Device": "IP oder Hostname des Geräts",
+    "Pollinginterval [msec]": "Abfrageintervall [ms]"
 }

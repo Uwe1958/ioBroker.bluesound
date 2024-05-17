@@ -19,5 +19,7 @@
     "Plays current audio source": "Plays current audio source",
     "Toggles Stop": "Toggles Stop",
     "Toggles Pause": "Toggles Pause",
-    "Current player state": "Current player state"
+    "Current player state": "Current player state",
+    "IP or hostname of Device": "IP or hostname of Device",
+    "Pollinginterval [msec]": "Pollinginterval [msec]"
 }
