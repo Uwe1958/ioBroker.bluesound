@@ -198,6 +198,9 @@ class Bluesound extends utils.Adapter {
 
         this.startPolling(pollingTime);
 
+        // Set the connection indicator to true on succesful startup
+        this.setState('info.connection', true, true);
+
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
         // this.subscribeStates('testVariable');
         // You can also add a subscription for multiple states. The following line watches all states starting with "lights."
@@ -524,6 +527,7 @@ class Bluesound extends utils.Adapter {
                     sStateTag = this.namespace + '.info.image';
                     this.subscribeStates(sStateTag);
                     let valOld = await this.getStateAsync(sStateTag);
+
                     if (valOld.val != imageUrl) {
                         await this.setStateAsync(sStateTag, { val: imageUrl, ack: true });
                         this.log.info('Image changed: ' + imageUrl);

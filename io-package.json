@@ -108,7 +108,6 @@
             "_id": "info.connection",
             "type": "state",
             "common": {
-                "role": "indicator.connected",
                 "name": {
                     "en": "Device or service connected",
                     "de": "Gerät- oder Service verbunden",
@@ -123,6 +122,7 @@
                     "zh-cn": "设备或服务已连接"
                 },
                 "type": "boolean",
+                "role": "indicator.connected",
                 "read": true,
                 "write": false,
                 "def": false
@@ -133,9 +133,9 @@
             "_id": "info.modelname",
             "type": "state",
             "common": {
-                "role": "text",
                 "name": "Player Model",
                 "type": "string",
+                "role": "text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -158,9 +158,9 @@
             "_id": "info.name",
             "type": "state",
             "common": {
-                "role": "text",
                 "name": "Player Name",
                 "type": "string",
+                "role": "text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -183,9 +183,9 @@
             "_id": "info.title1",
             "type": "state",
             "common": {
-                "role": "text",
                 "name": "Title1",
                 "type": "string",
+                "role": "text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -208,9 +208,9 @@
             "_id": "info.title2",
             "type": "state",
             "common": {
-                "role": "text",
                 "name": "Title2",
                 "type": "string",
+                "role": "text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -233,9 +233,9 @@
             "_id": "info.title3",
             "type": "state",
             "common": {
-                "role": "text",
                 "name": "Title3",
                 "type": "string",
+                "role": "text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -258,9 +258,9 @@
             "_id": "info.image",
             "type": "state",
             "common": {
-                "role": "url",
                 "name": "Image",
                 "type": "string",
+                "role": "text.url",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -285,6 +285,7 @@
             "common": {
                 "name": "secs",
                 "type": "number",
+                "role": "value",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -309,6 +310,7 @@
             "common": {
                 "name": "totlen",
                 "type": "number",
+                "role": "value",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -333,6 +335,7 @@
             "common": {
                 "name": "str_secs",
                 "type": "string",
+                "role": "text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -357,6 +360,7 @@
             "common": {
                 "name": "str_totlen",
                 "type": "string",
+                "role": "text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -393,6 +397,7 @@
                     "zh-cn": "音量"
                 },
                 "type": "number",
+                "role": "value",
                 "read": true,
                 "write": false,
                 "desc": "Player volume"
@@ -437,6 +442,7 @@
                     "zh-cn": "播放"
                 },
                 "type": "boolean",
+                "role": "button.play",
                 "read": true,
                 "write": true,
                 "desc": "Plays current audio source"
@@ -449,6 +455,7 @@
             "common": {
                 "name": "Stop",
                 "type": "boolean",
+                "role": "button.stop",
                 "read": true,
                 "write": true,
                 "desc": "Toggles Stop"
@@ -461,6 +468,7 @@
             "common": {
                 "name": "Pause",
                 "type": "boolean",
+                "role": "button.pause",
                 "read": true,
                 "write": true,
                 "desc": "Toggles Pause"
@@ -485,6 +493,7 @@
                     "zh-cn": "音量"
                 },
                 "type": "number",
+                "role": "value",
                 "read": true,
                 "write": true,
                 "desc": "Player Volume"
@@ -495,7 +504,6 @@
             "_id": "control.state",
             "type": "state",
             "common": {
-                "role": "text",
                 "name": {
                     "en": "State",
                     "de": "Status",
@@ -510,6 +518,7 @@
                     "zh-cn": "状态"
                 },
                 "type": "string",
+                "role": "text",
                 "read": true,
                 "write": false,
                 "desc": "Current player state"
