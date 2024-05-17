@@ -1,333 +1,520 @@
 {
-  "common": {
-    "name": "bluesound",
-    "version": "1.0.0",
-    "news": {
-      "1.0.0": {
-        "en": "initial release",
-        "de": "erstausstrahlung",
-        "ru": "первоначальный выпуск",
-        "pt": "lançamento inicial",
-        "nl": "eerste release",
-        "fr": "libération initiale",
-        "it": "rilascio iniziale",
-        "es": "liberación inicial",
-        "pl": "początkowe zwolnienie",
-        "uk": "початковий реліз",
-        "zh-cn": "初步释放"
-      },
-      "0.2.0": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "uk": "Початкова версія",
-        "zh-cn": "首次出版"
-      }
+    "common": {
+        "name": "bluesound",
+        "version": "1.0.0",
+        "news": {
+            "1.0.0": {
+                "en": "initial release",
+                "de": "erstausstrahlung",
+                "ru": "первоначальный выпуск",
+                "pt": "lançamento inicial",
+                "nl": "eerste release",
+                "fr": "libération initiale",
+                "it": "rilascio iniziale",
+                "es": "liberación inicial",
+                "pl": "początkowe zwolnienie",
+                "uk": "початковий реліз",
+                "zh-cn": "初步释放"
+            },
+            "0.2.0": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "uk": "Початкова версія",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "Bluesound Control",
+        "titleLang": {
+            "en": "Bluesound Control",
+            "de": "Bluesound-Steuerung",
+            "ru": "Управление Bluesound",
+            "pt": "Controle de som azul",
+            "nl": "Bluesound-controle",
+            "fr": "Contrôle du son bleu",
+            "it": "Controllo Bluesound",
+            "es": "Control de sonido azul",
+            "pl": "Sterowanie Bluesoundem",
+            "uk": "Управління Bluesound",
+            "zh-cn": "蓝声控制"
+        },
+        "desc": {
+            "en": "Adapter to control Bluesound devices",
+            "de": "Adapter zur Steuerung von Bluesound-Geräten",
+            "ru": "Адаптер для управления устройствами Bluesound",
+            "pt": "Adaptador para controlar dispositivos Bluesound",
+            "nl": "Adapter om Bluesound-apparaten te bedienen",
+            "fr": "Adaptateur pour contrôler les appareils Bluesound",
+            "it": "Adattatore per controllare i dispositivi Bluesound",
+            "es": "Adaptador para controlar dispositivos Bluesound",
+            "pl": "Adapter do sterowania urządzeniami Bluesound",
+            "uk": "Адаптер для управління пристроями Bluesound",
+            "zh-cn": "用于控制 Bluesound 设备的适配器"
+        },
+        "authors": ["Uwe Nagel <uwenagel@kabelmail.de>"],
+        "keywords": ["multimedia", "control"],
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "bluesound.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Uwe1958/ioBroker.bluesound/main/admin/bluesound.png",
+        "readme": "https://github.com/Uwe1958/ioBroker.bluesound/blob/main/README.md",
+        "loglevel": "info",
+        "tier": 3,
+        "mode": "daemon",
+        "type": "multimedia",
+        "compact": true,
+        "connectionType": "local",
+        "dataSource": "assumption",
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=3.3.22"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.1.13"
+            }
+        ]
     },
-    "title": "Bluesound Control",
-    "titleLang": {
-      "en": "Bluesound Control",
-      "de": "Bluesound-Steuerung",
-      "ru": "Управление Bluesound",
-      "pt": "Controle de som azul",
-      "nl": "Bluesound-controle",
-      "fr": "Contrôle du son bleu",
-      "it": "Controllo Bluesound",
-      "es": "Control de sonido azul",
-      "pl": "Sterowanie Bluesoundem",
-      "uk": "Управління Bluesound",
-      "zh-cn": "蓝声控制"
+    "native": {
+        "IP": "",
+        "PollingTime": ""
     },
-    "desc": {
-      "en": "Adapter to control Bluesound devices",
-      "de": "Adapter zur Steuerung von Bluesound-Geräten",
-      "ru": "Адаптер для управления устройствами Bluesound",
-      "pt": "Adaptador para controlar dispositivos Bluesound",
-      "nl": "Adapter om Bluesound-apparaten te bedienen",
-      "fr": "Adaptateur pour contrôler les appareils Bluesound",
-      "it": "Adattatore per controllare i dispositivi Bluesound",
-      "es": "Adaptador para controlar dispositivos Bluesound",
-      "pl": "Adapter do sterowania urządzeniami Bluesound",
-      "uk": "Адаптер для управління пристроями Bluesound",
-      "zh-cn": "用于控制 Bluesound 设备的适配器"
-    },
-    "authors": [
-      "Uwe Nagel <uwenagel@kabelmail.de>"
-    ],
-    "keywords": [
-      "multimedia",
-      "control"
-    ],
-    "licenseInformation": {
-      "type": "free",
-      "license": "MIT"
-    },
-    "platform": "Javascript/Node.js",
-    "main": "main.js",
-    "icon": "bluesound.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/Uwe1958/ioBroker.bluesound/main/admin/bluesound.png",
-    "readme": "https://github.com/Uwe1958/ioBroker.bluesound/blob/main/README.md",
-    "loglevel": "info",
-    "tier": 3,
-    "mode": "daemon",
-    "type": "multimedia",
-    "compact": true,
-    "connectionType": "local",
-    "dataSource": "assumption",
-    "adminUI": {
-      "config": "json"
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=3.3.22"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=5.1.13"
-      }
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": {
+                    "en": "Device or service connected",
+                    "de": "Gerät- oder Service verbunden",
+                    "ru": "Устройство или служба подключены",
+                    "pt": "Dispositivo ou serviço conectado",
+                    "nl": "Apparaat of dienst verbonden",
+                    "fr": "Appareil ou service connecté",
+                    "it": "Dispositivo o servizio collegato",
+                    "es": "Dispositivo o servicio conectado",
+                    "pl": "Przyłączone urządzenie lub usługa",
+                    "uk": "Пристрої або послуги підключені",
+                    "zh-cn": "设备或服务已连接"
+                },
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.modelname",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Player Model",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "Modelname from player",
+                    "de": "Modelname vom Spieler",
+                    "ru": "Имя модели от игрока",
+                    "pt": "Nome do modelo do jogador",
+                    "nl": "Modelnaam van speler",
+                    "fr": "Nom de modèle du lecteur",
+                    "it": "Nome modello da giocatore",
+                    "es": "Nombre de modelo del jugador",
+                    "pl": "Nazwa modelu od gracza",
+                    "uk": "Назва моделі від гравця",
+                    "zh-cn": "玩家的模型名称"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.name",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Player Name",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "Name from player",
+                    "de": "Name des Spielers",
+                    "ru": "Имя игрока",
+                    "pt": "Nome do jogador",
+                    "nl": "Naam van de speler",
+                    "fr": "Nom du joueur",
+                    "it": "Nome dal giocatore",
+                    "es": "Nombre del jugador",
+                    "pl": "Nazwa gracza",
+                    "uk": "Ім'я гравця",
+                    "zh-cn": "播放器的名称"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.title1",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Title1",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "Title1 from player",
+                    "de": "Titel1 vom Spieler",
+                    "ru": "Название 1 от игрока",
+                    "pt": "Título1 do jogador",
+                    "nl": "Titel 1 van de speler",
+                    "fr": "Titre1 du joueur",
+                    "it": "Titolo1 dal giocatore",
+                    "es": "Título1 del jugador",
+                    "pl": "Tytuł 1 od gracza",
+                    "uk": "Назва1 від гравця",
+                    "zh-cn": "标题1 从玩家"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.title2",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Title2",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "Title2 from player",
+                    "de": "Titel2 vom Spieler",
+                    "ru": "Title2 от игрока",
+                    "pt": "Título2 do jogador",
+                    "nl": "Titel2 van de speler",
+                    "fr": "Titre2 du joueur",
+                    "it": "Titolo2 dal giocatore",
+                    "es": "Título2 del jugador",
+                    "pl": "Tytuł 2 od gracza",
+                    "uk": "Назва2 від гравця",
+                    "zh-cn": "标题2 从玩家"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.title3",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Title3",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "Title3 from player",
+                    "de": "Titel3 vom Spieler",
+                    "ru": "Название 3 от игрока",
+                    "pt": "Título3 do jogador",
+                    "nl": "Titel3 van de speler",
+                    "fr": "Titre3 du joueur",
+                    "it": "Titolo3 dal giocatore",
+                    "es": "Título3 del jugador",
+                    "pl": "Tytuł 3 od gracza",
+                    "uk": "Назва3 від гравця",
+                    "zh-cn": "标题3 从玩家"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.image",
+            "type": "state",
+            "common": {
+                "role": "url",
+                "name": "Image",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "Picture of current title",
+                    "de": "Bild des aktuellen Titels",
+                    "ru": "Изображение текущего названия",
+                    "pt": "Imagem do título atual",
+                    "nl": "Afbeelding van de huidige titel",
+                    "fr": "Image du titre actuel",
+                    "it": "Immagine del titolo attuale",
+                    "es": "Imagen del título actual",
+                    "pl": "Zdjęcie aktualnego tytułu",
+                    "uk": "Зображення поточного звання",
+                    "zh-cn": "当前标题的图片"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.secs",
+            "type": "state",
+            "common": {
+                "name": "secs",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "Seconds played for current title",
+                    "de": "Sekunden für den aktuellen Titel gespielt",
+                    "ru": "Seconds сыграли за текущий титул",
+                    "pt": "Segundos jogados para o título atual",
+                    "nl": "Seconden gespeeld voor huidige titel",
+                    "fr": "Secondes jouées pour le titre actuel",
+                    "it": "Secondi giocati per il titolo attuale",
+                    "es": "Seconds played for current title",
+                    "pl": "Seconds played for current title",
+                    "uk": "Други грали за поточне звання",
+                    "zh-cn": "当前标题播放秒数"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.totlen",
+            "type": "state",
+            "common": {
+                "name": "totlen",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "Length of current title",
+                    "de": "Länge des aktuellen Titels",
+                    "ru": "Длина текущего заголовка",
+                    "pt": "Comprimento do título atual",
+                    "nl": "Lengte van de huidige titel",
+                    "fr": "Longueur du titre actuel",
+                    "it": "Lunghezza del titolo corrente",
+                    "es": "Duración del título actual",
+                    "pl": "Długość aktualnego tytułu",
+                    "uk": "Довжина поточного звання",
+                    "zh-cn": "当前标题的长度"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.str_secs",
+            "type": "state",
+            "common": {
+                "name": "str_secs",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "Seconds played for current title",
+                    "de": "Sekunden für den aktuellen Titel gespielt",
+                    "ru": "Seconds сыграли за текущий титул",
+                    "pt": "Segundos jogados para o título atual",
+                    "nl": "Seconden gespeeld voor huidige titel",
+                    "fr": "Secondes jouées pour le titre actuel",
+                    "it": "Secondi giocati per il titolo attuale",
+                    "es": "Seconds played for current title",
+                    "pl": "Seconds played for current title",
+                    "uk": "Други грали за поточне звання",
+                    "zh-cn": "当前标题播放秒数"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.str_totlen",
+            "type": "state",
+            "common": {
+                "name": "str_totlen",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "Length of current title",
+                    "de": "Länge des aktuellen Titels",
+                    "ru": "Длина текущего заголовка",
+                    "pt": "Comprimento do título atual",
+                    "nl": "Lengte van de huidige titel",
+                    "fr": "Longueur du titre actuel",
+                    "it": "Lunghezza del titolo corrente",
+                    "es": "Duración del título actual",
+                    "pl": "Długość aktualnego tytułu",
+                    "uk": "Довжина поточного звання",
+                    "zh-cn": "当前标题的长度"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.volume",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Volume",
+                    "de": "Lautstärke",
+                    "ru": "Объем",
+                    "pt": "Volume",
+                    "nl": "Volume",
+                    "fr": "Volume",
+                    "it": "Volume",
+                    "es": "Volumen",
+                    "pl": "Wielkość",
+                    "uk": "Об'єм",
+                    "zh-cn": "音量"
+                },
+                "type": "number",
+                "read": true,
+                "write": false,
+                "desc": "Player volume"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "en": "Device control",
+                    "de": "Gerätesteuerung",
+                    "ru": "Управление устройствами",
+                    "pt": "Controle de dispositivo",
+                    "nl": "Apparaatbesturing",
+                    "fr": "Contrôle du périphérique",
+                    "it": "Controllo dispositivi",
+                    "es": "Control de dispositivos",
+                    "pl": "Sterowanie urządzeniem",
+                    "uk": "Контроль пристрою",
+                    "zh-cn": "设备控制"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.play",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Play",
+                    "de": "Abspielen",
+                    "ru": "Играть",
+                    "pt": "Jogar",
+                    "nl": "Afspelen",
+                    "fr": "Jouer",
+                    "it": "Gioca",
+                    "es": "Jugar",
+                    "pl": "Zagraj",
+                    "uk": "Грати",
+                    "zh-cn": "播放"
+                },
+                "type": "boolean",
+                "read": true,
+                "write": true,
+                "desc": "Plays current audio source"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.stop",
+            "type": "state",
+            "common": {
+                "name": "Stop",
+                "type": "boolean",
+                "read": true,
+                "write": true,
+                "desc": "Toggles Stop"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.pause",
+            "type": "state",
+            "common": {
+                "name": "Pause",
+                "type": "boolean",
+                "read": true,
+                "write": true,
+                "desc": "Toggles Pause"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.volume",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Volume",
+                    "de": "Lautstärke",
+                    "ru": "Объем",
+                    "pt": "Volume",
+                    "nl": "Volume",
+                    "fr": "Volume",
+                    "it": "Volume",
+                    "es": "Volumen",
+                    "pl": "Wielkość",
+                    "uk": "Об'єм",
+                    "zh-cn": "音量"
+                },
+                "type": "number",
+                "read": true,
+                "write": true,
+                "desc": "Player Volume"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.state",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": {
+                    "en": "State",
+                    "de": "Status",
+                    "ru": "Государство",
+                    "pt": "Estado",
+                    "nl": "Staat",
+                    "fr": "État",
+                    "it": "Stato",
+                    "es": "Estado",
+                    "pl": "Państwo",
+                    "uk": "Стан",
+                    "zh-cn": "状态"
+                },
+                "type": "string",
+                "read": true,
+                "write": false,
+                "desc": "Current player state"
+            },
+            "native": {}
+        }
     ]
-  },
-  "native": {
-    "IP": "",
-    "PollingTime": ""
-  },
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": "Device or service connected",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.modelname",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "Player Model",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "desc": "Modelname from player"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.name",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "Player Name",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "desc": "Name from player"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.title1",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "Title1",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "desc": "Title1 from player"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.title2",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "Title2",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "desc": "Title2 from player"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.title3",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "Title3",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "desc": "Title3 from player"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.image",
-      "type": "state",
-      "common": {
-        "role": "url",
-        "name": "Image",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "desc": "Picture of current title"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.secs",
-      "type": "state",
-      "common": {
-        "name": "secs",
-        "type": "number",
-        "read": true,
-        "write": false,
-        "desc": "Seconds played for current title"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.totlen",
-      "type": "state",
-      "common": {
-        "name": "totlen",
-        "type": "number",
-        "read": true,
-        "write": false,
-        "desc": "Length of current title"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.str_secs",
-      "type": "state",
-      "common": {
-        "name": "str_secs",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "desc": "Seconds played for current title"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.str_totlen",
-      "type": "state",
-      "common": {
-        "name": "str_totlen",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "desc": "Length of current title"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.volume",
-      "type": "state",
-      "common": {
-        "name": "volume",
-        "type": "number",
-        "read": true,
-        "write": false,
-        "desc": "Player volume"
-      },
-      "native": {}
-    },
-    {
-      "_id": "control",
-      "type": "channel",
-      "common": {
-        "name": "Device control"
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.play",
-      "type": "state",
-      "common": {
-        "name": "Play",
-        "type": "boolean",
-        "read": true,
-        "write": true,
-        "desc": "Plays current audio source"
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.stop",
-      "type": "state",
-      "common": {
-        "name": "Stop",
-        "type": "boolean",
-        "read": true,
-        "write": true,
-        "desc": "Toggles Stop"
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.pause",
-      "type": "state",
-      "common": {
-        "name": "Pause",
-        "type": "boolean",
-        "read": true,
-        "write": true,
-        "desc": "Toggles Pause"
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.volume",
-      "type": "state",
-      "common": {
-        "name": "Volume",
-        "type": "number",
-        "read": true,
-        "write": true,
-        "desc": "Player Volume"
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.state",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "State",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "desc": "Current player state"
-      },
-      "native": {}
-    }
-  ]
 }

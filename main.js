@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 // @ts-nocheck
 'use strict';
 
