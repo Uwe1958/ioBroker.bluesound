@@ -19,6 +19,15 @@
             "label": "Polling Interval",
             "help": "Pollinginterval [msec]",
             "newLine": true
+        },
+        "TimeOut": {
+            "type": "text",
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "label": "Timeout",
+            "help": "Timeout for API calls [msec]",
+            "newLine": true
         }
     }
 }

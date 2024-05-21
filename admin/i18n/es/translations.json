@@ -21,5 +21,6 @@
     "Toggles Pause": "Alterna pausa",
     "Current player state": "Estado actual del jugador",
     "IP or hostname of Device": "IP o nombre de host del dispositivo",
-    "Pollinginterval [msec]": "Intervalo de sondeo [mseg]"
+    "Pollinginterval [msec]": "Intervalo de sondeo [mseg]",
+    "Timeout for API calls [msec]": "Tiempo de espera para llamadas API [mseg]"
 }

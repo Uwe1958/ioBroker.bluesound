@@ -61,6 +61,9 @@ class Bluesound extends utils.Adapter {
         const pollingTime = parseFloat(this.config.PollingTime) || 30000;
         this.log.info('[Start] PollingTime: ' + pollingTime);
 
+        const timeOUT = parseFloat(this.config.TimeOut) || 2000;
+        this.log.info('[Start] Timeout: ' + timeOUT);
+
         /*
 		For every state in the system there has to be also an object of type state
 		Here a simple template for a boolean variable named "testVariable"
@@ -69,7 +72,7 @@ class Bluesound extends utils.Adapter {
 
         apiClient = axios.create({
             baseURL: `http://${ip}:11000/`,
-            timeout: 1000,
+            timeout: timeOUT,
             responseType: 'xml',
             responseEncoding: 'utf8',
         });
