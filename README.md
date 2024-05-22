@@ -61,6 +61,7 @@ Change Volume (triggered by changing '.control.volume')
     (Uwe Nagel) Added config descriptions
     (Uwe Nagel) Added translations for object descriptions
     (Uwe Nagel) Added role definition for all objects
+    (Uwe Nagel) Added Timeout config Parameter
 
 ### 1.0.0 (2024-05-17)
 
