@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // @ts-nocheck
 'use strict';
 
@@ -248,6 +249,7 @@ class Bluesound extends utils.Adapter {
 
             // @ts-ignore
             callback();
+            // eslint-disable-next-line no-unused-vars
         } catch (e) {
             // @ts-ignore
             callback();
