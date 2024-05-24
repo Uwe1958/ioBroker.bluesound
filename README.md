@@ -34,10 +34,6 @@ Change Volume (triggered by changing '.control.volume')
 
 ## Changelog
 
-<!--
-    Placeholder for the next version (at the beginning of the line):
--->
-
 ### **Work in Progress**
 
     (Uwe Nagel) Added config descriptions
