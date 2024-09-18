@@ -1,528 +1,546 @@
 {
-    "common": {
-        "name": "bluesound",
-        "version": "1.0.1",
-        "news": {
-            "1.0.1": {
-                "en": "Added config descriptions\nAdded translations for object descriptions\nAdded role definition for all objects\nAdded Timeout config Parameter",
-                "de": "Weitere config Beschreibungen\nÜbersetzungen für Objektbeschreibungen hinzugefügt\nHinzufügen von Rollendefinition für alle Objekte\nHinzugefügt Timeout config Parameter",
-                "ru": "Добавленные описания конфигурации\nДобавленные переводы для описания объектов\nДобавить определение роли для всех объектов\nДобавлен параметр Timeout",
-                "pt": "Descrições de configuração adicionadas\nTraduções adicionadas para descrições de objetos\nDefinição de função adicionada para todos os objetos\nAdicionado parâmetro Timeout config",
-                "nl": "Config-beschrijvingen toegevoegd\nToegevoegde vertalingen voor objectbeschrijvingen\nRoldefinitie toegevoegd voor alle objecten\nTimeout-configuratieparameter toegevoegd",
-                "fr": "Ajout de descriptions de configuration\nAjout de traductions pour les descriptions d'objets\nAjout de la définition du rôle pour tous les objets\nAjout du paramètre de configuration Timeout",
-                "it": "Aggiunto descrizioni di configurazione\nTraduzioni aggiuntive per descrizioni degli oggetti\nDefinizione di ruolo aggiunto per tutti gli oggetti\nAggiunto Timeout config Parameter",
-                "es": "Descripción de configuración agregada\nTraducciones adicionales para descripciones de objetos\nDefinición de papel adicional para todos los objetos\nParámetro de configuración de Timeout",
-                "pl": "Dodano opisy konfiguracyjne\nDodano tłumaczenia opisów obiektów\nDodano definicję roli dla wszystkich obiektów\nDodano parametr konfiguracji timeout",
-                "uk": "Додано описи налаштувань\nДодано переклади для описів об'єктів\nДодано визначення ролі для всіх об'єктів\nДодано параметр налаштування Timeout",
-                "zh-cn": "添加配置描述\n为对象描述添加翻译\n为所有对象添加角色定义\n添加超时配置参数"
-            },
-            "1.0.0": {
-                "en": "initial release",
-                "de": "Ersterstellung",
-                "ru": "первоначальный выпуск",
-                "pt": "lançamento inicial",
-                "nl": "eerste release",
-                "fr": "libération initiale",
-                "it": "rilascio iniziale",
-                "es": "liberación inicial",
-                "pl": "początkowe zwolnienie",
-                "uk": "початковий реліз",
-                "zh-cn": "初步释放"
-            }
-        },
-        "titleLang": {
-            "en": "Bluesound Control",
-            "de": "Bluesound-Steuerung",
-            "ru": "Управление Bluesound",
-            "pt": "Controle de som azul",
-            "nl": "Bluesound-controle",
-            "fr": "Contrôle du son bleu",
-            "it": "Controllo Bluesound",
-            "es": "Control de sonido azul",
-            "pl": "Sterowanie Bluesoundem",
-            "uk": "Управління Bluesound",
-            "zh-cn": "蓝声控制"
-        },
-        "desc": {
-            "en": "Adapter to control Bluesound devices",
-            "de": "Adapter zur Steuerung von Bluesound-Geräten",
-            "ru": "Адаптер для управления устройствами Bluesound",
-            "pt": "Adaptador para controlar dispositivos Bluesound",
-            "nl": "Adapter om Bluesound-apparaten te bedienen",
-            "fr": "Adaptateur pour contrôler les appareils Bluesound",
-            "it": "Adattatore per controllare i dispositivi Bluesound",
-            "es": "Adaptador para controlar dispositivos Bluesound",
-            "pl": "Adapter do sterowania urządzeniami Bluesound",
-            "uk": "Адаптер для управління пристроями Bluesound",
-            "zh-cn": "用于控制 Bluesound 设备的适配器"
-        },
-        "authors": ["Uwe Nagel <uwenagel@kabelmail.de>"],
-        "keywords": ["multimedia", "control"],
-        "licenseInformation": {
-            "type": "free",
-            "license": "MIT"
-        },
-        "platform": "Javascript/Node.js",
-        "icon": "bluesound.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Uwe1958/ioBroker.bluesound/main/admin/bluesound.png",
-        "readme": "https://github.com/Uwe1958/ioBroker.bluesound/blob/main/README.md",
-        "loglevel": "info",
-        "tier": 3,
-        "mode": "daemon",
-        "type": "multimedia",
-        "compact": true,
-        "connectionType": "local",
-        "dataSource": "assumption",
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=5.0.19"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.1.13"
-            }
-        ]
+  "common": {
+    "name": "bluesound",
+    "version": "1.0.2",
+    "news": {
+      "1.0.2": {
+        "en": "Modified due to adapter checks",
+        "de": "Geändert durch Adapterkontrollen",
+        "ru": "Модифицировано из-за проверок адаптера",
+        "pt": "Modificado devido às verificações do adaptador",
+        "nl": "Gewijzigd als gevolg van adaptercontroles",
+        "fr": "Modifié en raison des vérifications de l'adaptateur",
+        "it": "Modificato a causa dei controlli dell'adattatore",
+        "es": "Modificado debido a los controles de adaptador",
+        "pl": "Zmodyfikowana z powodu kontroli adaptera",
+        "uk": "Модифіковано за рахунок перевірки адаптера",
+        "zh-cn": "由于适配器检查而修改"
+      },
+      "1.0.1": {
+        "en": "Added config descriptions\nAdded translations for object descriptions\nAdded role definition for all objects\nAdded Timeout config Parameter",
+        "de": "Weitere config Beschreibungen\nÜbersetzungen für Objektbeschreibungen hinzugefügt\nHinzufügen von Rollendefinition für alle Objekte\nHinzugefügt Timeout config Parameter",
+        "ru": "Добавленные описания конфигурации\nДобавленные переводы для описания объектов\nДобавить определение роли для всех объектов\nДобавлен параметр Timeout",
+        "pt": "Descrições de configuração adicionadas\nTraduções adicionadas para descrições de objetos\nDefinição de função adicionada para todos os objetos\nAdicionado parâmetro Timeout config",
+        "nl": "Config-beschrijvingen toegevoegd\nToegevoegde vertalingen voor objectbeschrijvingen\nRoldefinitie toegevoegd voor alle objecten\nTimeout-configuratieparameter toegevoegd",
+        "fr": "Ajout de descriptions de configuration\nAjout de traductions pour les descriptions d'objets\nAjout de la définition du rôle pour tous les objets\nAjout du paramètre de configuration Timeout",
+        "it": "Aggiunto descrizioni di configurazione\nTraduzioni aggiuntive per descrizioni degli oggetti\nDefinizione di ruolo aggiunto per tutti gli oggetti\nAggiunto Timeout config Parameter",
+        "es": "Descripción de configuración agregada\nTraducciones adicionales para descripciones de objetos\nDefinición de papel adicional para todos los objetos\nParámetro de configuración de Timeout",
+        "pl": "Dodano opisy konfiguracyjne\nDodano tłumaczenia opisów obiektów\nDodano definicję roli dla wszystkich obiektów\nDodano parametr konfiguracji timeout",
+        "uk": "Додано описи налаштувань\nДодано переклади для описів об'єктів\nДодано визначення ролі для всіх об'єктів\nДодано параметр налаштування Timeout",
+        "zh-cn": "添加配置描述\n为对象描述添加翻译\n为所有对象添加角色定义\n添加超时配置参数"
+      },
+      "1.0.0": {
+        "en": "initial release",
+        "de": "Ersterstellung",
+        "ru": "первоначальный выпуск",
+        "pt": "lançamento inicial",
+        "nl": "eerste release",
+        "fr": "libération initiale",
+        "it": "rilascio iniziale",
+        "es": "liberación inicial",
+        "pl": "początkowe zwolnienie",
+        "uk": "початковий реліз",
+        "zh-cn": "初步释放"
+      }
     },
-    "native": {
-        "IP": "",
-        "PollingTime": "",
-        "TimeOut": ""
+    "titleLang": {
+      "en": "Bluesound Control",
+      "de": "Bluesound-Steuerung",
+      "ru": "Управление Bluesound",
+      "pt": "Controle de som azul",
+      "nl": "Bluesound-controle",
+      "fr": "Contrôle du son bleu",
+      "it": "Controllo Bluesound",
+      "es": "Control de sonido azul",
+      "pl": "Sterowanie Bluesoundem",
+      "uk": "Управління Bluesound",
+      "zh-cn": "蓝声控制"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Device or service connected",
-                    "de": "Gerät- oder Service verbunden",
-                    "ru": "Устройство или служба подключены",
-                    "pt": "Dispositivo ou serviço conectado",
-                    "nl": "Apparaat of dienst verbonden",
-                    "fr": "Appareil ou service connecté",
-                    "it": "Dispositivo o servizio collegato",
-                    "es": "Dispositivo o servicio conectado",
-                    "pl": "Przyłączone urządzenie lub usługa",
-                    "uk": "Пристрої або послуги підключені",
-                    "zh-cn": "设备或服务已连接"
-                },
-                "type": "boolean",
-                "role": "indicator.connected",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.modelname",
-            "type": "state",
-            "common": {
-                "name": "Player Model",
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Modelname from player",
-                    "de": "Modelname vom Spieler",
-                    "ru": "Имя модели от игрока",
-                    "pt": "Nome do modelo do jogador",
-                    "nl": "Modelnaam van speler",
-                    "fr": "Nom de modèle du lecteur",
-                    "it": "Nome modello da giocatore",
-                    "es": "Nombre de modelo del jugador",
-                    "pl": "Nazwa modelu od gracza",
-                    "uk": "Назва моделі від гравця",
-                    "zh-cn": "玩家的模型名称"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.name",
-            "type": "state",
-            "common": {
-                "name": "Player Name",
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Name from player",
-                    "de": "Name des Spielers",
-                    "ru": "Имя игрока",
-                    "pt": "Nome do jogador",
-                    "nl": "Naam van de speler",
-                    "fr": "Nom du joueur",
-                    "it": "Nome dal giocatore",
-                    "es": "Nombre del jugador",
-                    "pl": "Nazwa gracza",
-                    "uk": "Ім'я гравця",
-                    "zh-cn": "播放器的名称"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.title1",
-            "type": "state",
-            "common": {
-                "name": "Title1",
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Title1 from player",
-                    "de": "Titel1 vom Spieler",
-                    "ru": "Название 1 от игрока",
-                    "pt": "Título1 do jogador",
-                    "nl": "Titel 1 van de speler",
-                    "fr": "Titre1 du joueur",
-                    "it": "Titolo1 dal giocatore",
-                    "es": "Título1 del jugador",
-                    "pl": "Tytuł 1 od gracza",
-                    "uk": "Назва1 від гравця",
-                    "zh-cn": "标题1 从玩家"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.title2",
-            "type": "state",
-            "common": {
-                "name": "Title2",
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Title2 from player",
-                    "de": "Titel2 vom Spieler",
-                    "ru": "Title2 от игрока",
-                    "pt": "Título2 do jogador",
-                    "nl": "Titel2 van de speler",
-                    "fr": "Titre2 du joueur",
-                    "it": "Titolo2 dal giocatore",
-                    "es": "Título2 del jugador",
-                    "pl": "Tytuł 2 od gracza",
-                    "uk": "Назва2 від гравця",
-                    "zh-cn": "标题2 从玩家"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.title3",
-            "type": "state",
-            "common": {
-                "name": "Title3",
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Title3 from player",
-                    "de": "Titel3 vom Spieler",
-                    "ru": "Название 3 от игрока",
-                    "pt": "Título3 do jogador",
-                    "nl": "Titel3 van de speler",
-                    "fr": "Titre3 du joueur",
-                    "it": "Titolo3 dal giocatore",
-                    "es": "Título3 del jugador",
-                    "pl": "Tytuł 3 od gracza",
-                    "uk": "Назва3 від гравця",
-                    "zh-cn": "标题3 从玩家"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.image",
-            "type": "state",
-            "common": {
-                "name": "Image",
-                "type": "string",
-                "role": "text.url",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Picture of current title",
-                    "de": "Bild des aktuellen Titels",
-                    "ru": "Изображение текущего названия",
-                    "pt": "Imagem do título atual",
-                    "nl": "Afbeelding van de huidige titel",
-                    "fr": "Image du titre actuel",
-                    "it": "Immagine del titolo attuale",
-                    "es": "Imagen del título actual",
-                    "pl": "Zdjęcie aktualnego tytułu",
-                    "uk": "Зображення поточного звання",
-                    "zh-cn": "当前标题的图片"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.secs",
-            "type": "state",
-            "common": {
-                "name": "secs",
-                "type": "number",
-                "role": "value",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Seconds played for current title",
-                    "de": "Sekunden für den aktuellen Titel gespielt",
-                    "ru": "Seconds сыграли за текущий титул",
-                    "pt": "Segundos jogados para o título atual",
-                    "nl": "Seconden gespeeld voor huidige titel",
-                    "fr": "Secondes jouées pour le titre actuel",
-                    "it": "Secondi giocati per il titolo attuale",
-                    "es": "Seconds played for current title",
-                    "pl": "Seconds played for current title",
-                    "uk": "Други грали за поточне звання",
-                    "zh-cn": "当前标题播放秒数"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.totlen",
-            "type": "state",
-            "common": {
-                "name": "totlen",
-                "type": "number",
-                "role": "value",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Length of current title",
-                    "de": "Länge des aktuellen Titels",
-                    "ru": "Длина текущего заголовка",
-                    "pt": "Comprimento do título atual",
-                    "nl": "Lengte van de huidige titel",
-                    "fr": "Longueur du titre actuel",
-                    "it": "Lunghezza del titolo corrente",
-                    "es": "Duración del título actual",
-                    "pl": "Długość aktualnego tytułu",
-                    "uk": "Довжина поточного звання",
-                    "zh-cn": "当前标题的长度"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.str_secs",
-            "type": "state",
-            "common": {
-                "name": "str_secs",
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Seconds played for current title",
-                    "de": "Sekunden für den aktuellen Titel gespielt",
-                    "ru": "Seconds сыграли за текущий титул",
-                    "pt": "Segundos jogados para o título atual",
-                    "nl": "Seconden gespeeld voor huidige titel",
-                    "fr": "Secondes jouées pour le titre actuel",
-                    "it": "Secondi giocati per il titolo attuale",
-                    "es": "Seconds played for current title",
-                    "pl": "Seconds played for current title",
-                    "uk": "Други грали за поточне звання",
-                    "zh-cn": "当前标题播放秒数"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.str_totlen",
-            "type": "state",
-            "common": {
-                "name": "str_totlen",
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Length of current title",
-                    "de": "Länge des aktuellen Titels",
-                    "ru": "Длина текущего заголовка",
-                    "pt": "Comprimento do título atual",
-                    "nl": "Lengte van de huidige titel",
-                    "fr": "Longueur du titre actuel",
-                    "it": "Lunghezza del titolo corrente",
-                    "es": "Duración del título actual",
-                    "pl": "Długość aktualnego tytułu",
-                    "uk": "Довжина поточного звання",
-                    "zh-cn": "当前标题的长度"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.volume",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Volume",
-                    "de": "Lautstärke",
-                    "ru": "Объем",
-                    "pt": "Volume",
-                    "nl": "Volume",
-                    "fr": "Volume",
-                    "it": "Volume",
-                    "es": "Volumen",
-                    "pl": "Wielkość",
-                    "uk": "Об'єм",
-                    "zh-cn": "音量"
-                },
-                "type": "number",
-                "role": "value",
-                "read": true,
-                "write": false,
-                "desc": "Player volume"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Device control",
-                    "de": "Gerätesteuerung",
-                    "ru": "Управление устройствами",
-                    "pt": "Controle de dispositivo",
-                    "nl": "Apparaatbesturing",
-                    "fr": "Contrôle du périphérique",
-                    "it": "Controllo dispositivi",
-                    "es": "Control de dispositivos",
-                    "pl": "Sterowanie urządzeniem",
-                    "uk": "Контроль пристрою",
-                    "zh-cn": "设备控制"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.play",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Play",
-                    "de": "Abspielen",
-                    "ru": "Играть",
-                    "pt": "Jogar",
-                    "nl": "Afspelen",
-                    "fr": "Jouer",
-                    "it": "Gioca",
-                    "es": "Jugar",
-                    "pl": "Zagraj",
-                    "uk": "Грати",
-                    "zh-cn": "播放"
-                },
-                "type": "boolean",
-                "role": "button.play",
-                "read": true,
-                "write": true,
-                "desc": "Plays current audio source"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.stop",
-            "type": "state",
-            "common": {
-                "name": "Stop",
-                "type": "boolean",
-                "role": "button.stop",
-                "read": true,
-                "write": true,
-                "desc": "Toggles Stop"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.pause",
-            "type": "state",
-            "common": {
-                "name": "Pause",
-                "type": "boolean",
-                "role": "button.pause",
-                "read": true,
-                "write": true,
-                "desc": "Toggles Pause"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.volume",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Volume",
-                    "de": "Lautstärke",
-                    "ru": "Объем",
-                    "pt": "Volume",
-                    "nl": "Volume",
-                    "fr": "Volume",
-                    "it": "Volume",
-                    "es": "Volumen",
-                    "pl": "Wielkość",
-                    "uk": "Об'єм",
-                    "zh-cn": "音量"
-                },
-                "type": "number",
-                "role": "value",
-                "read": true,
-                "write": true,
-                "desc": "Player Volume"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.state",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "State",
-                    "de": "Status",
-                    "ru": "Государство",
-                    "pt": "Estado",
-                    "nl": "Staat",
-                    "fr": "État",
-                    "it": "Stato",
-                    "es": "Estado",
-                    "pl": "Państwo",
-                    "uk": "Стан",
-                    "zh-cn": "状态"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false,
-                "desc": "Current player state"
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "Adapter to control Bluesound devices",
+      "de": "Adapter zur Steuerung von Bluesound-Geräten",
+      "ru": "Адаптер для управления устройствами Bluesound",
+      "pt": "Adaptador para controlar dispositivos Bluesound",
+      "nl": "Adapter om Bluesound-apparaten te bedienen",
+      "fr": "Adaptateur pour contrôler les appareils Bluesound",
+      "it": "Adattatore per controllare i dispositivi Bluesound",
+      "es": "Adaptador para controlar dispositivos Bluesound",
+      "pl": "Adapter do sterowania urządzeniami Bluesound",
+      "uk": "Адаптер для управління пристроями Bluesound",
+      "zh-cn": "用于控制 Bluesound 设备的适配器"
+    },
+    "authors": [
+      "Uwe Nagel <uwenagel@kabelmail.de>"
+    ],
+    "keywords": [
+      "multimedia",
+      "control"
+    ],
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
+    "platform": "Javascript/Node.js",
+    "icon": "bluesound.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Uwe1958/ioBroker.bluesound/main/admin/bluesound.png",
+    "readme": "https://github.com/Uwe1958/ioBroker.bluesound/blob/main/README.md",
+    "loglevel": "info",
+    "tier": 3,
+    "mode": "daemon",
+    "type": "multimedia",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "assumption",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.19"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.13"
+      }
     ]
+  },
+  "native": {
+    "IP": "",
+    "PollingTime": "",
+    "TimeOut": ""
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Device or service connected",
+          "de": "Gerät- oder Service verbunden",
+          "ru": "Устройство или служба подключены",
+          "pt": "Dispositivo ou serviço conectado",
+          "nl": "Apparaat of dienst verbonden",
+          "fr": "Appareil ou service connecté",
+          "it": "Dispositivo o servizio collegato",
+          "es": "Dispositivo o servicio conectado",
+          "pl": "Przyłączone urządzenie lub usługa",
+          "uk": "Пристрої або послуги підключені",
+          "zh-cn": "设备或服务已连接"
+        },
+        "type": "boolean",
+        "role": "indicator.connected",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.modelname",
+      "type": "state",
+      "common": {
+        "name": "Player Model",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Modelname from player",
+          "de": "Modelname vom Spieler",
+          "ru": "Имя модели от игрока",
+          "pt": "Nome do modelo do jogador",
+          "nl": "Modelnaam van speler",
+          "fr": "Nom de modèle du lecteur",
+          "it": "Nome modello da giocatore",
+          "es": "Nombre de modelo del jugador",
+          "pl": "Nazwa modelu od gracza",
+          "uk": "Назва моделі від гравця",
+          "zh-cn": "玩家的模型名称"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.name",
+      "type": "state",
+      "common": {
+        "name": "Player Name",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Name from player",
+          "de": "Name des Spielers",
+          "ru": "Имя игрока",
+          "pt": "Nome do jogador",
+          "nl": "Naam van de speler",
+          "fr": "Nom du joueur",
+          "it": "Nome dal giocatore",
+          "es": "Nombre del jugador",
+          "pl": "Nazwa gracza",
+          "uk": "Ім'я гравця",
+          "zh-cn": "播放器的名称"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.title1",
+      "type": "state",
+      "common": {
+        "name": "Title1",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Title1 from player",
+          "de": "Titel1 vom Spieler",
+          "ru": "Название 1 от игрока",
+          "pt": "Título1 do jogador",
+          "nl": "Titel 1 van de speler",
+          "fr": "Titre1 du joueur",
+          "it": "Titolo1 dal giocatore",
+          "es": "Título1 del jugador",
+          "pl": "Tytuł 1 od gracza",
+          "uk": "Назва1 від гравця",
+          "zh-cn": "标题1 从玩家"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.title2",
+      "type": "state",
+      "common": {
+        "name": "Title2",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Title2 from player",
+          "de": "Titel2 vom Spieler",
+          "ru": "Title2 от игрока",
+          "pt": "Título2 do jogador",
+          "nl": "Titel2 van de speler",
+          "fr": "Titre2 du joueur",
+          "it": "Titolo2 dal giocatore",
+          "es": "Título2 del jugador",
+          "pl": "Tytuł 2 od gracza",
+          "uk": "Назва2 від гравця",
+          "zh-cn": "标题2 从玩家"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.title3",
+      "type": "state",
+      "common": {
+        "name": "Title3",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Title3 from player",
+          "de": "Titel3 vom Spieler",
+          "ru": "Название 3 от игрока",
+          "pt": "Título3 do jogador",
+          "nl": "Titel3 van de speler",
+          "fr": "Titre3 du joueur",
+          "it": "Titolo3 dal giocatore",
+          "es": "Título3 del jugador",
+          "pl": "Tytuł 3 od gracza",
+          "uk": "Назва3 від гравця",
+          "zh-cn": "标题3 从玩家"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.image",
+      "type": "state",
+      "common": {
+        "name": "Image",
+        "type": "string",
+        "role": "text.url",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Picture of current title",
+          "de": "Bild des aktuellen Titels",
+          "ru": "Изображение текущего названия",
+          "pt": "Imagem do título atual",
+          "nl": "Afbeelding van de huidige titel",
+          "fr": "Image du titre actuel",
+          "it": "Immagine del titolo attuale",
+          "es": "Imagen del título actual",
+          "pl": "Zdjęcie aktualnego tytułu",
+          "uk": "Зображення поточного звання",
+          "zh-cn": "当前标题的图片"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.secs",
+      "type": "state",
+      "common": {
+        "name": "secs",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Seconds played for current title",
+          "de": "Sekunden für den aktuellen Titel gespielt",
+          "ru": "Seconds сыграли за текущий титул",
+          "pt": "Segundos jogados para o título atual",
+          "nl": "Seconden gespeeld voor huidige titel",
+          "fr": "Secondes jouées pour le titre actuel",
+          "it": "Secondi giocati per il titolo attuale",
+          "es": "Seconds played for current title",
+          "pl": "Seconds played for current title",
+          "uk": "Други грали за поточне звання",
+          "zh-cn": "当前标题播放秒数"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.totlen",
+      "type": "state",
+      "common": {
+        "name": "totlen",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Length of current title",
+          "de": "Länge des aktuellen Titels",
+          "ru": "Длина текущего заголовка",
+          "pt": "Comprimento do título atual",
+          "nl": "Lengte van de huidige titel",
+          "fr": "Longueur du titre actuel",
+          "it": "Lunghezza del titolo corrente",
+          "es": "Duración del título actual",
+          "pl": "Długość aktualnego tytułu",
+          "uk": "Довжина поточного звання",
+          "zh-cn": "当前标题的长度"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.str_secs",
+      "type": "state",
+      "common": {
+        "name": "str_secs",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Seconds played for current title",
+          "de": "Sekunden für den aktuellen Titel gespielt",
+          "ru": "Seconds сыграли за текущий титул",
+          "pt": "Segundos jogados para o título atual",
+          "nl": "Seconden gespeeld voor huidige titel",
+          "fr": "Secondes jouées pour le titre actuel",
+          "it": "Secondi giocati per il titolo attuale",
+          "es": "Seconds played for current title",
+          "pl": "Seconds played for current title",
+          "uk": "Други грали за поточне звання",
+          "zh-cn": "当前标题播放秒数"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.str_totlen",
+      "type": "state",
+      "common": {
+        "name": "str_totlen",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Length of current title",
+          "de": "Länge des aktuellen Titels",
+          "ru": "Длина текущего заголовка",
+          "pt": "Comprimento do título atual",
+          "nl": "Lengte van de huidige titel",
+          "fr": "Longueur du titre actuel",
+          "it": "Lunghezza del titolo corrente",
+          "es": "Duración del título actual",
+          "pl": "Długość aktualnego tytułu",
+          "uk": "Довжина поточного звання",
+          "zh-cn": "当前标题的长度"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.volume",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Volume",
+          "de": "Lautstärke",
+          "ru": "Объем",
+          "pt": "Volume",
+          "nl": "Volume",
+          "fr": "Volume",
+          "it": "Volume",
+          "es": "Volumen",
+          "pl": "Wielkość",
+          "uk": "Об'єм",
+          "zh-cn": "音量"
+        },
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "Player volume"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Device control",
+          "de": "Gerätesteuerung",
+          "ru": "Управление устройствами",
+          "pt": "Controle de dispositivo",
+          "nl": "Apparaatbesturing",
+          "fr": "Contrôle du périphérique",
+          "it": "Controllo dispositivi",
+          "es": "Control de dispositivos",
+          "pl": "Sterowanie urządzeniem",
+          "uk": "Контроль пристрою",
+          "zh-cn": "设备控制"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.play",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Play",
+          "de": "Abspielen",
+          "ru": "Играть",
+          "pt": "Jogar",
+          "nl": "Afspelen",
+          "fr": "Jouer",
+          "it": "Gioca",
+          "es": "Jugar",
+          "pl": "Zagraj",
+          "uk": "Грати",
+          "zh-cn": "播放"
+        },
+        "type": "boolean",
+        "role": "button.play",
+        "read": true,
+        "write": true,
+        "desc": "Plays current audio source"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.stop",
+      "type": "state",
+      "common": {
+        "name": "Stop",
+        "type": "boolean",
+        "role": "button.stop",
+        "read": true,
+        "write": true,
+        "desc": "Toggles Stop"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.pause",
+      "type": "state",
+      "common": {
+        "name": "Pause",
+        "type": "boolean",
+        "role": "button.pause",
+        "read": true,
+        "write": true,
+        "desc": "Toggles Pause"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.volume",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Volume",
+          "de": "Lautstärke",
+          "ru": "Объем",
+          "pt": "Volume",
+          "nl": "Volume",
+          "fr": "Volume",
+          "it": "Volume",
+          "es": "Volumen",
+          "pl": "Wielkość",
+          "uk": "Об'єм",
+          "zh-cn": "音量"
+        },
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": true,
+        "desc": "Player Volume"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.state",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "State",
+          "de": "Status",
+          "ru": "Государство",
+          "pt": "Estado",
+          "nl": "Staat",
+          "fr": "État",
+          "it": "Stato",
+          "es": "Estado",
+          "pl": "Państwo",
+          "uk": "Стан",
+          "zh-cn": "状态"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "desc": "Current player state"
+      },
+      "native": {}
+    }
+  ]
 }
