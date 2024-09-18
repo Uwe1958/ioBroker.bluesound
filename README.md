@@ -39,7 +39,7 @@ Change Volume (triggered by changing '.control.volume')
     ### **WORK IN PROGRESS**
 -->
 
-### \*\*WORK IN PROGRESS
+### **WORK IN PROGRESS**
 
 -   (Uwe Nagel) Modified due to adapter checks
 
