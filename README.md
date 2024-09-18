@@ -41,6 +41,8 @@ Change Volume (triggered by changing '.control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) Rerun release
+
 ### 1.0.2 (2024-09-18)
 
 -   (Uwe Nagel) Modified due to adapter checks
