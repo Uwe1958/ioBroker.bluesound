@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "news": {
+      "1.0.3": {
+        "en": "Rerun release",
+        "de": "Rerun Release",
+        "ru": "Rerun release",
+        "pt": "Rerun release",
+        "nl": "Rerun release",
+        "fr": "Rediffusion",
+        "it": "Recuperare il rilascio",
+        "es": "Rerun release",
+        "pl": "Uwolnienie Rerun",
+        "uk": "Запуск релізу",
+        "zh-cn": "重运行释放"
+      },
       "1.0.2": {
         "en": "Modified due to adapter checks",
         "de": "Geändert durch Adapterkontrollen",
