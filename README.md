@@ -36,25 +36,13 @@ Change Volume (triggered by changing '.control.volume')
 
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ### 0.2.0 Adapter rebuild using development server
-    ### 0.1.8 Fixed type error (PollingTime) after updating to javascript 5.
-    ### 0.1.7 Issue #11: Volume is now read from player and stored into .info.volume
-    ### 0.1.6 Added secs and totlen also as string object
-    ### 0.1.5 Solved error message, when totlen is not reported in /Status
-    ### 0.1.4 pollingtime is now correctly read from config page
-    ### 0.1.0 All `request` calls changed to `axios` (`request-promise-native` deprecated)
-    ### 0.0.14 Solved dependabot alerts
-    ### 0.0.13 follow-redirect vulnerability eliminated
-    ### 0.0.12 Bump parse-path from 1.0.6 to 1.0.7
-    ### 0.0.11 ACK warnings (due to JS controller 3.3) eliminated
-    ### 0.0.8 Slight changes due to adapter check
-    ### 0.0.7 Status polling added
-    ### 0.0.6 Volume control implemented
-    ### 0.0.5 Start/Stop/Pause implemented
-    ### 0.0.4 Presets created as states
-    ### 0.0.3 Device info created as states
-    ### 0.0.1 (uwe1958) initial release
+    ### **WORK IN PROGRESS**
 -->
+
+### \*\*WORK IN PROGRESS
+
+-   (Uwe Nagel) Modified due to adapter checks
+
 ### 1.0.1 (2024-05-24)
 
 -   (Uwe Nagel) Added config descriptions
