@@ -462,7 +462,7 @@ class Bluesound extends utils.Adapter {
                     if (response.data.toString().lastIndexOf('title1') === -1) {
                         title[1] = '';
                     } else {
-                        title[1] = result.status.title2[0];
+                        title[1] = result.status.title1[0];
                     }
 
                     if (response.data.toString().lastIndexOf('title2') === -1) {
@@ -474,7 +474,7 @@ class Bluesound extends utils.Adapter {
                     if (response.data.toString().lastIndexOf('title3') === -1) {
                         title[3] = '';
                     } else {
-                        title[3] = result.status.title2[0];
+                        title[3] = result.status.title3[0];
                     }
 
                     varSecs = result.status.secs[0];
