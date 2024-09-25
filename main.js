@@ -71,7 +71,7 @@ class Bluesound extends utils.Adapter {
 		*/
 
         apiClient = axios.create({
-            baseURL: `http://${ip}:11000/`,
+            baseURL: `http://${ip}:11000`,
             timeout: timeOUT,
             responseType: 'xml',
             responseEncoding: 'utf8',
@@ -458,14 +458,24 @@ class Bluesound extends utils.Adapter {
                         this.log.error('Error parsing Status XML:' + err);
                         return;
                     }
-                    title[1] = result.status.title1[0];
+
+                    if (response.data.toString().lastIndexOf('title1') === -1) {
+                        title[1] = '';
+                    } else {
+                        title[1] = result.status.title2[0];
+                    }
 
                     if (response.data.toString().lastIndexOf('title2') === -1) {
                         title[2] = '';
                     } else {
                         title[2] = result.status.title2[0];
                     }
-                    title[3] = result.status.title3[0];
+
+                    if (response.data.toString().lastIndexOf('title3') === -1) {
+                        title[3] = '';
+                    } else {
+                        title[3] = result.status.title2[0];
+                    }
 
                     varSecs = result.status.secs[0];
                     strSecs = this.convertSecs(varSecs);
@@ -476,7 +486,12 @@ class Bluesound extends utils.Adapter {
                         varTotLen = result.status.totlen[0];
                     }
 
-                    imageUrl = result.status.image[0];
+                    if (response.data.toString().lastIndexOf('image') === -1) {
+                        imageUrl = '';
+                    } else {
+                        imageUrl = result.status.image[0];
+                    }
+
                     varVolume = result.status.volume[0];
                     pState = result.status.state[0];
                 });
@@ -489,9 +504,8 @@ class Bluesound extends utils.Adapter {
 
                 await Promise.all(promises);
 
-                const pStateOld = await this.getStateAsync(this.namespace + '.control.state');
-
-                //			adapter.log.info(`Old: ${pStateOld.val}, New: ${pState}`);
+                const sNameTag = this.namespace + '.control.state';
+                const pStateOld = await this.getStateAsync(sNameTag);
 
                 if (pState != pStateOld.val) {
                     const sStateTag = this.namespace + '.control.state';
