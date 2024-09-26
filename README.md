@@ -38,9 +38,10 @@ Change Volume (triggered by changing '.control.volume')
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 1.0.3 (2024-09-26)
 
--   Parsing of /State corrected
+### **WORK IN PROGRESS**
+
+-   (Uwe Nagel) Parsing of /State corrected
 
 ### 1.0.2 (2024-09-19)
 
