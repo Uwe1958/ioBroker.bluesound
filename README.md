@@ -41,6 +41,7 @@ Change Volume (triggered by changing '.control.volume')
 
 ### **WORK IN PORGRESS**
 
+-   (Uwe Nagel) Added initial Browse to fill info.list
 -   (Uwe Nagel) Added info.list
 
 ### 1.0.3 (2024-09-26)

@@ -100,6 +100,24 @@ class Bluesound extends utils.Adapter {
         } catch (e) {
             console.error('Could not retrieve SyncStatus data: ' + e);
         }
+        // Get Initial Browse Data
+        try {
+            const response = await apiClient.get('/Browse');
+            if (response.status === 200) {
+                parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
+                    if (err) {
+                        this.log('Error parsing Browse XML:' + err);
+                        return;
+                    }
+                    let sInfoTag = this.namespace + '.info.list';
+                    this.setState(sInfoTag, JSON.stringify(result.browse.item), true);
+                });
+            } else {
+                this.log.error('Could not retrieve Browse data, Status code ' + response.status);
+            }
+        } catch (e) {
+            console.error('Could not retrieve Browse data: ' + e);
+        }
 
         // Initialize Control
 
