@@ -26,7 +26,7 @@ The player status is polled in the interval set by '.config.pollingtime' and the
 
 The following functions are implemented:
 
-Player stop (triggered by setting '.control.stop' to true)
+Player stop (triggered by setting '.control.stop' to true)  
 Player start (triggered by setting '.control.start' to true)
 Player Pause (triggered by setting '.control.pause' to true, toggle mode)
 Play Presetxxx (triggered by setting '.presets.preset(x).start' to true)
@@ -38,6 +38,11 @@ Change Volume (triggered by changing '.control.volume')
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+-   (Uwe Nagel) Example code removed
+
 ### 1.0.3 (2024-09-26)
 
 -   (Uwe Nagel) Parsing of /State corrected
