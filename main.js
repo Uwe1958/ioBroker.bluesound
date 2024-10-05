@@ -54,6 +54,7 @@ class Bluesound extends utils.Adapter {
             this.log.info('[Start] Starting adapter bluesound with: ' + ip);
         } else {
             this.log.warn('[Start] No IP Address set');
+            return;
         }
 
         const pollingTime = parseFloat(this.config.PollingTime) || 30000;
