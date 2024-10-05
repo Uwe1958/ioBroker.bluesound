@@ -41,6 +41,7 @@ Change Volume (triggered by changing '.control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) PollingTime and TimeOUT changed to type number
 -   (Uwe Nagel) onReady() stopped when no IP is set
 -   (Uwe Nagel) Testing extended to node 22.x
 -   (Uwe Nagel) Example code removed

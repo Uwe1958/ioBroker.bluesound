@@ -21,6 +21,6 @@
     "Toggles Pause": "Перемикає паузу",
     "Current player state": "Поточний стан гравця",
     "IP or hostname of Device": "IP або ім’я хоста пристрою",
-    "Pollinginterval [msec]": "Інтервал опитування [мс]",
-    "Timeout for API calls [msec]": "Тайм-аут для викликів API [мс]"
+    "Pollinginterval [sec]": "Інтервал опитування [с]",
+    "Timeout for API calls [sec]": "Тайм-аут для викликів API [с]"
 }

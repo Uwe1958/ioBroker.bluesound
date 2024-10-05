@@ -21,6 +21,6 @@
     "Toggles Pause": "Toggles Pause",
     "Current player state": "Current player state",
     "IP or hostname of Device": "IP or hostname of Device",
-    "Pollinginterval [msec]": "Pollinginterval [msec]",
-    "Timeout for API calls [msec]": "Timeout for API calls [msec]"
+    "Pollinginterval [sec]": "Pollinginterval [sec]",
+    "Timeout for API calls [sec]": "Timeout for API calls [sec]"
 }

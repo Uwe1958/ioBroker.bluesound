@@ -12,21 +12,21 @@
             "newLine": true
         },
         "PollingTime": {
-            "type": "text",
+            "type": "number",
             "sm": 12,
             "md": 6,
             "lg": 6,
             "label": "Polling Interval",
-            "help": "Pollinginterval [msec]",
+            "help": "Pollinginterval [sec]",
             "newLine": true
         },
         "TimeOut": {
-            "type": "text",
+            "type": "number",
             "sm": 12,
             "md": 6,
             "lg": 6,
             "label": "Timeout",
-            "help": "Timeout for API calls [msec]",
+            "help": "Timeout for API calls [sec]",
             "newLine": true
         }
     }

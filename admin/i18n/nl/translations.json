@@ -21,6 +21,6 @@
     "Toggles Pause": "Schakelt tussen pauzeren",
     "Current player state": "Huidige spelerstatus",
     "IP or hostname of Device": "IP of hostnaam van apparaat",
-    "Pollinginterval [msec]": "Pollinginterval [msec]",
-    "Timeout for API calls [msec]": "Time-out voor API-aanroepen [msec]"
+    "Pollinginterval [sec]": "Pollinginterval [sec]",
+    "Timeout for API calls [sec]": "Time-out voor API-aanroepen [sec]"
 }

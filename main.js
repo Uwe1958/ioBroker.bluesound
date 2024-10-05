@@ -57,11 +57,11 @@ class Bluesound extends utils.Adapter {
             return;
         }
 
-        const pollingTime = parseFloat(this.config.PollingTime) || 30000;
-        this.log.info('[Start] PollingTime: ' + pollingTime);
+        const pollingTime = this.config.PollingTime * 1000 || 30000;
+        this.log.info('[Start] PollingTime [msec]: ' + pollingTime);
 
-        const timeOUT = parseFloat(this.config.TimeOut) || 2000;
-        this.log.info('[Start] Timeout: ' + timeOUT);
+        const timeOUT = this.config.TimeOut * 1000 || 2000;
+        this.log.info('[Start] Timeout [msec]: ' + timeOUT);
 
         apiClient = axios.create({
             baseURL: `http://${ip}:11000`,
