@@ -41,6 +41,7 @@ Change Volume (triggered by changing '.control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) Testing extended to node 22.x
 -   (Uwe Nagel) Example code removed
 
 ### 1.0.3 (2024-09-26)
