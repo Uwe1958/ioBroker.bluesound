@@ -237,7 +237,7 @@ class Bluesound extends utils.Adapter {
         if (state) {
             // The state was changed
             // @ts-ignore
-            if (state.val) {
+            if (state.val && !state.ack) {
                 const pos = id.toString().lastIndexOf('.');
                 switch (id.substring(pos + 1)) {
                     case 'start':
