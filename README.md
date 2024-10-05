@@ -41,6 +41,7 @@ Change Volume (triggered by changing '.control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) Instance prefixes in ObjectIds are omitted when calling setState()
 -   (Uwe Nagel) State change now honors ack flag
 -   (Uwe Nagel) PollingTime and TimeOUT changed to type number
 -   (Uwe Nagel) onReady() stopped when no IP is set

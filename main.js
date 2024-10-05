@@ -72,9 +72,9 @@ class Bluesound extends utils.Adapter {
 
         // set Info
 
-        let sNameTag = this.namespace + '.info.name';
+        let sNameTag = 'info.name';
         this.subscribeStates(sNameTag);
-        const sModelNameTag = this.namespace + '.info.modelname';
+        const sModelNameTag = 'info.modelname';
         this.subscribeStates(sModelNameTag);
         try {
             const response = await apiClient.get('/SyncStatus');
@@ -97,19 +97,19 @@ class Bluesound extends utils.Adapter {
         // Initialize Control
 
         // stop = false
-        sNameTag = this.namespace + '.control.stop';
+        sNameTag = 'control.stop';
         this.subscribeStates(sNameTag);
         this.setState(sNameTag, false, true);
         // pause = false
-        sNameTag = this.namespace + '.control.pause';
+        sNameTag = 'control.pause';
         this.subscribeStates(sNameTag);
         this.setState(sNameTag, false, true);
         // play = false
-        sNameTag = this.namespace + '.control.play';
+        sNameTag = 'control.play';
         this.subscribeStates(sNameTag);
         this.setState(sNameTag, false, true);
         // state = ""
-        sNameTag = this.namespace + '.control.state';
+        sNameTag = 'control.state';
         this.subscribeStates(sNameTag);
         this.setState(sNameTag, '', true);
 
@@ -123,11 +123,11 @@ class Bluesound extends utils.Adapter {
                         console.log('Error parsing Volume XML:' + err);
                         return;
                     }
-                    sNameTag = this.namespace + '.control.volume';
+                    sNameTag = 'control.volume';
                     this.subscribeStates(sNameTag);
                     this.setState(sNameTag, parseInt(result.volume._), true);
 
-                    sNameTag = this.namespace + '.info.volume';
+                    sNameTag = 'info.volume';
                     this.subscribeStates(sNameTag);
                     this.setState(sNameTag, parseInt(result.volume._), true);
                 });
@@ -164,7 +164,7 @@ class Bluesound extends utils.Adapter {
                             delete obj._id;
                             promises.push(this.setObjectNotExistsAsync(id, obj));
                             if (obj.type != 'channel') {
-                                const sTag = this.namespace + `.presets.preset${sPresetID}.${obj.common.name}`;
+                                const sTag = `presets.preset${sPresetID}.${obj.common.name}`;
                                 for (const x in data1) {
                                     if (x == obj.common.name) {
                                         this.subscribeStates(sTag);
@@ -253,7 +253,7 @@ class Bluesound extends utils.Adapter {
                                                 this.log.error('Error parsing Preset XML: ' + err);
                                                 return;
                                             }
-                                            const sStateTag = this.namespace + '.control.state';
+                                            const sStateTag = 'control.state';
                                             this.subscribeStates(sStateTag);
                                             this.setState(sStateTag, result.state, true);
                                             this.log.info(`${this.namespace} Preset${preset} Start`);
@@ -278,7 +278,7 @@ class Bluesound extends utils.Adapter {
                                         this.log.error('Error parsing Pause XML: ' + err);
                                         return;
                                     }
-                                    const sStateTag = this.namespace + '.control.state';
+                                    const sStateTag = 'control.state';
                                     this.subscribeStates(sStateTag);
                                     this.setState(sStateTag, result.state, true);
                                     this.log.info(`${this.namespace} Pause`);
@@ -300,7 +300,7 @@ class Bluesound extends utils.Adapter {
                                         this.log.error('Error parsing Stop XML: ' + err);
                                         return;
                                     }
-                                    const sStateTag = this.namespace + '.control.state';
+                                    const sStateTag = 'control.state';
                                     this.subscribeStates(sStateTag);
                                     this.setState(sStateTag, result.state, true);
                                     this.log.info(`${this.namespace} Stop`);
@@ -323,7 +323,7 @@ class Bluesound extends utils.Adapter {
                                         this.log.error('Error parsing Play XML: ' + err);
                                         return;
                                     }
-                                    const sStateTag = this.namespace + '.control.state';
+                                    const sStateTag = 'control.state';
                                     this.subscribeStates(sStateTag);
                                     this.setState(sStateTag, result.state, true);
                                     this.log.info(`${this.namespace} Play`);
@@ -386,9 +386,9 @@ class Bluesound extends utils.Adapter {
 
     async clearPlayerStatus() {
         let i;
-        this.subscribeStates(this.namespace + '.info.title*');
+        this.subscribeStates('info.title*');
         for (i = 1; i < 4; i++) {
-            const sStateTag = this.namespace + `.info.title${i}`;
+            const sStateTag = `info.title${i}`;
             await this.setStateAsync(sStateTag, { val: '', ack: true });
         }
     }
@@ -459,20 +459,20 @@ class Bluesound extends utils.Adapter {
 
                 await Promise.all(promises);
 
-                const sNameTag = this.namespace + '.control.state';
+                const sNameTag = 'control.state';
                 const pStateOld = await this.getStateAsync(sNameTag);
 
                 if (pState != pStateOld.val) {
-                    const sStateTag = this.namespace + '.control.state';
+                    const sStateTag = 'control.state';
                     this.subscribeStates(sStateTag);
                     await this.setStateAsync(sStateTag, { val: pState, ack: true });
                 }
 
                 if (pState == 'stream' || pState == 'play') {
-                    this.subscribeStates(this.namespace + '.info.title*');
+                    this.subscribeStates('info.title*');
 
                     for (i = 1; i < 4; i++) {
-                        const sStateTag = this.namespace + `.info.title${i}`;
+                        const sStateTag = `info.title${i}`;
                         const valOld = await this.getStateAsync(sStateTag);
                         if (valOld.val != title[i]) {
                             await this.setStateAsync(sStateTag, { val: title[i], ack: true });
@@ -480,23 +480,23 @@ class Bluesound extends utils.Adapter {
                         }
                     }
 
-                    let sStateTag = this.namespace + '.info.secs';
+                    let sStateTag = 'info.secs';
                     this.subscribeStates(sStateTag);
                     await this.setStateAsync(sStateTag, { val: parseInt(varSecs), ack: true });
 
-                    sStateTag = this.namespace + '.info.totlen';
+                    sStateTag = 'info.totlen';
                     this.subscribeStates(sStateTag);
                     await this.setStateAsync(sStateTag, { val: parseInt(varTotLen), ack: true });
 
-                    sStateTag = this.namespace + '.info.str_secs';
+                    sStateTag = 'info.str_secs';
                     this.subscribeStates(sStateTag);
                     await this.setStateAsync(sStateTag, { val: strSecs, ack: true });
 
-                    sStateTag = this.namespace + '.info.str_totlen';
+                    sStateTag = 'info.str_totlen';
                     this.subscribeStates(sStateTag);
                     await this.setStateAsync(sStateTag, { val: strTotLen, ack: true });
 
-                    sStateTag = this.namespace + '.info.image';
+                    sStateTag = 'info.image';
                     this.subscribeStates(sStateTag);
                     let valOld = await this.getStateAsync(sStateTag);
 
@@ -505,7 +505,7 @@ class Bluesound extends utils.Adapter {
                         this.log.info('Image changed: ' + imageUrl);
                     }
 
-                    sStateTag = this.namespace + '.info.volume';
+                    sStateTag = 'info.volume';
                     this.subscribeStates(sStateTag);
                     valOld = await this.getStateAsync(sStateTag);
                     if (valOld.val != varVolume) {
@@ -514,19 +514,19 @@ class Bluesound extends utils.Adapter {
                     }
                 } else {
                     for (i = 1; i < 4; i++) {
-                        const sStateTag = this.namespace + `.info.title${i}`;
+                        const sStateTag = `info.title${i}`;
                         await this.setStateAsync(sStateTag, { val: '', ack: true });
                     }
 
-                    let sStateTag = this.namespace + '.info.secs';
+                    let sStateTag = 'info.secs';
                     this.subscribeStates(sStateTag);
                     await this.setStateAsync(sStateTag, { val: 0, ack: true });
 
-                    sStateTag = this.namespace + '.info.totlen';
+                    sStateTag = 'info.totlen';
                     this.subscribeStates(sStateTag);
                     await this.setStateAsync(sStateTag, { val: 0, ack: true });
 
-                    sStateTag = this.namespace + '.info.image';
+                    sStateTag = 'info.image';
                     this.subscribeStates(sStateTag);
                     await this.setStateAsync(sStateTag, { val: '', ack: true });
                 }
