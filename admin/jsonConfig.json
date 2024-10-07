@@ -4,30 +4,36 @@
     "items": {
         "IP": {
             "type": "text",
+            "xs": 12,
             "sm": 12,
             "md": 6,
             "lg": 6,
+            "xl": 6,
             "label": "IP",
             "help": "IP or hostname of Device",
             "newLine": true
         },
         "PollingTime": {
             "type": "number",
+            "xs": 12,
             "sm": 12,
             "md": 6,
             "lg": 6,
+            "xl": 6,
             "label": "Polling Interval",
             "help": "Pollinginterval [sec]",
             "newLine": true
         },
         "TimeOut": {
             "type": "number",
+            "xs": 12,
             "sm": 12,
             "md": 6,
             "lg": 6,
+            "xl": 6,
             "label": "Timeout",
             "help": "Timeout for API calls [sec]",
-            "newLine": true
+            "newLine": false
         }
     }
 }

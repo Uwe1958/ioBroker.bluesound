@@ -467,7 +467,7 @@
                     "zh-cn": "播放"
                 },
                 "type": "boolean",
-                "role": "button.start",
+                "role": "button.play",
                 "read": false,
                 "write": true,
                 "desc": "Plays current audio source"
@@ -493,7 +493,7 @@
             "common": {
                 "name": "Pause",
                 "type": "boolean",
-                "role": "button",
+                "role": "button.pause",
                 "read": false,
                 "write": true,
                 "desc": "Toggles Pause"

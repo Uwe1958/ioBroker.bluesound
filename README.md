@@ -41,6 +41,8 @@ Change Volume (triggered by changing '.control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) Missing sizes added
+-   (Uwe Nagel) State roles reevaluated
 -   (Uwe Nagel) subscribeState calls eliminated
 -   (Uwe Nagel) Instance prefixes in ObjectIds are omitted when calling setState()
 -   (Uwe Nagel) State change now honors ack flag
