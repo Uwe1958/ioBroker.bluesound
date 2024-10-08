@@ -19,18 +19,23 @@ Adapter to control Bluesound devices
 
 The adapter uses API calls in the format: http://--playerAPI--:11000/xxx
 
+A timeout parameter is set by optional parameter 'config.TimeOut' as timeout for the API call. Default value is 2 secs.
+
 At startup the presets are read and added to the 'presets' channel.
 Player model and name are stored in the 'info' channel.
 When player is playing the titles are set in the 'info' channel.
-The player status is polled in the interval set by '.config.pollingtime' and the result is stored in '.control.state' as well as in '.info.\*'.
+
+The player status is polled in the interval set by 'config.pollingtime' and the result is stored in 'control.state' as well as in 'info.\*'.
+
+PollingTime values up to 120 secs are reasonable. The adapter cannot be startet with values larger than 300 secs. Default value is 30 secs.
 
 The following functions are implemented:
 
-Player stop (triggered by setting '.control.stop' to true)  
-Player start (triggered by setting '.control.start' to true)
-Player Pause (triggered by setting '.control.pause' to true, toggle mode)
+Player stop (triggered by setting 'control.stop' to true)  
+Player start (triggered by setting 'control.start' to true)
+Player Pause (triggered by setting 'control.pause' to true, toggle mode)
 Play Presetxxx (triggered by setting '.presets.preset(x).start' to true)
-Change Volume (triggered by changing '.control.volume')
+Change Volume (triggered by changing 'control.volume')
 
 ## Changelog
 
@@ -41,6 +46,7 @@ Change Volume (triggered by changing '.control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) Check values for PollingTime and TimeOut
 -   (Uwe Nagel) Missing sizes added
 -   (Uwe Nagel) State roles reevaluated
 -   (Uwe Nagel) subscribeState calls eliminated

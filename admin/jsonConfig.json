@@ -20,6 +20,7 @@
             "md": 6,
             "lg": 6,
             "xl": 6,
+            "min": 1,
             "label": "Polling Interval",
             "help": "Pollinginterval [sec]",
             "newLine": true
@@ -31,6 +32,7 @@
             "md": 6,
             "lg": 6,
             "xl": 6,
+            "min": 1,
             "label": "Timeout",
             "help": "Timeout for API calls [sec]",
             "newLine": false

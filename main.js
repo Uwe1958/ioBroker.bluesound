@@ -60,10 +60,26 @@ class Bluesound extends utils.Adapter {
         }
 
         const pollingTime = this.config.PollingTime * 1000 || 30000;
-        this.log.info('[Start] PollingTime [msec]: ' + pollingTime);
+        if (pollingTime < 120000) {
+            this.log.info('[Start] PollingTime [msec]: ' + pollingTime);
+        } else if (pollingTime >= 120000 && pollingTime <= 300000) {
+            this.log.warn('[Start] PollingTime set very high! Status update should be scheduled more often!');
+        } else {
+            this.log.error(
+                '[Stop] PollingTime set to an impractical large number! Reasonable numbers are up to 120 secs',
+            );
+            return;
+        }
 
         const timeOUT = this.config.TimeOut * 1000 || 2000;
-        this.log.info('[Start] Timeout [msec]: ' + timeOUT);
+        if (timeOUT < pollingTime / 10) {
+            this.log.info('[Start] Timeout [msec]: ' + timeOUT);
+        } else {
+            this.log.error(
+                '[Stop] TimeOut set to an impractical large number! Should be set to less than PollingTime divide by ten',
+            );
+            return;
+        }
 
         apiClient = axios.create({
             baseURL: `http://${ip}:11000`,
