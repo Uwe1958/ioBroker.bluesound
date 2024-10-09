@@ -13,6 +13,9 @@ const helper = require(`${__dirname}/lib/utils`);
 
 let ip;
 let apiClient;
+let polling;
+let pollingTime;
+
 const axios = require(`axios`);
 const { parseString } = require('xml2js');
 
@@ -59,7 +62,7 @@ class Bluesound extends utils.Adapter {
             return;
         }
 
-        const pollingTime = this.config.PollingTime * 1000 || 30000;
+        pollingTime = this.config.PollingTime * 1000 || 30000;
         if (pollingTime < 120000) {
             this.log.info('[Start] PollingTime [msec]: ' + pollingTime);
         } else if (pollingTime >= 120000 && pollingTime <= 300000) {
@@ -200,8 +203,7 @@ class Bluesound extends utils.Adapter {
         this.readPlayerStatus();
 
         // Polling
-
-        this.startPolling(pollingTime);
+        this.startPolling();
 
         // Set the connection indicator to true on succesful startup
         this.setState('info.connection', true, true);
@@ -222,10 +224,10 @@ class Bluesound extends utils.Adapter {
     onUnload(callback) {
         try {
             // Here you must clear all timeouts or intervals that may still be active
-            // clearTimeout(timeout1);
+            clearTimeout(polling);
             // clearTimeout(timeout2);
             // ...
-            // clearInterval(interval1);
+            //            clearInterval(polling);
 
             // @ts-ignore
             callback();
@@ -380,13 +382,11 @@ class Bluesound extends utils.Adapter {
         return res;
     }
 
-    startPolling(pTime) {
-        let polling;
-        if (!polling) {
-            polling = this.setInterval(() => {
-                this.readPlayerStatus();
-            }, pTime);
-        }
+    startPolling() {
+        polling = this.setTimeout(() => {
+            this.readPlayerStatus();
+            this.startPolling();
+        }, pollingTime);
     }
 
     async clearPlayerStatus() {

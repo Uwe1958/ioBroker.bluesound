@@ -46,6 +46,7 @@ Change Volume (triggered by changing 'control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) setTimeout used instead of setInterval, clearTimeout added
 -   (Uwe Nagel) Check values for PollingTime and TimeOut
 -   (Uwe Nagel) Missing sizes added
 -   (Uwe Nagel) State roles reevaluated
