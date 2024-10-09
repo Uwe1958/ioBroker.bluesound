@@ -162,7 +162,7 @@ class Bluesound extends utils.Adapter {
                         return;
                     }
                     for (const objPreset of result.presets.preset) {
-                        const sPresetID = objPreset.id;
+                        const sPresetID = objPreset.id.replace(this.FORBIDDEN_CHARS, '_');
                         const sPresetName = objPreset.name;
                         const sPresetImage = objPreset.image;
                         const data1 = {
