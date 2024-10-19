@@ -505,6 +505,8 @@ class Bluesound extends utils.Adapter {
                     valOld = await this.getStateAsync(sStateTag);
                     if (valOld.val != varVolume) {
                         await this.setStateAsync(sStateTag, { val: parseInt(varVolume), ack: true });
+                        sStateTag = 'control.volume';
+                        await this.setStateAsync(sStateTag, { val: parseInt(varVolume), ack: true });
                         this.log.info('Volume changed: ' + varVolume);
                     }
                 } else {

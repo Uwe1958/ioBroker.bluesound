@@ -43,6 +43,11 @@ Change Volume (triggered by changing 'control.volume')
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+-   (Uwe Nagel) Corrected logic for remote volume changes
+
 ### 1.1.0 (2024-10-19)
 
 -   (Uwe Nagel) Potentially invalid characters are replaced before creating an object
