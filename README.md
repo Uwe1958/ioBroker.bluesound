@@ -46,6 +46,8 @@ Change Volume (triggered by changing 'control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) Add control.key and logic to react on changes
+-   (Uwe Nagel) Add info.list and call to fill info.list
 -   (Uwe Nagel) Corrected logic for remote volume changes
 
 ### 1.1.0 (2024-10-19)
