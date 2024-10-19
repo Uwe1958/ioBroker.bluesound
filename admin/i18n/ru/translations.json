@@ -22,5 +22,7 @@
     "Current player state": "Текущее состояние игрока",
     "IP or hostname of Device": "IP или имя хоста устройства",
     "Pollinginterval [msec]": "Интервал опроса [мс]",
-    "Timeout for API calls [msec]": "Таймаут для вызовов API [мс]"
+    "Timeout for API calls [msec]": "Таймаут для вызовов API [мс]",
+    "Pollinginterval [sec]": "Интервал опроса [сек]",
+    "Timeout for API calls [sec]": "Таймаут для вызовов API [сек]"
 }
