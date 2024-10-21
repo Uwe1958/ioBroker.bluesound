@@ -115,7 +115,16 @@ class Bluesound extends utils.Adapter {
 
         // Get Initial Browse Data
 
-        this.readBrowseData('');
+        let templist = await this.readBrowseData(''); // Top level menu
+
+        // Entries Library and Bluetooth are eliminated (Library call exceed timeout regularly)
+
+        let tempJSON = JSON.stringify(
+            JSON.parse(templist).filter(function (item) {
+                return item.text != 'Library' && item.text != 'Bluetooth';
+            }),
+        );
+        this.setState('info.list', tempJSON, true);
 
         // Initialize Control
 
@@ -357,7 +366,11 @@ class Bluesound extends utils.Adapter {
                         break;
                     case 'key':
                         this.log.info(`key=${state.val}`);
-                        this.readBrowseData(`${state.val}`);
+                        let res = new Promise((resolve) => {
+                            var ret = this.readBrowseData(`${state.val}`);
+                            resolve(ret);
+                        });
+                        res.then((val) => this.setState('info.list', val, true));
                         break;
                     default:
                     //                        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
@@ -542,28 +555,28 @@ class Bluesound extends utils.Adapter {
     }
 
     async readBrowseData(key) {
+        let res = -1;
         var browseKey;
-        if (key === '') {
-            browseKey = key;
-        } else {
-            browseKey = '?&key=' + key;
-        }
+
+        if (key === '') browseKey = key;
+        else browseKey = '?&key=' + key;
+
         try {
             const response = await apiClient.get('/Browse' + browseKey);
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
                     if (err) {
                         this.log('Error parsing Browse XML:' + err);
-                        return;
                     }
-                    let sInfoTag = this.namespace + '.info.list';
-                    this.setState(sInfoTag, JSON.stringify(result.browse.item), true);
+                    res = JSON.stringify(result.browse.item);
                 });
             } else {
                 this.log.error('Could not retrieve Browse data, Status code ' + response.status);
             }
+            return res;
         } catch (e) {
             console.error('Could not retrieve Browse data: ' + e);
+            return res;
         }
     }
 }
