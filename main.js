@@ -366,11 +366,22 @@ class Bluesound extends utils.Adapter {
                         break;
                     case 'key':
                         this.log.info(`key=${state.val}`);
+                        var key;
+                        try {
+                            key = JSON.parse(`${state.val}`)['browseKey'];
+                            //                            console.info('OldKey: ' + JSON.parse(`${state.valOld}`)['browseKey']);
+                        } catch (e) {
+                            key = state.val;
+                        }
+                        this.log.info('browseKey: ' + key);
                         let res = new Promise((resolve) => {
-                            var ret = this.readBrowseData(`${state.val}`);
+                            var ret = this.readBrowseData(key);
                             resolve(ret);
                         });
-                        res.then((val) => this.setState('info.list', val, true));
+                        res.then((val) => {
+                            console.info('List: ' + val);
+                            this.setState('info.list', val, true);
+                        });
                         break;
                     default:
                     //                        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
@@ -555,20 +566,104 @@ class Bluesound extends utils.Adapter {
     }
 
     async readBrowseData(key) {
-        let res = -1;
+        let res = JSON.stringify(-1);
         var browseKey;
 
-        if (key === '') browseKey = key;
-        else browseKey = '?&key=' + key;
+        if (key === '') browseKey = '/Browse';
+        else if (key.substring(0, 1) === '/') {
+            browseKey = key;
+        } else browseKey = '/Browse?&key=' + key;
+        console.log('Browsekey: ' + browseKey);
 
         try {
-            const response = await apiClient.get('/Browse' + browseKey);
+            const response = await apiClient.get(browseKey);
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
                     if (err) {
                         this.log('Error parsing Browse XML:' + err);
                     }
-                    res = JSON.stringify(result.browse.item);
+                    this.setForeignState('0_userdata.0.browseKey', JSON.stringify(result), true);
+                    const switchKey = Object.keys(result).toString();
+                    console.log('Root: ' + switchKey);
+                    switch (switchKey) {
+                        case 'browse':
+                            var tempRes = JSON.stringify(result.browse.item);
+                            if (tempRes.substring(0, 1) === '[') {
+                                res = tempRes;
+                            } else {
+                                res = '[' + tempRes + ']';
+                            }
+                            break;
+                        case 'playlists':
+                            var myArr = [];
+                            for (let i in result.playlists.name) {
+                                let entry = {
+                                    text: `${result.playlists.name[i]._}`,
+                                    browseKey:
+                                        '/Add?service=' +
+                                        `${result.playlists.service}` +
+                                        '&playlistid=' +
+                                        `${result.playlists.name[i].id}` +
+                                        '&playnow=1',
+                                };
+                                myArr.push(entry);
+                            }
+                            console.log('Arr: ' + myArr);
+                            res = JSON.stringify(myArr);
+                            break;
+                        case 'radiotime':
+                            var myArr = [];
+                            for (let i in result.radiotime.item) {
+                                let entry = {
+                                    text: `${result.radiotime.item[i].text}`,
+                                };
+                                myArr.push(entry);
+                            }
+                            res = JSON.stringify(myArr);
+                            break;
+                        case 'addsong':
+                            var myArr = [];
+                            let entry = {
+                                text: 'Back',
+                            };
+                            myArr.push(entry);
+                            res = JSON.stringify(myArr);
+                            break;
+                        case 'albums':
+                            var myArr = [];
+                            for (var i = 0; i < result.albums.album.length; i++) {
+                                let entry = {
+                                    text: result.albums.album[i].title,
+                                    browseKey:
+                                        '/Add?service=' +
+                                        result.albums.service +
+                                        '&albumid=' +
+                                        result.albums.album[i].albumid +
+                                        '&playnow=1',
+                                };
+                                myArr.push(entry);
+                            }
+                            res = JSON.stringify(myArr);
+                            break;
+                        case 'artists':
+                            var myArr = [];
+                            for (var i = 0; i < result.artists.art.length; i++) {
+                                let entry = {
+                                    text: result.artists.art[i]._,
+                                    browseKey:
+                                        '/Add?service=' +
+                                        result.artists.service +
+                                        '&artistid=' +
+                                        result.artists.art[i].artistid +
+                                        '&playnow=1',
+                                };
+                                myArr.push(entry);
+                            }
+                            res = JSON.stringify(myArr);
+                            break;
+                        default:
+                            console.log('Unknown root: ' + Object.keys(result));
+                    }
                 });
             } else {
                 this.log.error('Could not retrieve Browse data, Status code ' + response.status);
