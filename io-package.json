@@ -95,13 +95,8 @@
             "uk": "Адаптер для управління пристроями Bluesound",
             "zh-cn": "用于控制 Bluesound 设备的适配器"
         },
-        "authors": [
-            "Uwe Nagel <uwenagel@kabelmail.de>"
-        ],
-        "keywords": [
-            "multimedia",
-            "control"
-        ],
+        "authors": ["Uwe Nagel <uwenagel@kabelmail.de>"],
+        "keywords": ["multimedia", "control"],
         "licenseInformation": {
             "type": "free",
             "license": "MIT"
@@ -584,17 +579,17 @@
             "native": {}
         },
         {
-            "_id": "control.key",
+            "_id": "control.command",
             "type": "state",
             "common": {
                 "name": {
-                    "en": "BrowseKey"
+                    "en": "Command"
                 },
                 "type": "string",
                 "role": "text",
                 "read": true,
                 "write": true,
-                "desc": "Object for browse commands"
+                "desc": "Object for player commands"
             },
             "native": {}
         }

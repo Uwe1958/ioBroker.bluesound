@@ -15,6 +15,7 @@ let ip;
 let apiClient;
 let polling;
 let pollingTime;
+var commands = [];
 
 const axios = require(`axios`);
 const { parseString } = require('xml2js');
@@ -112,19 +113,9 @@ class Bluesound extends utils.Adapter {
         } catch (e) {
             console.error('Could not retrieve SyncStatus data: ' + e);
         }
-
         // Get Initial Browse Data
 
-        let templist = await this.readBrowseData(''); // Top level menu
-
-        // Entries Library and Bluetooth are eliminated (Library call exceed timeout regularly)
-
-        let tempJSON = JSON.stringify(
-            JSON.parse(templist).filter(function (item) {
-                return item.text != 'Library' && item.text != 'Bluetooth';
-            }),
-        );
-        this.setState('info.list', tempJSON, true);
+        await this.initMenu();
 
         // Initialize Control
 
@@ -364,7 +355,7 @@ class Bluesound extends utils.Adapter {
                                 this.log.error('Could not set volume, Status code ' + err);
                             });
                         break;
-                    case 'key':
+                    case 'command':
                         this.log.info(`key=${state.val}`);
                         var key;
                         try {
@@ -373,15 +364,43 @@ class Bluesound extends utils.Adapter {
                         } catch (e) {
                             key = state.val;
                         }
-                        this.log.info('browseKey: ' + key);
-                        let res = new Promise((resolve) => {
-                            var ret = this.readBrowseData(key);
-                            resolve(ret);
-                        });
-                        res.then((val) => {
-                            console.info('List: ' + val);
-                            this.setState('info.list', val, true);
-                        });
+                        if (key === 'HOME' || (key === 'BACK' && commands.length < 2)) {
+                            commands.length = 0;
+                            this.log.info('Stack: ' + commands.length);
+                            let a = new Promise((resolve) => {
+                                var ret = this.initMenu();
+                                resolve(ret);
+                            });
+                            a.then((val) => {
+                                console.info('Menu initialized');
+                            });
+                        } else if (key === 'BACK') {
+                            //                            commands.pop();
+                            commands.pop();
+                            var newKey = commands[commands.length - 1];
+                            this.log.info('newKey: ' + newKey);
+                            this.log.info('Stack: ' + commands.length);
+                            let res = new Promise((resolve) => {
+                                var ret = this.readBrowseData(newKey);
+                                resolve(ret);
+                            });
+                            res.then((val) => {
+                                console.info('List: ' + val);
+                                this.setState('info.list', val, true);
+                            });
+                        } else {
+                            commands.push(key);
+                            this.log.info('browseKey: ' + key);
+                            this.log.info('Stack: ' + commands.length);
+                            let res = new Promise((resolve) => {
+                                var ret = this.readBrowseData(key);
+                                resolve(ret);
+                            });
+                            res.then((val) => {
+                                console.info('List: ' + val);
+                                this.setState('info.list', val, true);
+                            });
+                        }
                         break;
                     default:
                     //                        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
@@ -624,7 +643,7 @@ class Bluesound extends utils.Adapter {
                         case 'addsong':
                             var myArr = [];
                             let entry = {
-                                text: 'Back',
+                                text: 'Playing',
                             };
                             myArr.push(entry);
                             res = JSON.stringify(myArr);
@@ -673,6 +692,18 @@ class Bluesound extends utils.Adapter {
             console.error('Could not retrieve Browse data: ' + e);
             return res;
         }
+    }
+    async initMenu() {
+        let templist = await this.readBrowseData('/Browse'); // Top level menu
+
+        // Entries Library and Bluetooth are eliminated (Library call exceed timeout regularly)
+
+        let tempJSON = JSON.stringify(
+            JSON.parse(templist).filter(function (item) {
+                return item.text != 'Library' && item.text != 'Bluetooth';
+            }),
+        );
+        this.setState('info.list', tempJSON, true);
     }
 }
 
