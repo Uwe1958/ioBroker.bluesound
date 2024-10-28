@@ -16,6 +16,7 @@ let apiClient;
 let polling;
 let pollingTime;
 var commands = [];
+var entry;
 
 const axios = require(`axios`);
 const { parseString } = require('xml2js');
@@ -111,7 +112,7 @@ class Bluesound extends utils.Adapter {
                 this.log.error('Could not retrieve SyncStatus data, Status code ' + response.status);
             }
         } catch (e) {
-            console.error('Could not retrieve SyncStatus data: ' + e);
+            this.log.error('Could not retrieve SyncStatus data: ' + e);
         }
         // Get Initial Browse Data
 
@@ -139,7 +140,7 @@ class Bluesound extends utils.Adapter {
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
                     if (err) {
-                        console.log('Error parsing Volume XML:' + err);
+                        this.log.error('Error parsing Volume XML:' + err);
                         return;
                     }
                     sNameTag = 'control.volume';
@@ -360,7 +361,6 @@ class Bluesound extends utils.Adapter {
                         var key;
                         try {
                             key = JSON.parse(`${state.val}`)['browseKey'];
-                            //                            console.info('OldKey: ' + JSON.parse(`${state.valOld}`)['browseKey']);
                         } catch (e) {
                             key = state.val;
                         }
@@ -372,32 +372,28 @@ class Bluesound extends utils.Adapter {
                                 resolve(ret);
                             });
                             a.then((val) => {
-                                console.info('Menu initialized');
+                                this.log.debug('Menu initialized');
                             });
                         } else if (key === 'BACK') {
                             //                            commands.pop();
                             commands.pop();
                             var newKey = commands[commands.length - 1];
-                            this.log.info('newKey: ' + newKey);
-                            this.log.info('Stack: ' + commands.length);
                             let res = new Promise((resolve) => {
                                 var ret = this.readBrowseData(newKey);
                                 resolve(ret);
                             });
                             res.then((val) => {
-                                console.info('List: ' + val);
+                                this.log.debug('List: ' + val);
                                 this.setState('info.list', val, true);
                             });
                         } else {
                             commands.push(key);
-                            this.log.info('browseKey: ' + key);
-                            this.log.info('Stack: ' + commands.length);
                             let res = new Promise((resolve) => {
                                 var ret = this.readBrowseData(key);
                                 resolve(ret);
                             });
                             res.then((val) => {
-                                console.info('List: ' + val);
+                                this.log.debug('List: ' + val);
                                 this.setState('info.list', val, true);
                             });
                         }
@@ -592,7 +588,7 @@ class Bluesound extends utils.Adapter {
         else if (key.substring(0, 1) === '/') {
             browseKey = key;
         } else browseKey = '/Browse?&key=' + key;
-        console.log('Browsekey: ' + browseKey);
+        this.log.debug('Browsekey: ' + browseKey);
 
         try {
             const response = await apiClient.get(browseKey);
@@ -603,20 +599,49 @@ class Bluesound extends utils.Adapter {
                     }
                     this.setForeignState('0_userdata.0.browseKey', JSON.stringify(result), true);
                     const switchKey = Object.keys(result).toString();
-                    console.log('Root: ' + switchKey);
+                    this.log.debug('Root: ' + switchKey);
                     switch (switchKey) {
                         case 'browse':
-                            var tempRes = JSON.stringify(result.browse.item);
-                            if (tempRes.substring(0, 1) === '[') {
-                                res = tempRes;
+                            var myArr = [];
+                            entry = {
+                                text: '...',
+                                browseKey: 'BACK',
+                            };
+                            var myTempArr = [];
+                            if (result.browse.type === 'menu') {
+                                if (JSON.stringify(result.browse.item).substring(0, 1) != '[') {
+                                    myTempArr.push(result.browse.item);
+                                } else myTempArr = result.browse.item;
+                                if (myTempArr[0].browseKey != 'playlists') {
+                                    myArr.push(entry);
+                                }
+                                for (let i in myTempArr) {
+                                    entry = {
+                                        text: myTempArr[i].text,
+                                        browseKey: myTempArr[i].browseKey,
+                                    };
+                                    myArr.push(entry);
+                                }
                             } else {
-                                res = '[' + tempRes + ']';
+                                for (let i in result.browse.item) {
+                                    entry = {
+                                        text: result.browse.item[i].text,
+                                        browseKey: result.browse.item[i].playURL + '&playnow=1',
+                                    };
+                                    myArr.push(entry);
+                                }
                             }
+                            res = JSON.stringify(myArr);
                             break;
                         case 'playlists':
                             var myArr = [];
+                            entry = {
+                                text: '...',
+                                browseKey: 'BACK',
+                            };
+                            myArr.push(entry);
                             for (let i in result.playlists.name) {
-                                let entry = {
+                                entry = {
                                     text: `${result.playlists.name[i]._}`,
                                     browseKey:
                                         '/Add?service=' +
@@ -627,14 +652,42 @@ class Bluesound extends utils.Adapter {
                                 };
                                 myArr.push(entry);
                             }
-                            console.log('Arr: ' + myArr);
+                            this.log.debug('Arr: ' + myArr);
                             res = JSON.stringify(myArr);
                             break;
                         case 'radiotime':
                             var myArr = [];
-                            for (let i in result.radiotime.item) {
-                                let entry = {
-                                    text: `${result.radiotime.item[i].text}`,
+                            if ('radiotime.item' in result) {
+                                entry = {
+                                    text: '...',
+                                    browseKey: 'BACK',
+                                };
+                                myArr.push(entry);
+                                for (var i = 0; i < result.radiotime.item.length; i++) {
+                                    switch (result.radiotime.service) {
+                                        case 'Deezer':
+                                            entry = {
+                                                text: result.radiotime.item[i].text,
+                                                browseKey:
+                                                    '/Play?service=' +
+                                                    result.radiotime.service +
+                                                    '&url=' +
+                                                    result.radiotime.item[i].URL +
+                                                    '&preset_id=' +
+                                                    result.radiotime.item[i].preset_id,
+                                            };
+                                            break;
+                                        default:
+                                            entry = {
+                                                text: `${result.radiotime.item[i].text}`,
+                                            };
+                                    }
+                                    myArr.push(entry);
+                                }
+                            } else {
+                                entry = {
+                                    text: 'empty ...',
+                                    browseKey: 'BACK',
                                 };
                                 myArr.push(entry);
                             }
@@ -642,16 +695,22 @@ class Bluesound extends utils.Adapter {
                             break;
                         case 'addsong':
                             var myArr = [];
-                            let entry = {
-                                text: 'Playing',
+                            entry = {
+                                text: 'playing ...',
+                                browseKey: 'BACK',
                             };
                             myArr.push(entry);
                             res = JSON.stringify(myArr);
                             break;
                         case 'albums':
                             var myArr = [];
+                            entry = {
+                                text: '...',
+                                browseKey: 'BACK',
+                            };
+                            myArr.push(entry);
                             for (var i = 0; i < result.albums.album.length; i++) {
-                                let entry = {
+                                entry = {
                                     text: result.albums.album[i].title,
                                     browseKey:
                                         '/Add?service=' +
@@ -666,8 +725,13 @@ class Bluesound extends utils.Adapter {
                             break;
                         case 'artists':
                             var myArr = [];
+                            entry = {
+                                text: '...',
+                                browseKey: 'BACK',
+                            };
+                            myArr.push(entry);
                             for (var i = 0; i < result.artists.art.length; i++) {
-                                let entry = {
+                                entry = {
                                     text: result.artists.art[i]._,
                                     browseKey:
                                         '/Add?service=' +
@@ -680,8 +744,38 @@ class Bluesound extends utils.Adapter {
                             }
                             res = JSON.stringify(myArr);
                             break;
+                        case 'songs':
+                            var myArr = [];
+                            entry = {
+                                text: '...',
+                                browseKey: 'BACK',
+                            };
+                            myArr.push(entry);
+                            console.log('hier');
+                            for (let i in result.songs.song) {
+                                entry = {
+                                    text: result.songs.song[i].title,
+                                    browseKey:
+                                        '/Add?service=' +
+                                        result.songs.service +
+                                        '&file=' +
+                                        result.songs.song[i].fn +
+                                        '&playnow=1',
+                                };
+                                myArr.push(entry);
+                            }
+                            res = JSON.stringify(myArr);
+                            break;
+                        case 'state':
+                            var myArr = [];
+                            entry = {
+                                text: ' playing ...',
+                                browseKey: 'BACK',
+                            };
+                            myArr.push(entry);
+                            res = JSON.stringify(myArr);
                         default:
-                            console.log('Unknown root: ' + Object.keys(result));
+                            this.log.warn('Unknown root: ' + Object.keys(result));
                     }
                 });
             } else {
@@ -689,7 +783,7 @@ class Bluesound extends utils.Adapter {
             }
             return res;
         } catch (e) {
-            console.error('Could not retrieve Browse data: ' + e);
+            this.log.error('Could not retrieve Browse data: ' + e);
             return res;
         }
     }

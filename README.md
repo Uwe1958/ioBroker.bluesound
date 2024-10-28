@@ -46,6 +46,8 @@ Change Volume (triggered by changing 'control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) Processing of more commands added
+-   (Uwe Nagel) BACK command added to top of all menu lists
 -   (Uwe Nagel) Command stack introduced, commands 'HOME' and 'BACK' added
 -   (Uwe Nagel) Info.key renamed to info.command
 -   (Uwe Nagel) Start handling of different results (albums, playlists, artists)
