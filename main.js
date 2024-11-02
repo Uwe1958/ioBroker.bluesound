@@ -608,56 +608,95 @@ class Bluesound extends utils.Adapter {
                                 browseKey: 'BACK',
                             };
                             var myTempArr = [];
-                            if (result.browse.type === 'menu') {
-                                if (JSON.stringify(result.browse.item).substring(0, 1) != '[') {
-                                    myTempArr.push(result.browse.item);
-                                } else myTempArr = result.browse.item;
-                                if (myTempArr[0].browseKey != 'playlists') {
+                            switch (result.browse.type) {
+                                case 'menu':
+                                case 'genres':
+                                    if (JSON.stringify(result.browse.item).substring(0, 1) != '[') {
+                                        myTempArr.push(result.browse.item);
+                                    } else myTempArr = result.browse.item;
+                                    if (myTempArr[0].browseKey != 'playlists') {
+                                        myArr.push(entry);
+                                    }
+                                    for (let i in myTempArr) {
+                                        entry = {
+                                            text: myTempArr[i].text,
+                                            browseKey: myTempArr[i].browseKey,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                    break;
+                                case 'items':
                                     myArr.push(entry);
-                                }
-                                for (let i in myTempArr) {
-                                    entry = {
-                                        text: myTempArr[i].text,
-                                        browseKey: myTempArr[i].browseKey,
-                                    };
+                                    if ('category' in result.browse) {
+                                        for (let i in result.browse.category) {
+                                            entry = {
+                                                text: result.browse.category[i].text,
+                                            };
+                                            myArr.push(entry);
+                                            for (let j in result.browse.category[i].item) {
+                                                entry = {
+                                                    text: result.browse.category[i].item[j].text,
+                                                    browseKey: result.browse.category[i].item[j].playURL,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                        }
+                                    } else {
+                                        for (let j in result.browse.item) {
+                                            entry = {
+                                                text: result.browse.item[j].text,
+                                                browseKey: result.browse.item[j].playURL,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    }
+
+                                    break;
+                                default:
                                     myArr.push(entry);
-                                }
-                            } else {
-                                for (let i in result.browse.item) {
-                                    entry = {
-                                        text: result.browse.item[i].text,
-                                        browseKey: result.browse.item[i].playURL + '&playnow=1',
-                                    };
-                                    myArr.push(entry);
-                                }
+                                    console.log('hier');
+                                    for (let i in result.browse.item) {
+                                        entry = {
+                                            text: result.browse.item[i].text,
+                                            browseKey: result.browse.item[i].playURL + '&playnow=1',
+                                        };
+                                        myArr.push(entry);
+                                    }
                             }
                             res = JSON.stringify(myArr);
                             break;
                         case 'playlists':
                             var myArr = [];
-                            entry = {
-                                text: '...',
-                                browseKey: 'BACK',
-                            };
-                            myArr.push(entry);
-                            for (let i in result.playlists.name) {
+                            if ('name' in result.playlists) {
                                 entry = {
-                                    text: `${result.playlists.name[i]._}`,
-                                    browseKey:
-                                        '/Add?service=' +
-                                        `${result.playlists.service}` +
-                                        '&playlistid=' +
-                                        `${result.playlists.name[i].id}` +
-                                        '&playnow=1',
+                                    text: '...',
+                                    browseKey: 'BACK',
+                                };
+                                myArr.push(entry);
+                                for (let i in result.playlists.name) {
+                                    entry = {
+                                        text: `${result.playlists.name[i]._}`,
+                                        browseKey:
+                                            '/Add?service=' +
+                                            `${result.playlists.service}` +
+                                            '&playlistid=' +
+                                            `${result.playlists.name[i].id}` +
+                                            '&playnow=1',
+                                    };
+                                    myArr.push(entry);
+                                }
+                            } else {
+                                entry = {
+                                    text: 'empty ...',
+                                    browseKey: 'BACK',
                                 };
                                 myArr.push(entry);
                             }
-                            this.log.debug('Arr: ' + myArr);
                             res = JSON.stringify(myArr);
                             break;
                         case 'radiotime':
                             var myArr = [];
-                            if ('radiotime.item' in result) {
+                            if ('item' in result.radiotime) {
                                 entry = {
                                     text: '...',
                                     browseKey: 'BACK',
@@ -725,20 +764,28 @@ class Bluesound extends utils.Adapter {
                             break;
                         case 'artists':
                             var myArr = [];
-                            entry = {
-                                text: '...',
-                                browseKey: 'BACK',
-                            };
-                            myArr.push(entry);
-                            for (var i = 0; i < result.artists.art.length; i++) {
+                            if ('art' in result.artists) {
                                 entry = {
-                                    text: result.artists.art[i]._,
-                                    browseKey:
-                                        '/Add?service=' +
-                                        result.artists.service +
-                                        '&artistid=' +
-                                        result.artists.art[i].artistid +
-                                        '&playnow=1',
+                                    text: '...',
+                                    browseKey: 'BACK',
+                                };
+                                myArr.push(entry);
+                                for (var i = 0; i < result.artists.art.length; i++) {
+                                    entry = {
+                                        text: result.artists.art[i]._,
+                                        browseKey:
+                                            '/Add?service=' +
+                                            result.artists.service +
+                                            '&artistid=' +
+                                            result.artists.art[i].artistid +
+                                            '&playnow=1',
+                                    };
+                                    myArr.push(entry);
+                                }
+                            } else {
+                                entry = {
+                                    text: 'empty...',
+                                    browseKey: 'BACK',
                                 };
                                 myArr.push(entry);
                             }
@@ -746,27 +793,48 @@ class Bluesound extends utils.Adapter {
                             break;
                         case 'songs':
                             var myArr = [];
-                            entry = {
-                                text: '...',
-                                browseKey: 'BACK',
-                            };
-                            myArr.push(entry);
-                            console.log('hier');
-                            for (let i in result.songs.song) {
+                            if ('song' in result.songs) {
+                                if (Array.isArray(result.songs.song)) {
+                                    entry = {
+                                        text: '...',
+                                        browseKey: 'BACK',
+                                    };
+                                    myArr.push(entry);
+                                    for (var i = 0; i < result.songs.song.length; i++) {
+                                        entry = {
+                                            text: result.songs.song[i].title,
+                                            browseKey:
+                                                '/Add?service=' +
+                                                result.songs.service +
+                                                '&file=' +
+                                                result.songs.song[i].fn +
+                                                '&playnow=1',
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                } else {
+                                    entry = {
+                                        text: 'playing...',
+                                        browseKey:
+                                            '/Add?service=' +
+                                            result.songs.service +
+                                            '&file=' +
+                                            result.songs.song.fn +
+                                            '&playnow=1',
+                                    };
+                                    myArr.push(entry);
+                                }
+                            } else {
                                 entry = {
-                                    text: result.songs.song[i].title,
-                                    browseKey:
-                                        '/Add?service=' +
-                                        result.songs.service +
-                                        '&file=' +
-                                        result.songs.song[i].fn +
-                                        '&playnow=1',
+                                    text: 'empty...',
+                                    browseKey: 'BACK',
                                 };
                                 myArr.push(entry);
                             }
                             res = JSON.stringify(myArr);
                             break;
                         case 'state':
+                        case 'loaded':
                             var myArr = [];
                             entry = {
                                 text: ' playing ...',

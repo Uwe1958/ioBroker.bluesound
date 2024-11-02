@@ -46,6 +46,7 @@ Change Volume (triggered by changing 'control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) Switch to adapter-core3.2.2
 -   (Uwe Nagel) Processing of more commands added
 -   (Uwe Nagel) BACK command added to top of all menu lists
 -   (Uwe Nagel) Command stack introduced, commands 'HOME' and 'BACK' added
