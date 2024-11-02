@@ -46,6 +46,7 @@ Change Volume (triggered by changing 'control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) Switch to adapter-core3.2.2
 -   (Uwe Nagel) Corrected logic for remote volume changes
 
 ### 1.1.0 (2024-10-19)
