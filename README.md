@@ -8,6 +8,7 @@
 ![Current version in stable repository](https://iobroker.live/badges/bluesound-stable.svg)
 
 [![NPM](https://nodei.co/npm/iobroker.bluesound.png?downloads=true)](https://nodei.co/npm/iobroker.bluesound/)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/bluesound/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 
 **Tests:** ![Test and Release](https://github.com/Uwe1958/ioBroker.bluesound/workflows/Test%20and%20Release/badge.svg)
 
@@ -46,6 +47,8 @@ Change Volume (triggered by changing 'control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) Added Weblate translation badge
+-   (Uwe Nagel) Bump cross-spawn from 7.0.3 to 7.0.6
 -   (Uwe Nagel) Switch to adapter-core3.2.2
 -   (Uwe Nagel) Corrected logic for remote volume changes
 
