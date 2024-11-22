@@ -2,7 +2,7 @@
     "Current player state": "Aktueller Spielerstatus",
     "Device control": "Gerätesteuerung",
     "Device or service connected": "Gerät oder Dienst verbunden",
-    "IP": "IP",
+    "IP": "IP-Adresse",
     "IP or hostname of Device": "IP oder Hostname des Geräts",
     "Information": "Information",
     "Length of current title": "Länge des aktuellen Titels",
@@ -23,6 +23,6 @@
     "Title3 from player": "Titel3 vom Spieler",
     "Toggles Pause": "Schaltet Pause um",
     "Toggles Stop": "Schaltet Stopp um",
-    "Volume": "Lautstärke",
+    "Volume": "Volumen",
     "bluesound adapter settings": "Adaptereinstellungen für bluesound"
 }
