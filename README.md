@@ -44,8 +44,7 @@ The following functions are implemented:
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.1.1 (2024-12-01)
 
 -   (Uwe Nagel) README.md cosmetics
 -   (Uwe Nagel) Added Weblate translation badge
