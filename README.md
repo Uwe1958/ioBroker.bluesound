@@ -32,11 +32,11 @@ PollingTime values up to 120 secs are reasonable. The adapter cannot be startet 
 
 The following functions are implemented:
 
-Player stop (triggered by setting 'control.stop' to true)  
-Player start (triggered by setting 'control.start' to true)
-Player Pause (triggered by setting 'control.pause' to true, toggle mode)
-Play Presetxxx (triggered by setting '.presets.preset(x).start' to true)
-Change Volume (triggered by changing 'control.volume')
+-   Player stop (triggered by setting 'control.stop' to true)
+-   Player start (triggered by setting 'control.start' to true)
+-   Player Pause (triggered by setting 'control.pause' to true, toggle mode)
+-   Play Presetxxx (triggered by setting '.presets.preset(x).start' to true)
+-   Change Volume (triggered by changing 'control.volume')
 
 ## Changelog
 
@@ -47,6 +47,7 @@ Change Volume (triggered by changing 'control.volume')
 
 ### **WORK IN PROGRESS**
 
+-   (Uwe Nagel) README.md cosmetics
 -   (Uwe Nagel) Added Weblate translation badge
 -   (Uwe Nagel) Bump cross-spawn from 7.0.3 to 7.0.6
 -   (Uwe Nagel) Switch to adapter-core3.2.2
