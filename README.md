@@ -8,6 +8,7 @@
 ![Current version in stable repository](https://iobroker.live/badges/bluesound-stable.svg)
 
 [![NPM](https://nodei.co/npm/iobroker.bluesound.png?downloads=true)](https://nodei.co/npm/iobroker.bluesound/)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/bluesound/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 
 **Tests:** ![Test and Release](https://github.com/Uwe1958/ioBroker.bluesound/workflows/Test%20and%20Release/badge.svg)
 
@@ -31,11 +32,11 @@ PollingTime values up to 120 secs are reasonable. The adapter cannot be startet 
 
 The following functions are implemented:
 
-Player stop (triggered by setting 'control.stop' to true)  
-Player start (triggered by setting 'control.start' to true)
-Player Pause (triggered by setting 'control.pause' to true, toggle mode)
-Play Presetxxx (triggered by setting '.presets.preset(x).start' to true)
-Change Volume (triggered by changing 'control.volume')
+- Player stop (triggered by setting 'control.stop' to true)
+- Player start (triggered by setting 'control.start' to true)
+- Player Pause (triggered by setting 'control.pause' to true, toggle mode)
+- Play Presetxxx (triggered by setting '.presets.preset(x).start' to true)
+- Change Volume (triggered by changing 'control.volume')
 
 ## Changelog
 
@@ -44,52 +45,55 @@ Change Volume (triggered by changing 'control.volume')
     ### **WORK IN PROGRESS**
 -->
 
-### **WORK IN PROGRESS**
+### 1.1.1 (2024-12-01)
 
--   (Uwe Nagel) Switch to adapter-core3.2.2
--   (Uwe Nagel) Processing of more commands added
--   (Uwe Nagel) BACK command added to top of all menu lists
--   (Uwe Nagel) Command stack introduced, commands 'HOME' and 'BACK' added
--   (Uwe Nagel) Info.key renamed to info.command
--   (Uwe Nagel) Start handling of different results (albums, playlists, artists)
--   (Uwe Nagel) Correct logic to react on changes in control.key
--   (Uwe Nagel) Add control.key and logic to react on changes
--   (Uwe Nagel) Add info.list and call to fill info.list
--   (Uwe Nagel) Corrected logic for remote volume changes
+- (Uwe Nagel) README.md cosmetics
+- (Uwe Nagel) Added Weblate translation badge
+- (Uwe Nagel) Bump cross-spawn from 7.0.3 to 7.0.6
+- (Uwe Nagel) Switch to adapter-core3.2.2
+- (Uwe Nagel) Processing of more commands added
+- (Uwe Nagel) BACK command added to top of all menu lists
+- (Uwe Nagel) Command stack introduced, commands 'HOME' and 'BACK' added
+- (Uwe Nagel) Info.key renamed to info.command
+- (Uwe Nagel) Start handling of different results (albums, playlists, artists)
+- (Uwe Nagel) Correct logic to react on changes in control.key
+- (Uwe Nagel) Add control.key and logic to react on changes
+- (Uwe Nagel) Add info.list and call to fill info.list
+- (Uwe Nagel) Corrected logic for remote volume changes
 
 ### 1.1.0 (2024-10-19)
 
--   (Uwe Nagel) Potentially invalid characters are replaced before creating an object
--   (Uwe Nagel) setTimeout used instead of setInterval, clearTimeout added
--   (Uwe Nagel) Check values for PollingTime and TimeOut
--   (Uwe Nagel) Missing sizes added
--   (Uwe Nagel) State roles reevaluated
--   (Uwe Nagel) subscribeState calls eliminated
--   (Uwe Nagel) Instance prefixes in ObjectIds are omitted when calling setState()
--   (Uwe Nagel) State change now honors ack flag
--   (Uwe Nagel) PollingTime and TimeOUT changed to type number
--   (Uwe Nagel) onReady() stopped when no IP is set
--   (Uwe Nagel) Testing extended to node 22.x
--   (Uwe Nagel) Example code removed
+- (Uwe Nagel) Potentially invalid characters are replaced before creating an object
+- (Uwe Nagel) setTimeout used instead of setInterval, clearTimeout added
+- (Uwe Nagel) Check values for PollingTime and TimeOut
+- (Uwe Nagel) Missing sizes added
+- (Uwe Nagel) State roles reevaluated
+- (Uwe Nagel) subscribeState calls eliminated
+- (Uwe Nagel) Instance prefixes in ObjectIds are omitted when calling setState()
+- (Uwe Nagel) State change now honors ack flag
+- (Uwe Nagel) PollingTime and TimeOUT changed to type number
+- (Uwe Nagel) onReady() stopped when no IP is set
+- (Uwe Nagel) Testing extended to node 22.x
+- (Uwe Nagel) Example code removed
 
 ### 1.0.3 (2024-09-26)
 
--   (Uwe Nagel) Parsing of /State corrected
+- (Uwe Nagel) Parsing of /State corrected
 
 ### 1.0.2 (2024-09-19)
 
--   (Uwe Nagel) Modified due to adapter checks
+- (Uwe Nagel) Modified due to adapter checks
 
 ### 1.0.1 (2024-05-24)
 
--   (Uwe Nagel) Added config descriptions
--   (Uwe Nagel) Added translations for object descriptions
--   (Uwe Nagel) Added role definition for all objects
--   (Uwe Nagel) Added Timeout config Parameter
+- (Uwe Nagel) Added config descriptions
+- (Uwe Nagel) Added translations for object descriptions
+- (Uwe Nagel) Added role definition for all objects
+- (Uwe Nagel) Added Timeout config Parameter
 
 ### 1.0.0 (2024-05-17)
 
--   (Uwe Nagel) initial release
+- (Uwe Nagel) initial release
 
 ## License
 

@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "bluesound",
-        "version": "1.1.0",
+        "version": "1.1.1",
         "news": {
+            "1.1.1": {
+                "en": "README.md cosmetics\nAdded Weblate translation badge\nBump cross-spawn from 7.0.3 to 7.0.6\nSwitch to adapter-core3.2.2\nCorrected logic for remote volume changes",
+                "de": "README.md Kosmetika\nHinzugefügt Weblate Übersetzung Badge\nStoßkreuz von 7.0.3 bis 7.0.6\nWechseln Sie zum Adapter-Core3.2.2\nKorrigierte Logik für Remote-Volumenänderungen",
+                "ru": "README.md косметика\nДобавлен значок перевода Weblate\nКросс-спаун с 7.0.3 до 7.0.6\nПереход на адаптер-core3.2.2\nИсправленная логика для изменений удаленного объема",
+                "pt": "Cosméticos README.md\nAdicionado crachá de tradução Weblate\nBump cross-spawn de 7.0.3 para 7.0.6\nMudar para o adaptador-core3.2.2\nLógica correta para mudanças de volume remoto",
+                "nl": "README.md cosmetica\nToegevoegd Weblate translation badge\nBump cross-pion van 7.0.3 tot 7.0.6\nOverschakelen naar adapter-core3.2.2\nGecorrigeerde logica voor volumeveranderingen op afstand",
+                "fr": "Produits cosmétiques README.md\nAjout du badge de traduction Weblate\nBrûlures croisées de 7,0.3 à 7,0,6\nPassez à l'adaptateur-core3.2.2\nLogique corrigée pour les changements de volume à distance",
+                "it": "README.md cosmetici\nAggiunto Weblate traduzione distintivo\nSpawn da 7.0.3 a 7.0.6\nPassare a adattatore-core3.2.2\nLogica corretta per le modifiche del volume remoto",
+                "es": "Cosméticos README.md\nInsignia de traducción de Weblate\nBump cross-spawn de 7.0.3 a 7.0.6\nCambiar a adaptador-core3.2\nLógica corregida para cambios de volumen remoto",
+                "pl": "README.md kosmetyki\nDodano odznakę tłumaczeniową Weblate\nPętla poprzeczna od 7.0.3 do 7.0.6\nPrzełącz na adapter-core3.2.2\nSkorygowana logika dla zdalnych zmian głośności",
+                "uk": "README.md Косметика\nДодано Weblate переклад значок\nБампер-спагін від 7.0.3 до 7.0.6\nПеремикач адаптера-core3.2.2\nВиправлена логіка для зміни віддаленого обсягу",
+                "zh-cn": "README.md 化妆品\n添加 Weblate 翻译徽章\n从7.0.3到7.0.6的交叉弹簧\n切换到适配器核心3.2.2\n远程音量变化的校正逻辑"
+            },
             "1.1.0": {
                 "en": "Fixes as requested for adapter release to repository\nPotentially invalid characters are replaced before creating an object\nsetTimeout used instead of setInterval, clearTimeout added\nCheck values for PollingTime and TimeOut\nMissing sizes added\nState roles reevaluated\nsubscribeState calls eliminated\nInstance prefixes in ObjectIds are omitted when calling setState()\nState change now honors ack flag\nPollingTime and TimeOUT changed to type number\nonReady() stopped when no IP is set\nTesting extended to node 22.x\nExample code removed",
                 "de": "Behebt die angeforderten Korrekturen für die Adapterfreigabe im Repository\nPotenziell ungültige Zeichen werden vor dem Erstellen eines Objekts ersetzt\nsetTimeout wird anstelle von setInterval verwendet, clearTimeout hinzugefügt\nÜberprüfen Sie die Werte für PollingTime und TimeOut\nFehlende Größen hinzugefügt\nStaatliche Rollen werden neu bewertet\nsubscribeState-Aufrufe eliminiert\nInstanzpräfixe in ObjectIds werden beim Aufruf von setState() weggelassen\nBei der Zustandsänderung wird jetzt die Bestätigungsflagge berücksichtigt\nPollingTime und TimeOUT wurden in Typnummer geändert\nonReady() wurde gestoppt, wenn keine IP festgelegt ist\nTests auf Knoten 22.x ausgeweitet\nBeispielcode entfernt",
@@ -560,36 +573,6 @@
                 "read": true,
                 "write": true,
                 "desc": "Current player state"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.list",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "List"
-                },
-                "type": "json",
-                "role": "string",
-                "read": true,
-                "write": true,
-                "desc": "Object to show a list"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.command",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Command"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": true,
-                "desc": "Object for player commands"
             },
             "native": {}
         }
