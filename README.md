@@ -45,6 +45,10 @@ The following functions are implemented:
     ### **WORK IN PROGRESS**
 -->
 
+### **WORK IN PROGRESS**
+
+- (Uwe Nagel) Add Library search
+
 ### 1.1.1 (2024-12-01)
 
 - (Uwe Nagel) README.md cosmetics

@@ -601,6 +601,71 @@ class Bluesound extends utils.Adapter {
                     const switchKey = Object.keys(result).toString();
                     this.log.debug('Root: ' + switchKey);
                     switch (switchKey) {
+                        case 'folders':
+                            var myArr = [];
+                            var myPath = '';
+                            if ('path' in result.folders) {
+                                myPath = result.folders.path + '/';
+                                if ('songs' in result.folders) {
+                                    this.log.info('Case1');
+                                    entry = {
+                                        text: '...',
+                                        browseKey: 'BACK',
+                                    };
+                                    myArr.push(entry);
+                                    for (var i = 0; i < result.folders.songs.song.length; i++) {
+                                        entry = {
+                                            text: result.folders.songs.song[i].title,
+                                            browseKey: '/Add?playnow=1&file=' + result.folders.songs.song[i].fn,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                } else {
+                                    if (Array.isArray(result.folders.subfolders.folder)) {
+                                        this.log.info('Case2');
+                                        entry = {
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                        };
+                                        myArr.push(entry);
+                                        for (var i = 0; i < result.folders.subfolders.folder.length; i++) {
+                                            entry = {
+                                                text: result.folders.subfolders.folder[i],
+                                                browseKey:
+                                                    '/Folders?path=' + myPath + result.folders.subfolders.folder[i],
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    } else {
+                                        this.log.info('Case3');
+                                        entry = {
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                        };
+                                        myArr.push(entry);
+                                        this.log.info('JJ:' + JSON.stringify(result.folders.subfolders.folder));
+                                        this.log.info('JJ1:' + result.folders.subfolders.length);
+                                        //                                        for (let i in result.folders.subfolders) {
+                                        entry = {
+                                            text: result.folders.subfolders.folder,
+                                            browseKey: '/Folders?path=' + myPath + result.folders.subfolders.folder,
+                                        };
+                                        myArr.push(entry);
+                                        //                                        }
+                                    }
+                                }
+                            } else {
+                                for (let i in result.folders.subfolders) {
+                                    this.log.info('Folder: ' + result.folders.subfolders[i]);
+                                    entry = {
+                                        text: result.folders.subfolders[i],
+                                        browseKey: '/Folders?path=' + result.folders.subfolders[i],
+                                    };
+                                    myArr.push(entry);
+                                }
+                            }
+                            res = JSON.stringify(myArr);
+                            break;
                         case 'browse':
                             var myArr = [];
                             entry = {
@@ -862,9 +927,16 @@ class Bluesound extends utils.Adapter {
 
         let tempJSON = JSON.stringify(
             JSON.parse(templist).filter(function (item) {
-                return item.text != 'Library' && item.text != 'Bluetooth';
+                //                return item.text != 'Library' && item.text != 'Bluetooth';
+                return item.text != 'Bluetooth';
             }),
         );
+        for (var i = 0; i < tempJSON.length; i++) {
+            if (tempJSON[i].text === 'Library') {
+                tempJSON[i].browseKey = '/Folders?service=LocalMusic';
+                break;
+            }
+        }
         this.setState('info.list', tempJSON, true);
     }
 }
