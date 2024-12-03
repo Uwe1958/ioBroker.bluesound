@@ -48,6 +48,7 @@ The following functions are implemented:
 ### **WORK IN PROGRESS**
 
 - (Uwe Nagel) Add Library search
+- (Uwe Nagel) Library tree completed
 
 ### 1.1.1 (2024-12-01)
 
