@@ -597,7 +597,7 @@ class Bluesound extends utils.Adapter {
                     if (err) {
                         this.log('Error parsing Browse XML:' + err);
                     }
-                    this.setForeignState('0_userdata.0.browseKey', JSON.stringify(result), true);
+                    //                    this.setForeignState('0_userdata.0.browseKey', JSON.stringify(result), true);
                     const switchKey = Object.keys(result).toString();
                     this.log.debug('Root: ' + switchKey);
                     switch (switchKey) {

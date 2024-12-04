@@ -456,6 +456,21 @@
             "native": {}
         },
         {
+            "_id": "info.list",
+            "type": "state",
+            "common": {
+                "name": "list",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "desc": {
+                    "en": "List for Visualization"
+                }
+            },
+            "native": {}
+        },
+        {
             "_id": "control",
             "type": "channel",
             "common": {
@@ -573,6 +588,21 @@
                 "read": true,
                 "write": true,
                 "desc": "Current player state"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.command",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "command"
+                },
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": true,
+                "desc": "Object for browse commands"
             },
             "native": {}
         }

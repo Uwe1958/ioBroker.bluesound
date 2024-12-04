@@ -47,8 +47,9 @@ The following functions are implemented:
 
 ### **WORK IN PROGRESS**
 
-- (Uwe Nagel) Add Library search
+- (Uwe Nagel) Merge errors corrected
 - (Uwe Nagel) Library tree completed
+- (Uwe Nagel) Add Library search
 
 ### 1.1.1 (2024-12-01)
 
