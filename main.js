@@ -398,6 +398,9 @@ class Bluesound extends utils.Adapter {
                             });
                         }
                         break;
+                    case 'home':
+                        this.setState('control.command', 'HOME', false);
+                        break;
                     default:
                     //                        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
                 }
@@ -437,11 +440,12 @@ class Bluesound extends utils.Adapter {
     }
 
     async clearPlayerStatus() {
-        let i;
-        for (i = 1; i < 4; i++) {
+        for (let i = 1; i < 4; i++) {
             const sStateTag = `info.title${i}`;
             await this.setStateAsync(sStateTag, { val: '', ack: true });
         }
+        const sStateTag = `info.image`;
+        await this.setStateAsync(sStateTag, { val: '', ack: true });
     }
 
     async readPlayerStatus() {
