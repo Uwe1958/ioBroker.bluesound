@@ -45,6 +45,15 @@ The following functions are implemented:
     ### **WORK IN PROGRESS**
 -->
 
+### 1.1.2 (2025-01-02)
+
+- (Uwe Nagel) Changed year in README
+- (Uwe Nagel) Bump prettier from 3.4.1 to 3.4.2
+- (Uwe Nagel) Bump mocha from 10.8.2 to 11.0.1
+- (Uwe Nagel) Bump chai-as-promised and @types/chai-as-promised
+- (Uwe Nagel) Bump sinon from 18.0.0 to 19.0.2
+- (Uwe Nagel) Bump globals from 15.9.0 to 15.14.0
+
 ### 1.1.1 (2024-12-01)
 
 - (Uwe Nagel) README.md cosmetics
