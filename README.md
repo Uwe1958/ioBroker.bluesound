@@ -44,6 +44,11 @@ The following functions are implemented:
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+- (Uwe Nagel) Correct common.news
+
 ### 1.1.3 (2025-01-03)
 
 - (Uwe Nagel) Changed year in README
