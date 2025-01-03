@@ -44,8 +44,7 @@ The following functions are implemented:
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.1.3 (2025-01-03)
 
 - (Uwe Nagel) Changed year in README
 - (Uwe Nagel) Bump prettier from 3.4.1 to 3.4.2
