@@ -52,6 +52,14 @@ The following functions are implemented:
 - (Uwe Nagel) Merge errors corrected
 - (Uwe Nagel) Library tree completed
 - (Uwe Nagel) Add Library search
+- (Uwe Nagel) Processing of more commands added
+- (Uwe Nagel) BACK command added to top of all menu lists
+- (Uwe Nagel) Command stack introduced, commands 'HOME' and 'BACK' added
+- (Uwe Nagel) Info.key renamed to info.command
+- (Uwe Nagel) Start handling of different results (albums, playlists, artists)
+- (Uwe Nagel) Correct logic to react on changes in control.key
+- (Uwe Nagel) Add control.key and logic to react on changes
+- (Uwe Nagel) Add info.list and call to fill info.list
 
 ### 1.1.4 (2025-01-03)
 
