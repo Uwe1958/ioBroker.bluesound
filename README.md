@@ -44,6 +44,11 @@ The following functions are implemented:
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+- (Uwe Nagel) Corrected translations (de,pl)
+
 ### 1.1.4 (2025-01-03)
 
 - (Uwe Nagel) Correct common.news
