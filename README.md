@@ -47,6 +47,7 @@ The following functions are implemented:
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Corrected translations (de, pl)
 - (Uwe Nagel) Add object control.home and code to react on it
 - (Uwe Nagel) Image clear added in clearPlayerStatus
 - (Uwe Nagel) Merge errors corrected
