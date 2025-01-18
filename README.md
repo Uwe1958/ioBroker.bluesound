@@ -48,6 +48,8 @@ The following functions are implemented:
 ### **WORK IN PROGRESS**
 
 - (Uwe Nagel) Corrected translations (de,pl)
+- (Uwe Nagel) Update @iobroker/adapter-core to 3.2.3
+- (Uwe Nagel) Update @iobroker/testing to 5.0.0
 
 ### 1.1.4 (2025-01-03)
 
