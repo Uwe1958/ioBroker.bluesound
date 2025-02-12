@@ -47,6 +47,7 @@ The following functions are implemented:
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Update @iobroker/adapter-dev to 1.3.0
 - (Uwe Nagel) Fixing test action problems
 - (Uwe Nagel) Bump mocha from 11.0.1 to 11.1.0
 - (Uwe Nagel) Bump eslint-config-prettier from 9.1.0 to 10.0.1
