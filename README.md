@@ -47,20 +47,17 @@ The following functions are implemented:
 
 ### **WORK IN PROGRESS**
 
-- (Uwe Nagel) Corrected translations (de, pl)
-- (Uwe Nagel) Add object control.home and code to react on it
-- (Uwe Nagel) Image clear added in clearPlayerStatus
-- (Uwe Nagel) Merge errors corrected
-- (Uwe Nagel) Library tree completed
-- (Uwe Nagel) Add Library search
-- (Uwe Nagel) Processing of more commands added
-- (Uwe Nagel) BACK command added to top of all menu lists
-- (Uwe Nagel) Command stack introduced, commands 'HOME' and 'BACK' added
-- (Uwe Nagel) Info.key renamed to info.command
-- (Uwe Nagel) Start handling of different results (albums, playlists, artists)
-- (Uwe Nagel) Correct logic to react on changes in control.key
-- (Uwe Nagel) Add control.key and logic to react on changes
-- (Uwe Nagel) Add info.list and call to fill info.list
+- (Uwe Nagel) Update info.connection regularly
+- (Uwe Nagel) Update admin dependency to >=7.4.10
+- (Uwe Nagel) Update @iobroker/adapter-dev to 1.3.0
+- (Uwe Nagel) Fixing test action problems
+- (Uwe Nagel) Bump mocha from 11.0.1 to 11.1.0
+- (Uwe Nagel) Bump eslint-config-prettier from 9.1.0 to 10.0.1
+- (Uwe Nagel) Bump chai and @types/chai
+- (Uwe Nagel) Bump eslint from 9.16.0 to 9.19.0
+- (Uwe Nagel) Corrected translations (de,pl)
+- (Uwe Nagel) Update @iobroker/adapter-core to 3.2.3
+- (Uwe Nagel) Update @iobroker/testing to 5.0.0
 
 ### 1.1.4 (2025-01-03)
 

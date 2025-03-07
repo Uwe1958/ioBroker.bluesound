@@ -138,7 +138,7 @@
         "type": "multimedia",
         "compact": true,
         "connectionType": "local",
-        "dataSource": "assumption",
+        "dataSource": "push",
         "adminUI": {
             "config": "json"
         },
@@ -149,7 +149,7 @@
         ],
         "globalDependencies": [
             {
-                "admin": ">=5.1.13"
+                "admin": ">=7.4.10"
             }
         ]
     },
@@ -586,36 +586,6 @@
                 "read": true,
                 "write": true,
                 "desc": "Current player state"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.home",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Home"
-                },
-                "type": "boolean",
-                "role": "button",
-                "read": false,
-                "write": true,
-                "desc": "Returns to top menu"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.command",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "command"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": true,
-                "desc": "Object for browse commands"
             },
             "native": {}
         }
