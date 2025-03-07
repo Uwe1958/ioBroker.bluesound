@@ -225,6 +225,10 @@ class Bluesound extends utils.Adapter {
         try {
             // Here you must clear all timeouts or intervals that may still be active
             clearTimeout(polling);
+
+            // Set the connection indicator to false
+            this.setState('info.connection', false, true);
+
             // clearTimeout(timeout2);
             // ...
             //            clearInterval(polling);
@@ -411,6 +415,9 @@ class Bluesound extends utils.Adapter {
         try {
             const response = await apiClient.get('/Status');
             if (response.status === 200) {
+                // Set the connection indicator to true on succesful read
+                this.setState('info.connection', true, true);
+
                 //const result = response.data;
                 parseString(response.data, (err, result) => {
                     if (err) {
@@ -526,9 +533,14 @@ class Bluesound extends utils.Adapter {
                 }
             } else {
                 this.log.error('Could not retrieve status data, Status code ' + response.status);
+
+                // Set the connection indicator to false on unsuccesful read
+                this.setState('info.connection', false, true);
             }
         } catch (e) {
             this.log.error('Could not retrieve status data: ' + e);
+            // Set the connection indicator to false on unsuccesful read
+            this.setState('info.connection', false, true);
         }
         return true;
     }

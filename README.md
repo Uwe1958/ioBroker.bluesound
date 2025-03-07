@@ -47,6 +47,7 @@ The following functions are implemented:
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Update info.connection regularly
 - (Uwe Nagel) Update admin dependency to >=7.4.10
 - (Uwe Nagel) Update @iobroker/adapter-dev to 1.3.0
 - (Uwe Nagel) Fixing test action problems
