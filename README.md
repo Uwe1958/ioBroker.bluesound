@@ -44,8 +44,7 @@ The following functions are implemented:
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.1.5 (2025-03-10)
 
 - (Uwe Nagel) Create version 1.1.5
 - (Uwe Nagel) Update info.connection regularly
