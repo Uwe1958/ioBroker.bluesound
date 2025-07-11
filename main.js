@@ -127,6 +127,9 @@ class Bluesound extends utils.Adapter {
         // state = ""
         sNameTag = 'control.state';
         this.setState(sNameTag, '', true);
+        // shuffle = false
+        sNameTag = 'control.shuffle';
+        this.setState(sNameTag, false, true);
 
         // volume from player
 
@@ -199,7 +202,6 @@ class Bluesound extends utils.Adapter {
         }
 
         // Status
-
         this.readPlayerStatus();
 
         // Polling
@@ -229,10 +231,6 @@ class Bluesound extends utils.Adapter {
             // Set the connection indicator to false
             this.setState('info.connection', false, true);
 
-            // clearTimeout(timeout2);
-            // ...
-            //            clearInterval(polling);
-
             // @ts-ignore
             callback();
         } catch (e) {
@@ -252,7 +250,7 @@ class Bluesound extends utils.Adapter {
         if (state) {
             // The state was changed
             // @ts-ignore
-            if (state.val && !state.ack) {
+            if (!state.ack) {
                 const pos = id.toString().lastIndexOf('.');
                 switch (id.substring(pos + 1)) {
                     case 'start':
@@ -275,7 +273,7 @@ class Bluesound extends utils.Adapter {
                                     })
                                     .catch((err) => {
                                         // Handle errors
-                                        //									adapter.log.error("Could not start preset, Status code " + response.status);
+                                        // adapter.log.error("Could not start preset, Status code " + response.status);
                                         this.log.error('Could not start preset, Status code ' + err);
                                     });
                             }
@@ -355,8 +353,18 @@ class Bluesound extends utils.Adapter {
                                 this.log.error('Could not set volume, Status code ' + err);
                             });
                         break;
+                    case 'shuffle':
+                        let val = Number(state.val);
+                        apiClient
+                            .get(`/Shuffle?state=${val}`)
+                            .then()
+                            .catch((err) => {
+                                // Handle errors
+                                this.log.error('Could not set shuffle, Status code ' + err);
+                            });
+                        break;
                     default:
-                    //                        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+                    //this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
                 }
             }
         } else {

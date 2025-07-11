@@ -545,6 +545,19 @@
       "native": {}
     },
     {
+      "_id": "control.shuffle",
+      "type": "state",
+      "common": {
+        "name": "Shuffle",
+        "type": "boolean",
+        "role": "button.shuffle",
+        "read": false,
+        "write": true,
+        "desc": "Toggles Shuffle"
+      },
+      "native": {}
+    },
+    {
       "_id": "control.volume",
       "type": "state",
       "common": {
