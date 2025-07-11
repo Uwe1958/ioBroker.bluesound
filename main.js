@@ -267,7 +267,7 @@ class Bluesound extends utils.Adapter {
                                                 return;
                                             }
                                             const sStateTag = 'control.state';
-                                            this.setState(sStateTag, result.state, true);
+                                            this.setState(sStateTag, result.state ?? '', true);
                                             this.log.info(`${this.namespace} Preset${preset} Start`);
                                         });
                                     })
