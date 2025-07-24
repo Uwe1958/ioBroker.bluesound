@@ -47,32 +47,10 @@ The following functions are implemented:
 
 - (Uwe Nagel) Logic added to shift playlist forward/backward
 - (Uwe Nagel) State roles updated
-- (Uwe Nagel) Bump form-data from 4.0.2 to 4.0.4
 - (Uwe Nagel) Logic added to shuffle playlist
-- (Uwe Nagel) Bump @eslint/js from 9.28.0 to 9.30.0
-- (Uwe Nagel) Bump globals from 16.0.0 to 16.2.0
-- (Uwe Nagel) Bump prettier from 3.5.3 to 3.6.2
-- (Uwe Nagel) Bump eslint from 9.28.0 to 9.30.0
-- (Uwe Nagel) Bump sinon from 20.0.0 to 21.0.0
-- (Uwe Nagel) Bump @types/node from 22.15.29 to 24.0.8
 - (Uwe Nagel) Translated using Weblate (Dutch)
-- (Uwe Nagel) Bump eslint from 9.22.0 to 9.28.0
-- (Uwe Nagel) Bump @types/chai from 5.2.1 to 5.2.2
-- (Uwe Nagel) Bump @types/node from 22.15.3 to 22.15.29
 - (Uwe Nagel) Update test-and.release.yml to node 24.x
-- (Uwe Nagel) Bump eslint-config-prettier from 10.1.2 to 10.1.5
-- (Uwe Nagel) Bump @eslint/js from 9.25.1 to 9.28.0
 - (Uwe Nagel) Update testing to minimum node.js version 20
-- (Uwe Nagel) Bump eslint-config-prettier from 10.1.1 to 10.1.2
-- (Uwe Nagel) Bump sinon from 19.0.5 to 20.0.0
-- (Uwe Nagel) Bump @eslint/js from 9.23.0 to 9.25.1
-- (Uwe Nagel) Bump @types/node from 22.13.10 to 22.15.3
-- (Uwe Nagel) Bump eslint-plugin-prettier from 5.2.3 to 5.2.6
-- (Uwe Nagel) Bump @eslint/eslintrc from 3.3.0 to 3.3.1
-- (Uwe Nagel) Bump @types/chai from 5.2.0 to 5.2.1
-- (Uwe Nagel) Bump @eslint/js from 9.22.0 to 9.23.0
-- (Uwe Nagel) Bump @iobroker/testing from 5.0.3 to 5.0.4
-- (Uwe Nagel) Bump globals from 15.15.0 to 16.0.0
 
 ### 1.1.5 (2025-03-10)
 
