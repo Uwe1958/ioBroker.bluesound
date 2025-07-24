@@ -42,8 +42,7 @@ The following functions are implemented:
 - Playlist backward (triggered by setting 'control.backward' to true)
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 1.2.0 (2025-07-24)
 
 - (Uwe Nagel) Logic added to shift playlist forward/backward
 - (Uwe Nagel) State roles updated
