@@ -18,11 +18,9 @@ Adapter to control Bluesound devices
 
 ## Functions included
 
-The adapter uses API calls in the format: http://--playerAPI--:11000/xxx
+The adapter uses API calls in the format: http://--playerIP--:11000/xxx
 
-A timeout parameter is set by optional parameter 'config.TimeOut' as timeout for the API call. Default value is 2 secs.
-
-At startup the presets are read and added to the 'presets' channel.
+At startup the presets are read from the player and added to the 'presets' channel.
 Player model and name are stored in the 'info' channel.
 When player is playing the titles are set in the 'info' channel.
 
@@ -30,13 +28,18 @@ The player status is polled in the interval set by 'config.pollingtime' and the 
 
 PollingTime values up to 120 secs are reasonable. The adapter cannot be startet with values larger than 300 secs. Default value is 30 secs.
 
+A timeout parameter is set by optional parameter 'config.TimeOut' as timeout for the API call. Default value is 2 secs.
+
 The following functions are implemented:
 
-- Player stop (triggered by setting 'control.stop' to true)
-- Player start (triggered by setting 'control.start' to true)
-- Player Pause (triggered by setting 'control.pause' to true, toggle mode)
+- Player Stop (triggered by setting 'control.stop' to true)
+- Player Start (triggered by setting 'control.start' to true)
+- Player Pause (triggered by setting 'control.pause' to true)
 - Play Presetxxx (triggered by setting '.presets.preset(x).start' to true)
 - Change Volume (triggered by changing 'control.volume')
+- Shuffle Playlist (triggered by setting 'control.shuffle' to true, toggle mode)
+- Playlist forward (triggered by setting 'control.forward' to true)
+- Playlist backward (triggered by setting 'control.backward' to true)
 
 ## Changelog
 
@@ -47,6 +50,10 @@ The following functions are implemented:
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Logic added to shift playlist forward/backward
+- (Uwe Nagel) State roles updated
+- (Uwe Nagel) Bump form-data from 4.0.2 to 4.0.4
+- (Uwe Nagel) Logic added to shuffle playlist
 - (Uwe Nagel) Bump @eslint/js from 9.28.0 to 9.30.0
 - (Uwe Nagel) Bump globals from 16.0.0 to 16.2.0
 - (Uwe Nagel) Bump prettier from 3.5.3 to 3.6.2

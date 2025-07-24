@@ -84,7 +84,7 @@ class Bluesound extends utils.Adapter {
             return;
         }
 
-        apiClient = axios.create({
+        apiClient = await axios.create({
             baseURL: `http://${ip}:11000`,
             timeout: timeOUT,
             responseType: 'xml',
@@ -129,6 +129,10 @@ class Bluesound extends utils.Adapter {
         this.setState(sNameTag, '', true);
         // shuffle = false
         sNameTag = 'control.shuffle';
+        this.setState(sNameTag, false, true);
+        sNameTag = 'control.forward';
+        this.setState(sNameTag, false, true);
+        sNameTag = 'control.backward';
         this.setState(sNameTag, false, true);
 
         // volume from player
@@ -245,7 +249,7 @@ class Bluesound extends utils.Adapter {
      * @param {ioBroker.State | null | undefined} state
      */
     // @ts-ignore
-    onStateChange(id, state) {
+    async onStateChange(id, state) {
         // @ts-ignore
         if (state) {
             // The state was changed
@@ -254,7 +258,7 @@ class Bluesound extends utils.Adapter {
                 const pos = id.toString().lastIndexOf('.');
                 switch (id.substring(pos + 1)) {
                     case 'start':
-                        this.getState(id.substring(0, pos) + '.id', (err, status) => {
+                        this.getStateAsync(id.substring(0, pos) + '.id', (err, status) => {
                             if (status || status.val) {
                                 const preset = status.val;
                                 apiClient
@@ -268,6 +272,7 @@ class Bluesound extends utils.Adapter {
                                             }
                                             const sStateTag = 'control.state';
                                             this.setState(sStateTag, result.state ?? '', true);
+                                            this.setState(id, true, true); // Set acknowledged
                                             this.log.info(`${this.namespace} Preset${preset} Start`);
                                         });
                                     })
@@ -282,7 +287,7 @@ class Bluesound extends utils.Adapter {
                         break;
                     case 'pause':
                         apiClient
-                            .get('/Pause?toggle=1')
+                            .get('/Pause')
                             .then((response) => {
                                 // Handle response
                                 parseString(response.data, (err, result) => {
@@ -292,7 +297,8 @@ class Bluesound extends utils.Adapter {
                                     }
                                     const sStateTag = 'control.state';
                                     this.setState(sStateTag, result.state, true);
-                                    this.log.info(`${this.namespace} Pause`);
+                                    this.setState(id, true, true); // Set acknowledged
+                                    this.log.info(`${this.namespace} Pause ${result.state}`);
                                 });
                             })
                             .catch((err) => {
@@ -313,6 +319,7 @@ class Bluesound extends utils.Adapter {
                                     }
                                     const sStateTag = 'control.state';
                                     this.setState(sStateTag, result.state, true);
+                                    this.setState(id, true, true);
                                     this.log.info(`${this.namespace} Stop`);
                                 });
                             })
@@ -335,6 +342,7 @@ class Bluesound extends utils.Adapter {
                                     }
                                     const sStateTag = 'control.state';
                                     this.setState(sStateTag, result.state, true);
+                                    this.setState(id, true, true);
                                     this.log.info(`${this.namespace} Play`);
                                 });
                             })
@@ -352,15 +360,48 @@ class Bluesound extends utils.Adapter {
                                 // Handle errors
                                 this.log.error('Could not set volume, Status code ' + err);
                             });
+                        this.readPlayerStatus();
                         break;
                     case 'shuffle':
-                        let val = Number(state.val);
+                        const sShuffleTag = 'info.shuffle';
+                        const valShuffle = await this.getStateAsync(sShuffleTag);
+                        let val = valShuffle.val;
+                        val = !val;
                         apiClient
-                            .get(`/Shuffle?state=${val}`)
-                            .then()
+                            .get(`/Shuffle?state=${Number(val)}`)
+                            .then((response) => {
+                                const sShuffleTag = 'info.shuffle';
+                                this.setState(sShuffleTag, val, true);
+                                this.setState(id, state.val, true);
+                            })
                             .catch((err) => {
                                 // Handle errors
                                 this.log.error('Could not set shuffle, Status code ' + err);
+                            });
+                        this.readPlayerStatus();
+                        break;
+                    case 'forward':
+                        apiClient
+                            .get('/Skip')
+                            .then(() => {
+                                // Handle response
+                                this.setState(id, true, true);
+                            })
+                            .catch((err) => {
+                                // Handle errors
+                                this.log.error('Could not set skip, Status code ' + err);
+                            });
+                        break;
+                    case 'backward':
+                        apiClient
+                            .get('/Back')
+                            .then(() => {
+                                // Handle response
+                                this.setState(id, true, true);
+                            })
+                            .catch((err) => {
+                                // Handle errors
+                                this.log.error('Could not set back, Status code ' + err);
                             });
                         break;
                     default:
@@ -415,7 +456,7 @@ class Bluesound extends utils.Adapter {
         let i;
         let varSecs;
         let strSecs;
-        let varTotLen, strTotLen, imageUrl, varVolume, pState;
+        let varTotLen, strTotLen, imageUrl, varVolume, pState, varShuffle;
 
         for (i = 1; i < 4; i++) {
             title[i] = '';
@@ -468,6 +509,8 @@ class Bluesound extends utils.Adapter {
 
                     varVolume = result.status.volume[0];
                     pState = result.status.state[0];
+
+                    varShuffle = result.status.shuffle[0] == 0 ? false : true;
                 });
 
                 strTotLen = this.convertSecs(varTotLen);
@@ -477,6 +520,13 @@ class Bluesound extends utils.Adapter {
                 }
 
                 await Promise.all(promises);
+
+                const sShuffleTag = 'info.shuffle';
+                const sShuffleOld = await this.getStateAsync(sShuffleTag).val;
+
+                if (varShuffle != sShuffleOld) {
+                    await this.setStateAsync(sShuffleTag, { val: varShuffle, ack: true });
+                }
 
                 const sNameTag = 'control.state';
                 const pStateOld = await this.getStateAsync(sNameTag);
