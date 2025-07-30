@@ -356,19 +356,23 @@ class Bluesound extends utils.Adapter {
                         break;
                     case 'shuffle': {
                         const sShuffleTag = 'info.shuffle';
-                        const valShuffle = await this.getStateAsync(sShuffleTag);
-                        let val = valShuffle.val;
-                        val = !val;
-                        apiClient
-                            .get(`/Shuffle?state=${Number(val)}`)
-                            .then(() => {
-                                this.setState(sShuffleTag, val, true);
-                                this.setState(id, state.val, true);
-                            })
-                            .catch(err => {
-                                // Handle errors
-                                this.log.error(`Could not set shuffle, Status code ${err}`);
-                            });
+                        try {
+                            const valShuffle = await this.getStateAsync(sShuffleTag);
+                            let val = valShuffle.val;
+                            val = !val;
+                            apiClient
+                                .get(`/Shuffle?state=${Number(val)}`)
+                                .then(() => {
+                                    this.setState(sShuffleTag, val, true);
+                                    this.setState(id, state.val, true);
+                                })
+                                .catch(err => {
+                                    // Handle errors
+                                    this.log.error(`Could not set shuffle, Status code ${err}`);
+                                });
+                        } catch (err) {
+                            this.log.error(`Error reading ${sShuffleTag}: ${err}`);
+                        }
                         this.readPlayerStatus();
                         break;
                     }
@@ -522,18 +526,26 @@ class Bluesound extends utils.Adapter {
                 await Promise.all(promises);
 
                 const sShuffleTag = 'info.shuffle';
-                const sShuffleOld = await this.getStateAsync(sShuffleTag);
+                try {
+                    const sShuffleOld = await this.getStateAsync(sShuffleTag);
 
-                if (varShuffle != sShuffleOld.val) {
-                    await this.setState(sShuffleTag, { val: varShuffle, ack: true });
+                    if (varShuffle != sShuffleOld.val) {
+                        await this.setState(sShuffleTag, { val: varShuffle, ack: true });
+                    }
+                } catch (err) {
+                    this.log.error(`Error reading ${sShuffleTag}: ${err}`);
                 }
 
                 const sNameTag = 'control.state';
-                const pStateOld = await this.getStateAsync(sNameTag);
+                try {
+                    const pStateOld = await this.getStateAsync(sNameTag);
 
-                if (pState != pStateOld.val) {
-                    let sStateTag = 'control.state';
-                    await this.setState(sStateTag, { val: pState, ack: true });
+                    if (pState != pStateOld.val) {
+                        let sStateTag = 'control.state';
+                        await this.setState(sStateTag, { val: pState, ack: true });
+                    }
+                } catch (err) {
+                    this.log.error(`Error reading ${sNameTag}: ${err}`);
                 }
 
                 if (pState == 'stream' || pState == 'play') {
