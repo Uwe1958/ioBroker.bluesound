@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.2.3",
+    "@types/xml2js": "^0.4.14",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {

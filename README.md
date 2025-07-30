@@ -45,6 +45,8 @@ The following functions are implemented:
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Further code cleaning (apiclient, getStateAsync)
+- (Uwe Nagel) @types/xml2js added
 - (Uwe Nagel) Move to eslint 9 and fix subsequent issues
 
 ### 1.2.0 (2025-07-24)

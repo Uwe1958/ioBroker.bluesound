@@ -13,8 +13,9 @@ let ip;
 let polling;
 let pollingTime;
 
-const axios = require(`axios`);
+const axios = require(`axios`).default;
 const { parseString } = require('xml2js');
+const apiClient = axios.create();
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -28,7 +29,7 @@ class Bluesound extends utils.Adapter {
             ...options,
             name: 'bluesound',
         });
-        this.apiClient = null;
+        //        this.apiClient = null;
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
@@ -75,20 +76,16 @@ class Bluesound extends utils.Adapter {
             );
             return;
         }
-
-        this.apiClient = await axios.create({
-            baseURL: `http://${ip}:11000`,
-            timeout: timeOUT,
-            responseType: 'xml',
-            responseEncoding: 'utf8',
-        });
+        apiClient.defaults.baseURL = `http://${ip}:11000`;
+        apiClient.defaults.timeout = timeOUT;
+        apiClient.defaults.responseEncoding = 'utf8';
 
         // set Info
 
         let sNameTag = 'info.name';
         const sModelNameTag = 'info.modelname';
         try {
-            const response = await this.apiClient.get('/SyncStatus');
+            const response = await apiClient.get('/SyncStatus');
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
                     if (err) {
@@ -130,7 +127,7 @@ class Bluesound extends utils.Adapter {
         // volume from player
 
         try {
-            const response = await this.apiClient.get('/Volume');
+            const response = await apiClient.get('/Volume');
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
                     if (err) {
@@ -153,7 +150,7 @@ class Bluesound extends utils.Adapter {
         // Presets
 
         try {
-            const response = await this.apiClient.get('/Presets');
+            const response = await apiClient.get('/Presets');
             if (response.status == 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
                     if (err) {
@@ -214,11 +211,13 @@ class Bluesound extends utils.Adapter {
         this.log.info(`check group user admin group admin: ${result}`);
     }
 
-    /*
+    /**
      *
-     * Is called when adapter shuts down - callback has to be called under any circumstances!
      * @param {() => void} callback
      */
+
+    //  Is called when adapter shuts down - callback has to be called under any circumstances!
+
     onUnload(callback) {
         try {
             // Here you must clear all timeouts or intervals that may still be active
@@ -233,11 +232,14 @@ class Bluesound extends utils.Adapter {
         }
     }
 
-    /*
-     * Is called if a subscribed state changes
+    /**
+     *
      * @param {string} id
      * @param {ioBroker.State | null | undefined} state
      */
+
+    // Is called if a subscribed state changes
+
     async onStateChange(id, state) {
         if (state) {
             // The state was changed
@@ -245,10 +247,11 @@ class Bluesound extends utils.Adapter {
                 const pos = id.toString().lastIndexOf('.');
                 switch (id.substring(pos + 1)) {
                     case 'start':
-                        this.getStateAsync(`${id.substring(0, pos)}.id`, (err, status) => {
-                            if (status || status.val) {
-                                const preset = status.val;
-                                this.apiClient
+                        try {
+                            const obj = await this.getStateAsync(`${id.substring(0, pos)}.id`);
+                            if (obj || obj.val) {
+                                const preset = obj.val;
+                                apiClient
                                     .get(`/Preset?id=${preset}`)
                                     .then(response => {
                                         // Handle response
@@ -269,11 +272,13 @@ class Bluesound extends utils.Adapter {
                                         this.log.error(`Could not start preset, Status code ${err}`);
                                     });
                             }
-                        });
+                        } catch (err) {
+                            this.log.error(`Error reading ${id.substring(0, pos)}.id: ${err}`);
+                        }
                         this.readPlayerStatus();
                         break;
                     case 'pause':
-                        this.apiClient
+                        apiClient
                             .get('/Pause')
                             .then(response => {
                                 // Handle response
@@ -295,7 +300,7 @@ class Bluesound extends utils.Adapter {
                         this.readPlayerStatus();
                         break;
                     case 'stop':
-                        this.apiClient
+                        apiClient
                             .get('/Stop')
                             .then(response => {
                                 // Handle response
@@ -318,7 +323,7 @@ class Bluesound extends utils.Adapter {
                         break;
                     case 'stream':
                     case 'play':
-                        this.apiClient
+                        apiClient
                             .get('/Play')
                             .then(response => {
                                 // Handle response
@@ -340,7 +345,7 @@ class Bluesound extends utils.Adapter {
                         this.readPlayerStatus();
                         break;
                     case 'volume':
-                        this.apiClient
+                        apiClient
                             .get(`/Volume?level=${state.val}`)
                             .then()
                             .catch(err => {
@@ -354,7 +359,7 @@ class Bluesound extends utils.Adapter {
                         const valShuffle = await this.getStateAsync(sShuffleTag);
                         let val = valShuffle.val;
                         val = !val;
-                        this.apiClient
+                        apiClient
                             .get(`/Shuffle?state=${Number(val)}`)
                             .then(() => {
                                 this.setState(sShuffleTag, val, true);
@@ -368,7 +373,7 @@ class Bluesound extends utils.Adapter {
                         break;
                     }
                     case 'forward':
-                        this.apiClient
+                        apiClient
                             .get('/Skip')
                             .then(() => {
                                 // Handle response
@@ -380,7 +385,7 @@ class Bluesound extends utils.Adapter {
                             });
                         break;
                     case 'backward':
-                        this.apiClient
+                        apiClient
                             .get('/Back')
                             .then(() => {
                                 // Handle response
@@ -457,7 +462,7 @@ class Bluesound extends utils.Adapter {
             title[i] = '';
         }
         try {
-            const response = await this.apiClient.get('/Status');
+            const response = await apiClient.get('/Status');
             if (response.status === 200) {
                 // Set the connection indicator to true on succesful read
                 this.setState('info.connection', true, true);
@@ -527,17 +532,21 @@ class Bluesound extends utils.Adapter {
                 const pStateOld = await this.getStateAsync(sNameTag);
 
                 if (pState != pStateOld.val) {
-                    const sStateTag = 'control.state';
+                    let sStateTag = 'control.state';
                     await this.setState(sStateTag, { val: pState, ack: true });
                 }
 
                 if (pState == 'stream' || pState == 'play') {
                     for (i = 1; i < 4; i++) {
-                        const sStateTag = `info.title${i}`;
-                        const valOld = await this.getStateAsync(sStateTag);
-                        if (valOld.val != title[i]) {
-                            await this.setState(sStateTag, { val: title[i], ack: true });
-                            this.log.info(`title${i} changed: ${title[i]}`);
+                        let sStateTag = `info.title${i}`;
+                        try {
+                            const valOld = await this.getStateAsync(sStateTag);
+                            if (valOld.val != title[i]) {
+                                await this.setState(sStateTag, { val: title[i], ack: true });
+                                this.log.info(`title${i} changed: ${title[i]}`);
+                            }
+                        } catch (err) {
+                            this.log.error(`Error reading ${sStateTag}: ${err}`);
                         }
                     }
 
@@ -554,20 +563,28 @@ class Bluesound extends utils.Adapter {
                     await this.setState(sStateTag, { val: strTotLen, ack: true });
 
                     sStateTag = 'info.image';
-                    let valOld = await this.getStateAsync(sStateTag);
+                    try {
+                        let valOld = await this.getStateAsync(sStateTag);
 
-                    if (valOld.val != imageUrl) {
-                        await this.setState(sStateTag, { val: imageUrl.toString(), ack: true });
-                        this.log.info(`Image changed: ${imageUrl}`);
+                        if (valOld.val != imageUrl) {
+                            await this.setState(sStateTag, { val: imageUrl.toString(), ack: true });
+                            this.log.info(`Image changed: ${imageUrl}`);
+                        }
+                    } catch (err) {
+                        this.log.error(`Error reading ${sStateTag}: ${err}`);
                     }
 
                     sStateTag = 'info.volume';
-                    valOld = await this.getStateAsync(sStateTag);
-                    if (valOld.val != varVolume) {
-                        await this.setState(sStateTag, { val: parseInt(varVolume), ack: true });
-                        sStateTag = 'control.volume';
-                        await this.setState(sStateTag, { val: parseInt(varVolume), ack: true });
-                        this.log.info(`Volume changed: ${varVolume}`);
+                    try {
+                        let valOld = await this.getStateAsync(sStateTag);
+                        if (valOld.val != varVolume) {
+                            await this.setState(sStateTag, { val: parseInt(varVolume), ack: true });
+                            sStateTag = 'control.volume';
+                            await this.setState(sStateTag, { val: parseInt(varVolume), ack: true });
+                            this.log.info(`Volume changed: ${varVolume}`);
+                        }
+                    } catch (err) {
+                        this.log.error(`Error reading ${sStateTag}: ${err}`);
                     }
                 } else {
                     for (i = 1; i < 4; i++) {
