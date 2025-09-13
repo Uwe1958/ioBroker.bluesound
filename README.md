@@ -45,6 +45,7 @@ The following functions are implemented:
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Resolve dependency errors
 - (Uwe Nagel) Bump mocha from 11.1.0 to 11.7.1
 - (Uwe Nagel) Bump globals from 16.2.0 to 16.3.0
 - (Uwe Nagel) Bump @types/node from 24.0.8 to 24.1.0
