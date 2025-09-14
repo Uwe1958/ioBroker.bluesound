@@ -45,6 +45,7 @@ The following functions are implemented:
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Update io-package.json and package.json
 - (Uwe Nagel) Update .vscode/jsonConfig.json and .gitignore
 - (Uwe Nagel) Resolve dependency errors
 - (Uwe Nagel) Bump mocha from 11.1.0 to 11.7.1
