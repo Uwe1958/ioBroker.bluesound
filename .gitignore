@@ -13,6 +13,7 @@ iobroker.*.tgz
 Thumbs.db
 .gitignore
 .npmignore
+.commitinfo
 
 # i18n intermediate files
 admin/i18n/flat.txt
