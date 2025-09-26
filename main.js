@@ -207,8 +207,8 @@ class Bluesound extends utils.Adapter {
         let result = await this.checkPasswordAsync('admin', 'iobroker');
         this.log.info(`check user admin pw iobroker: ${result}`);
 
-        result = await this.checkGroupAsync('admin', 'admin');
-        this.log.info(`check group user admin group admin: ${result}`);
+        let resulta = await this.checkGroupAsync('admin', 'admin');
+        this.log.info(`check group user admin group admin: ${resulta}`);
     }
 
     /**
