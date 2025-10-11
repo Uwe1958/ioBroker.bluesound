@@ -1,8 +1,73 @@
 {
     "common": {
         "name": "bluesound",
-        "version": "1.1.0",
+        "version": "1.2.0",
         "news": {
+            "1.2.0": {
+                "en": "Logic added to shift playlist forward/backward\nState roles updated\nLogic added to shuffle playlist\nTranslated using Weblate (Dutch)\nUpdate test-and.release.yml to node 24.x\nUpdate testing to minimum node.js version 20",
+                "de": "Logic hinzugefügt, um die Wiedergabeliste vorwärts/zurück zu verschieben\nStaatliche Rollen aktualisiert\nLogic zur Shuffle Playlist hinzugefügt\nÜbersetzt mit Weblate (Dutch)\nTest-and.release.yml auf Knoten 24.x aktualisieren\nUpdate-Tests auf minimal node.js Version 20",
+                "ru": "Логика добавлена для смещения плейлиста вперед/назад\nОбновлены роли государства\nЛогика добавлена для перетасовки плейлиста\nПеревод с использованием Weblate (голландский)\nОбновление test-and.release.yml до узла 24.x\nОбновление до минимума node.js версии 20",
+                "pt": "Lógica adicionada à lista de reprodução para a frente/para trás\nFunções do Estado actualizadas\nLógica adicionada à lista de reprodução embaralhada\nTraduzido usando Weblate (Holandês)\nAtualizar test-and.release.yml para o nó 24.x\nAtualizar os testes para a versão 20 do nodo mínimo.js",
+                "nl": "Logica toegevoegd aan shift playlist forward/backward\nStaatsfuncties bijgewerkt\nLogica toegevoegd aan shuffle playlist\nVertaald met Weblate\nUpdate test-and.release.yml to node 24.x\nTesten bijwerken naar minimaal node.js versie 20",
+                "fr": "La logique a été ajoutée pour déplacer la playlist vers l'avant/ vers l'arrière\nMise à jour des rôles des États\nLogique ajoutée à la liste de lecture shuffle\nTraduit en utilisant Weblate (néerlandais)\nMettre à jour test-and.release.yml vers le noeud 24.x\nMettre à jour les tests vers la version minimum node.js 20",
+                "it": "Logica aggiunta a spostare la playlist in avanti / indietro\nRapporti di Stato aggiornati\nLogica aggiunta a shuffle playlist\nTradotto con Weblate (Dutch)\nAggiornamento test-and.release.yml al nodo 24.x\nTest di aggiornamento alla versione minima node.js 20",
+                "es": "Logic añadido para cambiar la lista de reproducción hacia adelante y hacia atrás\nFunciones del Estado actualizadas\nLogic añadido a la lista de reproducción shuffle\nTraducido con Weblate (Dutch)\nActualizar test-and.release.yml al nodo 24.x\nActualizar las pruebas al mínimo node.js versión 20",
+                "pl": "Logika dodana do przesunięcia listy odtwarzania do przodu / do tyłu\nAktualizacja ról państwa\nLogika dodana do listy tasowania\nPrzetłumaczone na Weblate (holenderski)\nAktualizuj test- and.release.yml do węzła 24.x\nAktualizacja testów do minimum node.js wersja 20",
+                "uk": "Logic додано до переадресації списку відтворення вперед / назад\nДержавні ролі оновлено\nЛогічні додані до шапелюстки\nПерекладений за допомогою Weblate (Dutch)\nОновлення тест-і.випуск.yml до вузла 24.x\nОновлення тестування на мінімальний вузол.js версія 20",
+                "zh-cn": "向前/向后移动播放列表时添加逻辑\n更新国家作用\n逻辑添加到洗牌播放列表\n使用 Weblate (荷兰语) 翻译\n更新测试和. release.yml至节点 24.x\n更新测试到最小节点.js 版本 20"
+            },
+            "1.1.5": {
+                "en": "Create version 1.1.5\nUpdate info.connection regularly\nUpdate admin dependency to >=7.4.10\nUpdate @iobroker/adapter-dev to 1.3.0\nFixing test action problems\nBump mocha from 11.0.1 to 11.1.0\nBump eslint-config-prettier from 9.1.0 to 10.0.1\nBump chai and @types/chai\nBump eslint from 9.16.0 to 9.19.0\nCorrected translations (de,pl)\nUpdate @iobroker/adapter-core to 3.2.3\nUpdate @iobroker/testing to 5.0.0",
+                "de": "Version 1.1.5 erstellen\nUpdate info.connection regelmäßig\nAdminabhängigkeit aktualisieren von >=7.4.10\nUpdate @iobroker/adapter-dev auf 1.3.0\nProbleme bei der Prüfung\nStoß Mocha von 11.0.1 bis 11.1.0\nBump eslint-config-prettier von 9.1.0 bis 10.0.1\nBump chai und @types/chai\nBump eslint von 9.16.0 bis 9.19.0\nKorrigierte Übersetzungen (de,pl)\nUpdate @iobroker/Adapter-Core auf 3.2.3\nUpdate @iobroker/Test auf 5.0.0",
+                "ru": "Создать версию 1.1.5\nОбновление info.connection регулярно\nОбновление зависимости администратора от >=7.4.10\nОбновление @iobroker/adapter-dev до 1.3.0\nИсправление проблем с тестом\nBump mocha от 11.0.1 до 11.1.0\nBump eslint-config-prettier от 9.1.0 до 10.0.1\nBump chai и @types/chai\nБамп эслинт от 9.16.0 до 9.19.0\nИсправленные переводы (de,pl)\nОбновление @iobroker/adapter-core до 3.2.3\nОбновление @iobroker/тестирование до 5.0.0",
+                "pt": "Criar versão 1.1.5\nAtualizar info.connection regularmente\nAtualizar dependência de administrador para >=7.4.10\nAtualizar @iobroker/adapter-dev para 1.3.0\nCorrigir problemas de ação de teste\nBump mocha de 11.0.1 para 11.1.0\nBump eslint-config-prettier de 9.1.0 a 10.0.1\nBump chai e @types/chai\nBump eslint de 9.16.0 para 9.19.0\nTraduções corrigidas (de,pl)\nAtualizar @iobroker/adapter-core para 3.2.3\nAtualizar @iobroker/teste para 5.0.0",
+                "nl": "Maak versie 1.1.5 aan\nInfo.connectie regelmatig bijwerken\nDe waarde van niet meer dan 20% van de prijs af fabriek van het product\n@iobroker/adapter-dev bijwerken naar 1.3.0\nProefactieproblemen oplossen\nBump mokka van 11.0.1 tot 11.1.0\nBump eslint-config-prettier van 9.1,0 tot 10.0.1\nBump chai en @types/chai\nBump eslint van 9.16.0 tot 9.19.0\nGecorrigeerde vertalingen (de,pl)\nBijwerken @iobroker/adapter-core naar 3.2.3\nUpdate @iobroker/testing naar 5.0.0",
+                "fr": "Créer la version 1.1.5\nMettre à jour régulièrement info.connection\nMettre à jour la dépendance de l'administration vers >=7.4.10\nMettre à jour @iobroker/adaptateur-dev pour 1.3.0\nCorrection des problèmes d'action lors des essais\nMocha de boules de 11,0.1 à 111,0\nBump eslint-config-prettier de 9.1.0 à 10.0.1\nBump chai et @types/chai\nEscalope de 9.16.0 à 9.19.0\nTraductions corrigées (de,pl)\nMettre à jour @iobroker/adaptateur-core au 3.2.3\nMettre à jour @iobroker/test à 5.0.0",
+                "it": "Creare la versione 1.1.5\nAggiornare info.connection regolarmente\nAggiornare la dipendenza da admin a >=7.4.10\nAggiorna @iobroker/adapter-dev a 1.3.0\nRisolvere i problemi di azione del test\nBump mocha da 11.0.1 a 11.1.0\nBump eslint-config-prettier da 9.1.0 a 10.0.1\nBump chai e @types/chai\nBump eslint da 9.16.0 a 9.19.0\nTraduzioni corrette (de,pl)\nAggiorna @iobroker/adapter-core a 3.2.3\nAggiornamento @iobroker/testing a 5.0.0",
+                "es": "Crear versión 1.1.5\nInformación actualizada.conexión regularmente\nActualizar la dependencia de administración a н=7.4.10\nActualizar @iobroker/adapter-dev a 1.3.0\nProblemas de acción de prueba de fijación\nMocha de bomba de 11.0.1 a 11.1.0\nBump eslint-config-prettier de 9.1.0 a 10.0.1\nBump chai y @tipos/chai\nBump eslint from 9.16.0 to 9.19.0\nTraducciones corregidas (de,pl)\nActualizar @iobroker/adapter-core a 3.2.3\nActualizar @iobroker/testing a 5.0.0",
+                "pl": "Utwórz wersję 1.1.5\nAktualizuj regularne połączenia info.connection\nAktualizacja zależności admin do > = 7.4.10\nAktualizacja @ iobroker / adapter- dev do 1.3.0\nRozwiązanie problemów z działaniem testowym\nBump mocha od 11.0.1 do 11.1.0\nBump eslint- config- pretier od 9.1.0 do 10.0.1\nBump chai i @ types / chai\nEslint bump od 9.16.0 do 9.19.0\nTłumaczenie poprawione (de, pl)\nAktualizacja @ iobroker / adapter- core do 3.2.3\nAktualizacja @ iobroker / testowanie do 5.0.0",
+                "uk": "Створити версію 1.1.5\nОновлення інформації\nОновлення залежності адміністратора до >=7.4.10\nОновлення @iobroker/adapter-dev до 1.3.0\nВиправлення проблем тестової дії\nBump mocha від 11.0.1 до 11.1.0\nBump eslint-config-prettier від 9.1.0 до 10.0.1\nBump chai і @types/chai\nBump eslint від 9.16.0 до 9.19.0\nВиправлені переклади (de,pl)\nОновлення @iobroker/adapter-core до 3.2.3\nОновлення @iobroker/testing до 5.0.0",
+                "zh-cn": "创建 1.1.5 版本\n定期更新信息.连接\n将管理员依赖性更新到 QQ7.4.10\n将 @iobrocco/adapter-dev 更新为 1.3. 0\n解决测试动作问题\n从11.0.1到11.1.0\nBump eslint-config- prettier 从9.1.0 到 10.0.1\nBump chai 和 @ types/ chai\n从9.16.0到9.19.0\n更正的译文(德,pl)\n将 @iobrocco/ adapter- core 更新为 3.2.3\n更新 @ iobus/ testing 到 5. 0.0"
+            },
+            "1.1.4": {
+                "en": "Correct common.news",
+                "de": "Richtig häufig.news",
+                "ru": "Исправный общий.news",
+                "pt": "Correto common.news",
+                "nl": "Correct algemeen nieuws",
+                "fr": "Correct common.news",
+                "it": "Corretto comune.news",
+                "es": "Correcto común.noticias",
+                "pl": "Prawidłowe wiadomości",
+                "uk": "Корисний загальний.news",
+                "zh-cn": "正确的普通新闻"
+            },
+            "1.1.3": {
+                "en": "Changed year in README\nBump prettier from 3.4.1 to 3.4.2\nBump mocha from 10.8.2 to 11.0.1\nBump chai-as-promised and @types/chai-as-promised\nBump sinon from 18.0.0 to 19.0.2\nBump globals from 15.9.0 to 15.14.0",
+                "de": "Geändertes Jahr in README\nStoßfänger von 3.4.1 bis 3.4.2\nStoß Mocha von 10.8.2 bis 11.0.1\nBump chai-as-promised und @types/chai-as-promised\nStoßsinus von 18.0.0 bis 19.0.2\nBump global von 15.9.0 bis 15.14.0",
+                "ru": "Изменение года в README\n3.4.1 - 3.4.2\nС 10.8.2 до 11.0.1\nBump chai-as-promised and @types/chai-as-promised\nBump sinon от 18.0.0 до 19.0.2\nBump globals от 15.9.0 до 15.14.0",
+                "pt": "Ano alterado em README\nBump mais bonita de 3.4.1 para 3.4.2\nBump mocha de 10.8.2 para 11.0.1\nBump chai-as-promised e @types/chai-as-promised\nBump sinon de 18.0.0 para 19.0.2\nBump globals de 15.9.0 para 15.14.0",
+                "nl": "Veranderd jaar in README\nBump mooier van 3.4.1 tot 3.4.2\nBump mokka van 10..8.2 tot 11.0.1\nBump chai-as-promised en @types/chai-as-promised\nBump sinon van 18,0 tot 19,0.2\nBump globals van 15.9.0 naar 15.14.0",
+                "fr": "Année changée en README\nBombe plus jolie du 3.4.1 au 3.4.2\nMocha de pompe du 10.8.2 au 11.0.1\nBump chai-as-promise et @types/chai-as-promise\nPoignée de 18.0.0 à 19.0.2\nBump globals de 15.9.0 à 15.14.0",
+                "it": "Variato anno in README\nPrettier Bump da 3.4.1 a 3.4.2\nBump mocha da 10.8.2 a 11.0.1\nBump chai-as-promised e @types/chai-as-promised\nBump sinon da 18.0.0 a 19.0.2\nBump globali da 15.9.0 a 15.14.0",
+                "es": "Año cambiado en README\nBomba superior de 3.4.1 a 3.4.2\nMocha de bomba de 10.8.2 a 11.0.1\nBump chai-as-promised y @types/chai-as-promised\nBump sinon de 18.0.0 a 19.0.2\nGlobales de bombas de 15.9.0 a 15.14.0",
+                "pl": "Zmieniony rok w README\nPretty od 3.4.1 do 3.4.2\nBump mocha od 10.8.2 do 11.0.1\nBump chai- as- provided i @ types / chai- as- provided\nBump sinon od 18.0.0 do 19.0.2\nBump globals od 15.9.0 do 15.14.0",
+                "uk": "Змінений рік в РЕЖИМ\nBump prettier від 3.4.1 до 3.4.2\nBump mocha від 10.8.2 до 11.0.1\nBump chai-as-promized і @types/chai-as-promized\nЗ 18.0.0 до 19.0.2\nЗ 15.9.0 до 15.14.0",
+                "zh-cn": "读取ME的年份变化\n3.4.1至3.4.2之间的倾角\n从10.8.2到11.0.1\nBump chai-as-promimated and @ types/chai-as-promimated (英语)\n从18.0.0到19.0.2\n从15.9.0到15.14.0的凸起全球"
+            },
+            "1.1.1": {
+                "en": "README.md cosmetics\nAdded Weblate translation badge\nBump cross-spawn from 7.0.3 to 7.0.6\nSwitch to adapter-core3.2.2\nCorrected logic for remote volume changes",
+                "de": "README.md Kosmetika\nHinzugefügt Weblate Übersetzung Badge\nStoßkreuz von 7.0.3 bis 7.0.6\nWechseln Sie zum Adapter-Core3.2.2\nKorrigierte Logik für Remote-Volumenänderungen",
+                "ru": "README.md косметика\nДобавлен значок перевода Weblate\nКросс-спаун с 7.0.3 до 7.0.6\nПереход на адаптер-core3.2.2\nИсправленная логика для изменений удаленного объема",
+                "pt": "Cosméticos README.md\nAdicionado crachá de tradução Weblate\nBump cross-spawn de 7.0.3 para 7.0.6\nMudar para o adaptador-core3.2.2\nLógica correta para mudanças de volume remoto",
+                "nl": "README.md cosmetica\nToegevoegd Weblate translation badge\nBump cross-pion van 7.0.3 tot 7.0.6\nOverschakelen naar adapter-core3.2.2\nGecorrigeerde logica voor volumeveranderingen op afstand",
+                "fr": "Produits cosmétiques README.md\nAjout du badge de traduction Weblate\nBrûlures croisées de 7,0.3 à 7,0,6\nPassez à l'adaptateur-core3.2.2\nLogique corrigée pour les changements de volume à distance",
+                "it": "README.md cosmetici\nAggiunto Weblate traduzione distintivo\nSpawn da 7.0.3 a 7.0.6\nPassare a adattatore-core3.2.2\nLogica corretta per le modifiche del volume remoto",
+                "es": "Cosméticos README.md\nInsignia de traducción de Weblate\nBump cross-spawn de 7.0.3 a 7.0.6\nCambiar a adaptador-core3.2\nLógica corregida para cambios de volumen remoto",
+                "pl": "README.md kosmetyki\nDodano odznakę tłumaczeniową Weblate\nPętla poprzeczna od 7.0.3 do 7.0.6\nPrzełącz na adapter-core3.2.2\nSkorygowana logika dla zdalnych zmian głośności",
+                "uk": "README.md Косметика\nДодано Weblate переклад значок\nБампер-спагін від 7.0.3 до 7.0.6\nПеремикач адаптера-core3.2.2\nВиправлена логіка для зміни віддаленого обсягу",
+                "zh-cn": "README.md 化妆品\n添加 Weblate 翻译徽章\n从7.0.3到7.0.6的交叉弹簧\n切换到适配器核心3.2.2\n远程音量变化的校正逻辑"
+            },
             "1.1.0": {
                 "en": "Fixes as requested for adapter release to repository\nPotentially invalid characters are replaced before creating an object\nsetTimeout used instead of setInterval, clearTimeout added\nCheck values for PollingTime and TimeOut\nMissing sizes added\nState roles reevaluated\nsubscribeState calls eliminated\nInstance prefixes in ObjectIds are omitted when calling setState()\nState change now honors ack flag\nPollingTime and TimeOUT changed to type number\nonReady() stopped when no IP is set\nTesting extended to node 22.x\nExample code removed",
                 "de": "Behebt die angeforderten Korrekturen für die Adapterfreigabe im Repository\nPotenziell ungültige Zeichen werden vor dem Erstellen eines Objekts ersetzt\nsetTimeout wird anstelle von setInterval verwendet, clearTimeout hinzugefügt\nÜberprüfen Sie die Werte für PollingTime und TimeOut\nFehlende Größen hinzugefügt\nStaatliche Rollen werden neu bewertet\nsubscribeState-Aufrufe eliminiert\nInstanzpräfixe in ObjectIds werden beim Aufruf von setState() weggelassen\nBei der Zustandsänderung wird jetzt die Bestätigungsflagge berücksichtigt\nPollingTime und TimeOUT wurden in Typnummer geändert\nonReady() wurde gestoppt, wenn keine IP festgelegt ist\nTests auf Knoten 22.x ausgeweitet\nBeispielcode entfernt",
@@ -28,45 +93,6 @@
                 "pl": "Część / Korekta państwa",
                 "uk": "Батьки /Державні виправлення",
                 "zh-cn": "分析/国家更正"
-            },
-            "1.0.2": {
-                "en": "Modified due to adapter checks",
-                "de": "Geändert durch Adapterkontrollen",
-                "ru": "Модифицировано из-за проверок адаптера",
-                "pt": "Modificado devido às verificações do adaptador",
-                "nl": "Gewijzigd als gevolg van adaptercontroles",
-                "fr": "Modifié en raison des vérifications de l'adaptateur",
-                "it": "Modificato a causa dei controlli dell'adattatore",
-                "es": "Modificado debido a los controles de adaptador",
-                "pl": "Zmodyfikowana z powodu kontroli adaptera",
-                "uk": "Модифіковано за рахунок перевірки адаптера",
-                "zh-cn": "由于适配器检查而修改"
-            },
-            "1.0.1": {
-                "en": "Added config descriptions\nAdded translations for object descriptions\nAdded role definition for all objects\nAdded Timeout config Parameter",
-                "de": "Weitere config Beschreibungen\nÜbersetzungen für Objektbeschreibungen hinzugefügt\nHinzufügen von Rollendefinition für alle Objekte\nHinzugefügt Timeout config Parameter",
-                "ru": "Добавленные описания конфигурации\nДобавленные переводы для описания объектов\nДобавить определение роли для всех объектов\nДобавлен параметр Timeout",
-                "pt": "Descrições de configuração adicionadas\nTraduções adicionadas para descrições de objetos\nDefinição de função adicionada para todos os objetos\nAdicionado parâmetro Timeout config",
-                "nl": "Config-beschrijvingen toegevoegd\nToegevoegde vertalingen voor objectbeschrijvingen\nRoldefinitie toegevoegd voor alle objecten\nTimeout-configuratieparameter toegevoegd",
-                "fr": "Ajout de descriptions de configuration\nAjout de traductions pour les descriptions d'objets\nAjout de la définition du rôle pour tous les objets\nAjout du paramètre de configuration Timeout",
-                "it": "Aggiunto descrizioni di configurazione\nTraduzioni aggiuntive per descrizioni degli oggetti\nDefinizione di ruolo aggiunto per tutti gli oggetti\nAggiunto Timeout config Parameter",
-                "es": "Descripción de configuración agregada\nTraducciones adicionales para descripciones de objetos\nDefinición de papel adicional para todos los objetos\nParámetro de configuración de Timeout",
-                "pl": "Dodano opisy konfiguracyjne\nDodano tłumaczenia opisów obiektów\nDodano definicję roli dla wszystkich obiektów\nDodano parametr konfiguracji timeout",
-                "uk": "Додано описи налаштувань\nДодано переклади для описів об'єктів\nДодано визначення ролі для всіх об'єктів\nДодано параметр налаштування Timeout",
-                "zh-cn": "添加配置描述\n为对象描述添加翻译\n为所有对象添加角色定义\n添加超时配置参数"
-            },
-            "1.0.0": {
-                "en": "initial release",
-                "de": "Ersterstellung",
-                "ru": "первоначальный выпуск",
-                "pt": "lançamento inicial",
-                "nl": "eerste release",
-                "fr": "libération initiale",
-                "it": "rilascio iniziale",
-                "es": "liberación inicial",
-                "pl": "początkowe zwolnienie",
-                "uk": "початковий реліз",
-                "zh-cn": "初步释放"
             }
         },
         "titleLang": {
@@ -112,18 +138,18 @@
         "type": "multimedia",
         "compact": true,
         "connectionType": "local",
-        "dataSource": "assumption",
+        "dataSource": "push",
         "adminUI": {
             "config": "json"
         },
         "dependencies": [
             {
-                "js-controller": ">=5.0.19"
+                "js-controller": ">=6.0.11"
             }
         ],
         "globalDependencies": [
             {
-                "admin": ">=5.1.13"
+                "admin": ">=7.6.17"
             }
         ]
     },
@@ -173,7 +199,7 @@
             "common": {
                 "name": "Player Model",
                 "type": "string",
-                "role": "info.name",
+                "role": "info.model",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -223,7 +249,7 @@
             "common": {
                 "name": "Title1",
                 "type": "string",
-                "role": "text",
+                "role": "media.title",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -248,7 +274,7 @@
             "common": {
                 "name": "Title2",
                 "type": "string",
-                "role": "text",
+                "role": "media.artist",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -273,7 +299,7 @@
             "common": {
                 "name": "Title3",
                 "type": "string",
-                "role": "text",
+                "role": "media.album",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -298,7 +324,7 @@
             "common": {
                 "name": "Image",
                 "type": "string",
-                "role": "text.url",
+                "role": "media.cover.small",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -323,7 +349,7 @@
             "common": {
                 "name": "secs",
                 "type": "number",
-                "role": "value",
+                "role": "media.elapsed",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -348,7 +374,7 @@
             "common": {
                 "name": "totlen",
                 "type": "number",
-                "role": "value",
+                "role": "media.duration",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -373,7 +399,7 @@
             "common": {
                 "name": "str_secs",
                 "type": "string",
-                "role": "text",
+                "role": "media.elapsed.text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -398,7 +424,7 @@
             "common": {
                 "name": "str_totlen",
                 "type": "string",
-                "role": "text",
+                "role": "media.duration.text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -439,6 +465,31 @@
                 "read": true,
                 "write": false,
                 "desc": "Player volume"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.shuffle",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Shuffle State",
+                    "de": "Status Shuffle",
+                    "ru": "Штат Таффл",
+                    "pt": "Estado do shuffle",
+                    "nl": "Schuifstaat",
+                    "fr": "État de choc",
+                    "it": "Stato di Shuffle",
+                    "es": "Shuffle State",
+                    "pl": "Stan Shuffle",
+                    "uk": "Шафл Стан",
+                    "zh-cn": "摇摆状态"
+                },
+                "type": "boolean",
+                "role": "button",
+                "read": true,
+                "write": false,
+                "def": false
             },
             "native": {}
         },
@@ -514,6 +565,45 @@
             "native": {}
         },
         {
+            "_id": "control.shuffle",
+            "type": "state",
+            "common": {
+                "name": "Shuffle",
+                "type": "boolean",
+                "role": "button.shuffle",
+                "read": false,
+                "write": true,
+                "desc": "Toggles Shuffle"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.forward",
+            "type": "state",
+            "common": {
+                "name": "Forward",
+                "type": "boolean",
+                "role": "button.forward",
+                "read": false,
+                "write": true,
+                "desc": "Player Forward"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.backward",
+            "type": "state",
+            "common": {
+                "name": "Backward",
+                "type": "boolean",
+                "role": "button.backward",
+                "read": false,
+                "write": true,
+                "desc": "Player Backward"
+            },
+            "native": {}
+        },
+        {
             "_id": "control.volume",
             "type": "state",
             "common": {
@@ -547,7 +637,7 @@
                     "de": "Status",
                     "ru": "Государство",
                     "pt": "Estado",
-                    "nl": "Staat",
+                    "nl": "Status",
                     "fr": "État",
                     "it": "Stato",
                     "es": "Estado",

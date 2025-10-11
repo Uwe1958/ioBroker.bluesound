@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use strict';
 
 /*
@@ -8,36 +7,33 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
-// @ts-ignore
 const helper = require(`${__dirname}/lib/utils`);
 
 let ip;
-let apiClient;
 let polling;
 let pollingTime;
 var commands = [];
 var entry;
 
-const axios = require(`axios`);
+const axios = require(`axios`).default;
 const { parseString } = require('xml2js');
+const apiClient = axios.create();
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
 
 class Bluesound extends utils.Adapter {
     /**
-     * @param {Partial<utils.AdapterOptions>} [options={}]
+     * @param {Partial<utils.AdapterOptions>} [options]
      */
     constructor(options) {
         super({
             ...options,
             name: 'bluesound',
         });
-        this.apiClient = null;
+        //        this.apiClient = null;
         this.on('ready', this.onReady.bind(this));
-        // @ts-ignore
         this.on('stateChange', this.onStateChange.bind(this));
-        // @ts-ignore
         this.on('unload', this.onUnload.bind(this));
     }
 
@@ -52,21 +48,19 @@ class Bluesound extends utils.Adapter {
         // Reset the connection indicator during startup
         this.setState('info.connection', false, true);
         ip = this.config.IP;
-        // @ts-ignore
         const promises = [];
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
         if (ip) {
-            this.log.info('[Start] Starting adapter bluesound with: ' + ip);
+            this.log.info(`[Start] Starting adapter bluesound with: ${ip}`);
         } else {
             this.log.warn('[Start] No IP Address set');
             return;
         }
-
-        pollingTime = this.config.PollingTime * 1000 || 30000;
+        pollingTime = Number(this.config.PollingTime) * 1000 || 30000;
         if (pollingTime < 120000) {
-            this.log.info('[Start] PollingTime [msec]: ' + pollingTime);
+            this.log.info(`[Start] PollingTime [msec]: ${pollingTime}`);
         } else if (pollingTime >= 120000 && pollingTime <= 300000) {
             this.log.warn('[Start] PollingTime set very high! Status update should be scheduled more often!');
         } else {
@@ -75,23 +69,18 @@ class Bluesound extends utils.Adapter {
             );
             return;
         }
-
-        const timeOUT = this.config.TimeOut * 1000 || 2000;
+        const timeOUT = Number(this.config.TimeOut) * 1000 || 2000;
         if (timeOUT < pollingTime / 10) {
-            this.log.info('[Start] Timeout [msec]: ' + timeOUT);
+            this.log.info(`[Start] Timeout [msec]: ${timeOUT}`);
         } else {
             this.log.error(
                 '[Stop] TimeOut set to an impractical large number! Should be set to less than PollingTime divide by ten',
             );
             return;
         }
-
-        apiClient = axios.create({
-            baseURL: `http://${ip}:11000`,
-            timeout: timeOUT,
-            responseType: 'xml',
-            responseEncoding: 'utf8',
-        });
+        apiClient.defaults.baseURL = `http://${ip}:11000`;
+        apiClient.defaults.timeout = timeOUT;
+        apiClient.defaults.responseEncoding = 'utf8';
 
         // set Info
 
@@ -102,17 +91,17 @@ class Bluesound extends utils.Adapter {
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
                     if (err) {
-                        this.log('Error parsing SyncStatus XML:' + err);
+                        this.log.error(`Error parsing SyncStatus XML:${err}`);
                         return;
                     }
                     this.setState(sNameTag, result.SyncStatus.name, true);
                     this.setState(sModelNameTag, result.SyncStatus.modelName, true);
                 });
             } else {
-                this.log.error('Could not retrieve SyncStatus data, Status code ' + response.status);
+                this.log.error(`Could not retrieve SyncStatus data, Status code ${response.status}`);
             }
         } catch (e) {
-            this.log.error('Could not retrieve SyncStatus data: ' + e);
+            this.log.error(`Could not retrieve SyncStatus data: ${e}`);
         }
         // Get Initial Browse Data
 
@@ -132,6 +121,13 @@ class Bluesound extends utils.Adapter {
         // state = ""
         sNameTag = 'control.state';
         this.setState(sNameTag, '', true);
+        // shuffle = false
+        sNameTag = 'control.shuffle';
+        this.setState(sNameTag, false, true);
+        sNameTag = 'control.forward';
+        this.setState(sNameTag, false, true);
+        sNameTag = 'control.backward';
+        this.setState(sNameTag, false, true);
 
         // volume from player
 
@@ -140,7 +136,7 @@ class Bluesound extends utils.Adapter {
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
                     if (err) {
-                        this.log.error('Error parsing Volume XML:' + err);
+                        this.log.error(`Error parsing Volume XML:${err}`);
                         return;
                     }
                     sNameTag = 'control.volume';
@@ -150,10 +146,10 @@ class Bluesound extends utils.Adapter {
                     this.setState(sNameTag, parseInt(result.volume._), true);
                 });
             } else {
-                this.log.error('Could not retrieve Volume data, Status code ' + response.status);
+                this.log.error(`Could not retrieve Volume data, Status code ${response.status}`);
             }
         } catch (e) {
-            this.log.error('Could not retrieve Volume data: ' + e);
+            this.log.error(`Could not retrieve Volume data: ${e}`);
         }
 
         // Presets
@@ -163,7 +159,7 @@ class Bluesound extends utils.Adapter {
             if (response.status == 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
                     if (err) {
-                        this.log.error('Error parsing Presets XML:' + err);
+                        this.log.error(`Error parsing Presets XML:${err}`);
                         return;
                     }
                     for (const objPreset of result.presets.preset) {
@@ -197,14 +193,13 @@ class Bluesound extends utils.Adapter {
                     }
                 });
             } else {
-                this.log.error('Could not retrieve Presets data, Status code ' + response.status);
+                this.log.error(`Could not retrieve Presets data, Status code ${response.status}`);
             }
         } catch (e) {
-            this.log.error('Could not retrieve Presets data: ' + e);
+            this.log.error(`Could not retrieve Presets data: ${e}`);
         }
 
         // Status
-
         this.readPlayerStatus();
 
         // Polling
@@ -215,113 +210,119 @@ class Bluesound extends utils.Adapter {
 
         // examples for the checkPassword/checkGroup functions
         let result = await this.checkPasswordAsync('admin', 'iobroker');
-        this.log.info('check user admin pw iobroker: ' + result);
+        this.log.info(`check user admin pw iobroker: ${result}`);
 
-        result = await this.checkGroupAsync('admin', 'admin');
-        this.log.info('check group user admin group admin: ' + result);
+        let resulta = await this.checkGroupAsync('admin', 'admin');
+        this.log.info(`check group user admin group admin: ${resulta}`);
     }
 
     /**
-     * Is called when adapter shuts down - callback has to be called under any circumstances!
+     *
      * @param {() => void} callback
      */
-    // @ts-ignore
+
+    //  Is called when adapter shuts down - callback has to be called under any circumstances!
+
     onUnload(callback) {
         try {
             // Here you must clear all timeouts or intervals that may still be active
             clearTimeout(polling);
-            // clearTimeout(timeout2);
-            // ...
-            //            clearInterval(polling);
 
-            // @ts-ignore
+            // Set the connection indicator to false
+            this.setState('info.connection', false, true);
+
             callback();
-        } catch (e) {
-            // @ts-ignore
+        } catch {
             callback();
         }
     }
 
     /**
-     * Is called if a subscribed state changes
+     *
      * @param {string} id
      * @param {ioBroker.State | null | undefined} state
      */
-    // @ts-ignore
-    onStateChange(id, state) {
-        // @ts-ignore
+
+    // Is called if a subscribed state changes
+
+    async onStateChange(id, state) {
         if (state) {
             // The state was changed
-            // @ts-ignore
-            if (state.val && !state.ack) {
+            if (!state.ack) {
                 const pos = id.toString().lastIndexOf('.');
                 switch (id.substring(pos + 1)) {
                     case 'start':
-                        this.getState(id.substring(0, pos) + '.id', (err, status) => {
-                            if (status || status.val) {
-                                const preset = status.val;
+                        try {
+                            const obj = await this.getStateAsync(`${id.substring(0, pos)}.id`);
+                            if (obj || obj.val) {
+                                const preset = obj.val;
                                 apiClient
                                     .get(`/Preset?id=${preset}`)
-                                    .then((response) => {
+                                    .then(response => {
                                         // Handle response
                                         parseString(response.data, (err, result) => {
                                             if (err) {
-                                                this.log.error('Error parsing Preset XML: ' + err);
+                                                this.log.error(`Error parsing Preset XML: ${err}`);
                                                 return;
                                             }
                                             const sStateTag = 'control.state';
-                                            this.setState(sStateTag, result.state, true);
+                                            this.setState(sStateTag, result.state ?? '', true);
+                                            this.setState(id, true, true); // Set acknowledged
                                             this.log.info(`${this.namespace} Preset${preset} Start`);
                                         });
                                     })
-                                    .catch((err) => {
+                                    .catch(err => {
                                         // Handle errors
-                                        //									adapter.log.error("Could not start preset, Status code " + response.status);
-                                        this.log.error('Could not start preset, Status code ' + err);
+                                        // adapter.log.error("Could not start preset, Status code " + response.status);
+                                        this.log.error(`Could not start preset, Status code ${err}`);
                                     });
                             }
-                        });
+                        } catch (err) {
+                            this.log.error(`Error reading ${id.substring(0, pos)}.id: ${err}`);
+                        }
                         this.readPlayerStatus();
                         break;
                     case 'pause':
                         apiClient
-                            .get('/Pause?toggle=1')
-                            .then((response) => {
+                            .get('/Pause')
+                            .then(response => {
                                 // Handle response
                                 parseString(response.data, (err, result) => {
                                     if (err) {
-                                        this.log.error('Error parsing Pause XML: ' + err);
+                                        this.log.error(`Error parsing Pause XML: ${err}`);
                                         return;
                                     }
                                     const sStateTag = 'control.state';
                                     this.setState(sStateTag, result.state, true);
-                                    this.log.info(`${this.namespace} Pause`);
+                                    this.setState(id, true, true); // Set acknowledged
+                                    this.log.info(`${this.namespace} Pause ${result.state}`);
                                 });
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 // Handle errors
-                                this.log.error('Could not set Pause, Status code ' + err);
+                                this.log.error(`Could not set Pause, Status code ${err}`);
                             });
                         this.readPlayerStatus();
                         break;
                     case 'stop':
                         apiClient
                             .get('/Stop')
-                            .then((response) => {
+                            .then(response => {
                                 // Handle response
                                 parseString(response.data, (err, result) => {
                                     if (err) {
-                                        this.log.error('Error parsing Stop XML: ' + err);
+                                        this.log.error(`Error parsing Stop XML: ${err}`);
                                         return;
                                     }
                                     const sStateTag = 'control.state';
                                     this.setState(sStateTag, result.state, true);
+                                    this.setState(id, true, true);
                                     this.log.info(`${this.namespace} Stop`);
                                 });
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 // Handle errors
-                                this.log.error('Could not set stop, Status code ' + err);
+                                this.log.error(`Could not set stop, Status code ${err}`);
                             });
                         this.clearPlayerStatus();
                         break;
@@ -329,21 +330,22 @@ class Bluesound extends utils.Adapter {
                     case 'play':
                         apiClient
                             .get('/Play')
-                            .then((response) => {
+                            .then(response => {
                                 // Handle response
                                 parseString(response.data, (err, result) => {
                                     if (err) {
-                                        this.log.error('Error parsing Play XML: ' + err);
+                                        this.log.error(`Error parsing Play XML: ${err}`);
                                         return;
                                     }
                                     const sStateTag = 'control.state';
                                     this.setState(sStateTag, result.state, true);
+                                    this.setState(id, true, true);
                                     this.log.info(`${this.namespace} Play`);
                                 });
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 // Handle errors
-                                this.log.error('Could not set play, Status code ' + err);
+                                this.log.error(`Could not set play, Status code ${err}`);
                             });
                         this.readPlayerStatus();
                         break;
@@ -351,9 +353,56 @@ class Bluesound extends utils.Adapter {
                         apiClient
                             .get(`/Volume?level=${state.val}`)
                             .then()
-                            .catch((err) => {
+                            .catch(err => {
                                 // Handle errors
-                                this.log.error('Could not set volume, Status code ' + err);
+                                this.log.error(`Could not set volume, Status code ${err}`);
+                            });
+                        this.readPlayerStatus();
+                        break;
+                    case 'shuffle': {
+                        const sShuffleTag = 'info.shuffle';
+                        try {
+                            const valShuffle = await this.getStateAsync(sShuffleTag);
+                            let val = valShuffle.val;
+                            val = !val;
+                            apiClient
+                                .get(`/Shuffle?state=${Number(val)}`)
+                                .then(() => {
+                                    this.setState(sShuffleTag, val, true);
+                                    this.setState(id, state.val, true);
+                                })
+                                .catch(err => {
+                                    // Handle errors
+                                    this.log.error(`Could not set shuffle, Status code ${err}`);
+                                });
+                        } catch (err) {
+                            this.log.error(`Error reading ${sShuffleTag}: ${err}`);
+                        }
+                        this.readPlayerStatus();
+                        break;
+                    }
+                    case 'forward':
+                        apiClient
+                            .get('/Skip')
+                            .then(() => {
+                                // Handle response
+                                this.setState(id, true, true);
+                            })
+                            .catch(err => {
+                                // Handle errors
+                                this.log.error(`Could not set skip, Status code ${err}`);
+                            });
+                        break;
+                    case 'backward':
+                        apiClient
+                            .get('/Back')
+                            .then(() => {
+                                // Handle response
+                                this.setState(id, true, true);
+                            })
+                            .catch(err => {
+                                // Handle errors
+                                this.log.error(`Could not set back, Status code ${err}`);
                             });
                         break;
                     case 'command':
@@ -367,52 +416,59 @@ class Bluesound extends utils.Adapter {
                         if (key === 'HOME' || (key === 'BACK' && commands.length < 2)) {
                             commands.length = 0;
                             this.log.info('Stack: ' + commands.length);
-                            let a = new Promise((resolve) => {
+                            let a = new Promise(resolve => {
                                 var ret = this.initMenu();
                                 resolve(ret);
                             });
-                            a.then((val) => {
+                            a.then(val => {
                                 this.log.debug('Menu initialized');
                             });
                         } else if (key === 'BACK') {
                             //                            commands.pop();
                             commands.pop();
                             var newKey = commands[commands.length - 1];
-                            let res = new Promise((resolve) => {
+                            let res = new Promise(resolve => {
                                 var ret = this.readBrowseData(newKey);
                                 resolve(ret);
                             });
-                            res.then((val) => {
+                            res.then(val => {
                                 this.log.debug('List: ' + val);
                                 this.setState('info.list', val, true);
                             });
                         } else {
                             commands.push(key);
-                            let res = new Promise((resolve) => {
+                            let res = new Promise(resolve => {
                                 var ret = this.readBrowseData(key);
                                 resolve(ret);
                             });
-                            res.then((val) => {
+                            res.then(val => {
                                 this.log.debug('List: ' + val);
                                 this.setState('info.list', val, true);
                             });
                         }
                         break;
                     default:
-                    //                        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+                    //this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
                 }
             }
         } else {
             // The state was deleted
-            // @ts-ignore
             this.log.info(`state ${id} deleted`);
         }
     }
 
+    /**
+     * @param {string} str - the string
+     */
     stripHTML(str) {
         const strneu = str.replace('&amp;', '&');
         return strneu;
     }
+
+    /**
+     *
+     * @param {number} secs - the string
+     */
 
     convertSecs(secs) {
         const date = new Date(null);
@@ -440,7 +496,7 @@ class Bluesound extends utils.Adapter {
         let i;
         for (i = 1; i < 4; i++) {
             const sStateTag = `info.title${i}`;
-            await this.setStateAsync(sStateTag, { val: '', ack: true });
+            await this.setState(sStateTag, { val: '', ack: true });
         }
     }
 
@@ -450,7 +506,8 @@ class Bluesound extends utils.Adapter {
         let i;
         let varSecs;
         let strSecs;
-        let varTotLen, strTotLen, imageUrl, varVolume, pState;
+        let varTotLen, strTotLen, varVolume, pState, varShuffle;
+        let imageUrl = new String();
 
         for (i = 1; i < 4; i++) {
             title[i] = '';
@@ -458,10 +515,13 @@ class Bluesound extends utils.Adapter {
         try {
             const response = await apiClient.get('/Status');
             if (response.status === 200) {
+                // Set the connection indicator to true on succesful read
+                this.setState('info.connection', true, true);
+
                 //const result = response.data;
                 parseString(response.data, (err, result) => {
                     if (err) {
-                        this.log.error('Error parsing Status XML:' + err);
+                        this.log.error(`Error parsing Status XML:${err}`);
                         return;
                     }
 
@@ -500,82 +560,116 @@ class Bluesound extends utils.Adapter {
 
                     varVolume = result.status.volume[0];
                     pState = result.status.state[0];
+
+                    varShuffle = result.status.shuffle[0] == 0 ? false : true;
                 });
 
-                strTotLen = this.convertSecs(varTotLen);
+                strTotLen = this.convertSecs(Number(varTotLen));
 
                 if (imageUrl.substring(0, 4) != 'http') {
-                    imageUrl = `http://${ip}:11000` + imageUrl;
+                    imageUrl = `http://${ip}:11000${imageUrl}`;
                 }
 
                 await Promise.all(promises);
 
-                const sNameTag = 'control.state';
-                const pStateOld = await this.getStateAsync(sNameTag);
+                const sShuffleTag = 'info.shuffle';
+                try {
+                    const sShuffleOld = await this.getStateAsync(sShuffleTag);
 
-                if (pState != pStateOld.val) {
-                    const sStateTag = 'control.state';
-                    await this.setStateAsync(sStateTag, { val: pState, ack: true });
+                    if (varShuffle != sShuffleOld.val) {
+                        await this.setState(sShuffleTag, { val: varShuffle, ack: true });
+                    }
+                } catch (err) {
+                    this.log.error(`Error reading ${sShuffleTag}: ${err}`);
+                }
+
+                const sNameTag = 'control.state';
+                try {
+                    const pStateOld = await this.getStateAsync(sNameTag);
+
+                    if (pState != pStateOld.val) {
+                        let sStateTag = 'control.state';
+                        await this.setState(sStateTag, { val: pState, ack: true });
+                    }
+                } catch (err) {
+                    this.log.error(`Error reading ${sNameTag}: ${err}`);
                 }
 
                 if (pState == 'stream' || pState == 'play') {
                     for (i = 1; i < 4; i++) {
-                        const sStateTag = `info.title${i}`;
-                        const valOld = await this.getStateAsync(sStateTag);
-                        if (valOld.val != title[i]) {
-                            await this.setStateAsync(sStateTag, { val: title[i], ack: true });
-                            this.log.info(`title${i} changed: ` + title[i]);
+                        let sStateTag = `info.title${i}`;
+                        try {
+                            const valOld = await this.getStateAsync(sStateTag);
+                            if (valOld.val != title[i]) {
+                                await this.setState(sStateTag, { val: title[i], ack: true });
+                                this.log.info(`title${i} changed: ${title[i]}`);
+                            }
+                        } catch (err) {
+                            this.log.error(`Error reading ${sStateTag}: ${err}`);
                         }
                     }
 
                     let sStateTag = 'info.secs';
-                    await this.setStateAsync(sStateTag, { val: parseInt(varSecs), ack: true });
+                    await this.setState(sStateTag, { val: parseInt(varSecs), ack: true });
 
                     sStateTag = 'info.totlen';
-                    await this.setStateAsync(sStateTag, { val: parseInt(varTotLen), ack: true });
+                    await this.setState(sStateTag, { val: parseInt(varTotLen), ack: true });
 
                     sStateTag = 'info.str_secs';
-                    await this.setStateAsync(sStateTag, { val: strSecs, ack: true });
+                    await this.setState(sStateTag, { val: strSecs, ack: true });
 
                     sStateTag = 'info.str_totlen';
-                    await this.setStateAsync(sStateTag, { val: strTotLen, ack: true });
+                    await this.setState(sStateTag, { val: strTotLen, ack: true });
 
                     sStateTag = 'info.image';
-                    let valOld = await this.getStateAsync(sStateTag);
+                    try {
+                        let valOld = await this.getStateAsync(sStateTag);
 
-                    if (valOld.val != imageUrl) {
-                        await this.setStateAsync(sStateTag, { val: imageUrl, ack: true });
-                        this.log.info('Image changed: ' + imageUrl);
+                        if (valOld.val != imageUrl) {
+                            await this.setState(sStateTag, { val: imageUrl.toString(), ack: true });
+                            this.log.info(`Image changed: ${imageUrl}`);
+                        }
+                    } catch (err) {
+                        this.log.error(`Error reading ${sStateTag}: ${err}`);
                     }
 
                     sStateTag = 'info.volume';
-                    valOld = await this.getStateAsync(sStateTag);
-                    if (valOld.val != varVolume) {
-                        await this.setStateAsync(sStateTag, { val: parseInt(varVolume), ack: true });
-                        sStateTag = 'control.volume';
-                        await this.setStateAsync(sStateTag, { val: parseInt(varVolume), ack: true });
-                        this.log.info('Volume changed: ' + varVolume);
+                    try {
+                        let valOld = await this.getStateAsync(sStateTag);
+                        if (valOld.val != varVolume) {
+                            await this.setState(sStateTag, { val: parseInt(varVolume), ack: true });
+                            sStateTag = 'control.volume';
+                            await this.setState(sStateTag, { val: parseInt(varVolume), ack: true });
+                            this.log.info(`Volume changed: ${varVolume}`);
+                        }
+                    } catch (err) {
+                        this.log.error(`Error reading ${sStateTag}: ${err}`);
                     }
                 } else {
                     for (i = 1; i < 4; i++) {
                         const sStateTag = `info.title${i}`;
-                        await this.setStateAsync(sStateTag, { val: '', ack: true });
+                        await this.setState(sStateTag, { val: '', ack: true });
                     }
 
                     let sStateTag = 'info.secs';
-                    await this.setStateAsync(sStateTag, { val: 0, ack: true });
+                    await this.setState(sStateTag, { val: 0, ack: true });
 
                     sStateTag = 'info.totlen';
-                    await this.setStateAsync(sStateTag, { val: 0, ack: true });
+                    await this.setState(sStateTag, { val: 0, ack: true });
 
                     sStateTag = 'info.image';
-                    await this.setStateAsync(sStateTag, { val: '', ack: true });
+                    await this.setState(sStateTag, { val: '', ack: true });
                 }
             } else {
-                this.log.error('Could not retrieve status data, Status code ' + response.status);
+                this.log.error(`Could not retrieve status data, Status code ${response.status}`);
+
+                // Set the connection indicator to false on unsuccesful read
+                this.setState('info.connection', false, true);
             }
         } catch (e) {
-            this.log.error('Could not retrieve status data: ' + e);
+            this.log.error(`Could not retrieve status data: ${e}`);
+            // Set the connection indicator to false on unsuccesful read
+            this.setState('info.connection', false, true);
         }
         return true;
     }
@@ -869,14 +963,12 @@ class Bluesound extends utils.Adapter {
     }
 }
 
-// @ts-ignore
 if (require.main !== module) {
     // Export the constructor in compact mode
     /**
-     * @param {Partial<utils.AdapterOptions>} [options={}]
+     * @param {Partial<utils.AdapterOptions>} [options]
      */
-    module.exports = (options) => new Bluesound(options);
-    // @ts-ignore
+    module.exports = options => new Bluesound(options);
 } else {
     // otherwise start the instance directly
     new Bluesound();
