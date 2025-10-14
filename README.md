@@ -45,6 +45,7 @@ The following functions are implemented:
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Add info.list and control.command
 - (Uwe Nagel) Changes according to ioBroker Check
 - (Uwe Nagel) Bump @types/node from 24.5.2 to 24.6.1
 - (Uwe Nagel) Bump chai from 6.0.1 to 6.2.0

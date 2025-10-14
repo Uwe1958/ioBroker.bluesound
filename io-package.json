@@ -652,6 +652,36 @@
                 "desc": "Current player state"
             },
             "native": {}
+        },
+        {
+            "_id": "info.list",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "List"
+                },
+                "type": "json",
+                "role": "string",
+                "read": true,
+                "write": true,
+                "desc": "Object to show a list"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.command",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Command"
+                },
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": true,
+                "desc": "Object for player commands"
+            },
+            "native": {}
         }
     ]
 }

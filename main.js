@@ -22,7 +22,7 @@ const apiClient = axios.create();
 
 class Bluesound extends utils.Adapter {
     /**
-     * @param {Partial<utils.AdapterOptions>} [options]
+     * @param {Partial<utils.AdapterOptions>} [options] Options defined
      */
     constructor(options) {
         super({
@@ -101,6 +101,9 @@ class Bluesound extends utils.Adapter {
         } catch (e) {
             console.error(`Could not retrieve SyncStatus data: ${e}`);
         }
+        // Get Initial Browse Data
+
+        await this.initMenu();
 
         // Initialize Control
 
@@ -626,12 +629,69 @@ class Bluesound extends utils.Adapter {
         }
         return true;
     }
+    /**
+     * @param {string} key Keyword for Browse command
+     */
+    async readBrowseData(key) {
+        let res = JSON.stringify(-1);
+        var browseKey;
+
+        if (key === '') {
+            browseKey = '/Browse';
+        } else if (key.substring(0, 1) === '/') {
+            browseKey = key;
+        } else {
+            browseKey = `/Browse?&key=${key}`;
+        }
+        this.log.debug(`Browsekey: ${browseKey}`);
+        try {
+            const response = await apiClient.get(browseKey);
+            if (response.status === 200) {
+                parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
+                    if (err) {
+                        this.log.error(`Error parsing Browse XML: ${err}`);
+                    }
+                    this.log.debug(JSON.stringify(result));
+                    this.setForeignState('0_userdata.0.browseKey', JSON.stringify(result), true);
+                    const switchKey = Object.keys(result).toString();
+                    this.log.debug(`Root: ${switchKey}`);
+                    switch (switchKey) {
+                        case 'browse':
+                            var myArr = [];
+                            var entry = {
+                                text: '...',
+                                browseKey: 'BACK',
+                            };
+                            break;
+                    }
+                });
+            } else {
+                this.log.error(`Could not retrieve Browse data, Status code ${response.status}`);
+            }
+            return res;
+        } catch (e) {
+            this.log.error(`Could not retrieve Browse data: ${e}`);
+            return res;
+        }
+    }
+    async initMenu() {
+        var templist = await this.readBrowseData('/Browse'); // Top level menu
+
+        // Entries Library and Bluetooth are eliminated (Library call exceed timeout regularly)
+
+        let tempJSON = JSON.stringify(
+            JSON.parse(templist).filter(function (item) {
+                return item.text != 'Library' && item.text != 'Bluetooth';
+            }),
+        );
+        this.setState('info.list', tempJSON, true);
+    }
 }
 
 if (require.main !== module) {
     // Export the constructor in compact mode
     /**
-     * @param {Partial<utils.AdapterOptions>} [options]
+     * @param {Partial<utils.AdapterOptions>} [options] Option defined
      */
     module.exports = options => new Bluesound(options);
 } else {
