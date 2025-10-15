@@ -632,14 +632,12 @@ class Bluesound extends utils.Adapter {
     /**
      * @param {string} key Keyword for Browse command
      */
-    async readBrowseData(key) {
+    async readBrowseData(key = '') {
         let res = JSON.stringify(-1);
         var browseKey;
 
-        if (key === '') {
-            browseKey = '/Browse';
-        } else if (key.substring(0, 1) === '/') {
-            browseKey = key;
+        if (key === '' || key === 'HOME') {
+            browseKey = '/ui/browseMenuGroup?service=LocalMusic';
         } else {
             browseKey = `/Browse?&key=${key}`;
         }
@@ -648,22 +646,36 @@ class Bluesound extends utils.Adapter {
             const response = await apiClient.get(browseKey);
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
+                    var myArr = [];
                     if (err) {
                         this.log.error(`Error parsing Browse XML: ${err}`);
+                    } else {
+                        this.setForeignState('0_userdata.0.browseKey', JSON.stringify(result), true);
+                        const switchKey = Object.keys(result).toString();
+                        this.log.debug(`Root: ${switchKey}`);
+                        var entry;
+                        /*                    var entry = {
+                            text: '...',
+                            browseKey: 'BACK',
+                        };
+                        myArr.push(entry);*/
+                        switch (switchKey) {
+                            case 'screen':
+                                if ('row' in result.screen) {
+                                    for (const objRow of result.screen.row) {
+                                        entry = {
+                                            text: `${objRow.action.title}`,
+                                            browseKey: `${objRow.action.URI}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                } else {
+                                    this.log.debug(`result: =${JSON.stringify(result)}`);
+                                }
+                                break;
+                        }
                     }
-                    this.log.debug(JSON.stringify(result));
-                    this.setForeignState('0_userdata.0.browseKey', JSON.stringify(result), true);
-                    const switchKey = Object.keys(result).toString();
-                    this.log.debug(`Root: ${switchKey}`);
-                    switch (switchKey) {
-                        case 'browse':
-                            var myArr = [];
-                            var entry = {
-                                text: '...',
-                                browseKey: 'BACK',
-                            };
-                            break;
-                    }
+                    res = JSON.stringify(myArr);
                 });
             } else {
                 this.log.error(`Could not retrieve Browse data, Status code ${response.status}`);
@@ -675,16 +687,9 @@ class Bluesound extends utils.Adapter {
         }
     }
     async initMenu() {
-        var templist = await this.readBrowseData('/Browse'); // Top level menu
+        var templist = await this.readBrowseData(); // Top level menu
 
-        // Entries Library and Bluetooth are eliminated (Library call exceed timeout regularly)
-
-        let tempJSON = JSON.stringify(
-            JSON.parse(templist).filter(function (item) {
-                return item.text != 'Library' && item.text != 'Bluetooth';
-            }),
-        );
-        this.setState('info.list', tempJSON, true);
+        this.setState('info.list', templist, true);
     }
 }
 
