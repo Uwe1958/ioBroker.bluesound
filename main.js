@@ -757,22 +757,53 @@ class Bluesound extends utils.Adapter {
                                         };
                                         myArr.push(entry);
                                     }
+                                } else if (result.screen.id === 'screen-LocalMusic-1') {
+                                    entry = {
+                                        text: '...',
+                                        browseKey: 'BACK',
+                                    };
+                                    myArr.push(entry);
+                                    for (const objItem of result.screen.list.item) {
+                                        entry = {
+                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                            browseKey: `${objItem.playAction.URI}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                    if ('nextLink' in result.screen.list) {
+                                        entry = {
+                                            text: 'NEXT',
+                                            browseKey: `${result.screen.list.nextLink}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
                                 } else {
                                     this.log.debug(`result: =${JSON.stringify(result)}`);
                                 }
                                 break;
                             case 'list':
+                                this.log.info(`type: ${result.list.item[0].action.resultType}`);
                                 entry = {
                                     text: '...',
                                     browseKey: 'BACK',
                                 };
                                 myArr.push(entry);
-                                for (const objItem of result.list.item) {
-                                    entry = {
-                                        text: `${objItem.action.title}`,
-                                        browseKey: `${objItem.action.URI}`,
-                                    };
-                                    myArr.push(entry);
+                                if (`${result.list.item[0].action.resultType}` === 'Artist') {
+                                    for (const objItem of result.list.item) {
+                                        entry = {
+                                            text: `${objItem.action.title}`,
+                                            browseKey: `${objItem.action.URI}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                } else if (`${result.list.item[0].action.resultType}` === 'Album') {
+                                    for (const objItem of result.list.item) {
+                                        entry = {
+                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                            browseKey: `${objItem.playAction.URI}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
                                 }
                                 if ('nextLink' in result.list) {
                                     entry = {
