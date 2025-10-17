@@ -12,6 +12,7 @@ const helper = require(`${__dirname}/lib/utils`);
 let ip;
 let polling;
 let pollingTime;
+var commands = [];
 
 const axios = require(`axios`).default;
 const { parseString } = require('xml2js');
@@ -403,6 +404,49 @@ class Bluesound extends utils.Adapter {
                                 this.log.error(`Could not set back, Status code ${err}`);
                             });
                         break;
+                    case 'command':
+                        this.log.info(`key=${state.val}`);
+                        var key;
+                        try {
+                            key = JSON.parse(`${state.val}`)['browseKey'];
+                            this.log.debug(`BrowseKey New: ${key}`);
+                        } catch (e) {
+                            this.log.error(`Error parsing command ${e}`);
+                        }
+                        if (key === 'HOME' || (key === 'BACK' && commands.length < 2)) {
+                            commands.length = 0;
+                            this.log.info(`Stack: ${commands.length}`);
+                            let a = new Promise(resolve => {
+                                var ret = this.initMenu();
+                                resolve(ret);
+                            });
+                            a.then(val => {
+                                this.log.debug(`Menu initialized ${val}`);
+                            });
+                        } else if (key === 'BACK') {
+                            //                            commands.pop();
+                            commands.pop();
+                            var newKey = commands[commands.length - 1];
+                            let res = new Promise(resolve => {
+                                var ret = this.readBrowseData(newKey);
+                                resolve(ret);
+                            });
+                            res.then(val => {
+                                this.log.debug(`List: ${val}`);
+                                this.setState('info.list', val, true);
+                            });
+                        } else {
+                            commands.push(key);
+                            let res = new Promise(resolve => {
+                                var ret = this.readBrowseData(key);
+                                resolve(ret);
+                            });
+                            res.then(val => {
+                                //                                this.log.debug(`List: ${val}`);
+                                this.setState('info.list', val, true);
+                            });
+                        }
+                        break;
                     default:
                     //this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
                 }
@@ -639,7 +683,7 @@ class Bluesound extends utils.Adapter {
         if (key === '' || key === 'HOME') {
             browseKey = '/ui/browseMenuGroup?service=LocalMusic';
         } else {
-            browseKey = `/Browse?&key=${key}`;
+            browseKey = `${key}`;
         }
         this.log.debug(`Browsekey: ${browseKey}`);
         try {
@@ -661,7 +705,7 @@ class Bluesound extends utils.Adapter {
                         myArr.push(entry);*/
                         switch (switchKey) {
                             case 'screen':
-                                if ('row' in result.screen) {
+                                if (result.screen.id === 'screen-LocalMusic') {
                                     for (const objRow of result.screen.row) {
                                         entry = {
                                             text: `${objRow.action.title}`,
@@ -669,10 +713,84 @@ class Bluesound extends utils.Adapter {
                                         };
                                         myArr.push(entry);
                                     }
+                                } else if (result.screen.id === 'screen-LocalMusic-0') {
+                                    entry = {
+                                        text: '...',
+                                        browseKey: 'BACK',
+                                    };
+                                    myArr.push(entry);
+                                    for (const objItem of result.screen.list.item) {
+                                        var regExP = new RegExp(' ', 'g');
+                                        let artist = `${objItem.title}`.replace(regExP, '%2B');
+                                        entry = {
+                                            text: `${objItem.action.title}`,
+                                            browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                    if ('nextLink' in result.screen.list) {
+                                        entry = {
+                                            text: 'NEXT',
+                                            browseKey: `${result.screen.list.nextLink}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                } else if (result.screen.id === 'screen-LocalMusic-Artist') {
+                                    entry = {
+                                        text: '...',
+                                        browseKey: 'BACK',
+                                    };
+                                    myArr.push(entry);
+                                    if (Array.isArray(result.screen.row[0].largeThumbnail)) {
+                                        for (const objItem of result.screen.row[0].largeThumbnail) {
+                                            entry = {
+                                                text: `${objItem.action.title}`,
+                                                browseKey: `${objItem.playAction.URI}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    } else {
+                                        const objItem = result.screen.row[0].largeThumbnail;
+                                        entry = {
+                                            text: `${objItem.action.title}`,
+                                            browseKey: `${objItem.playAction.URI}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
                                 } else {
                                     this.log.debug(`result: =${JSON.stringify(result)}`);
                                 }
                                 break;
+                            case 'list':
+                                entry = {
+                                    text: '...',
+                                    browseKey: 'BACK',
+                                };
+                                myArr.push(entry);
+                                for (const objItem of result.list.item) {
+                                    entry = {
+                                        text: `${objItem.action.title}`,
+                                        browseKey: `${objItem.action.URI}`,
+                                    };
+                                    myArr.push(entry);
+                                }
+                                if ('nextLink' in result.list) {
+                                    entry = {
+                                        text: 'NEXT',
+                                        browseKey: `${result.list.nextLink}`,
+                                    };
+                                    myArr.push(entry);
+                                }
+                                break;
+                            case 'playlist':
+                                entry = {
+                                    text: 'Content added, ... ',
+                                    browseKey: 'BACK',
+                                };
+                                myArr.push(entry);
+                                break;
+                            default:
+                                this.log.info(result);
                         }
                     }
                     res = JSON.stringify(myArr);
