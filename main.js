@@ -22,7 +22,7 @@ const apiClient = axios.create();
 
 class Bluesound extends utils.Adapter {
     /**
-     * @param {Partial<utils.AdapterOptions>} [options]
+     * @param {Partial<utils.AdapterOptions>} [options] Options defined
      */
     constructor(options) {
         super({
@@ -631,7 +631,7 @@ class Bluesound extends utils.Adapter {
 if (require.main !== module) {
     // Export the constructor in compact mode
     /**
-     * @param {Partial<utils.AdapterOptions>} [options]
+     * @param {Partial<utils.AdapterOptions>} [options] Options defined
      */
     module.exports = options => new Bluesound(options);
 } else {
