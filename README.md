@@ -42,8 +42,7 @@ The following functions are implemented:
 - Playlist backward (triggered by setting 'control.backward' to true)
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 1.2.1 (2025-10-18)
 
 - (Uwe Nagel) Changes according to ioBroker Check
 - (Uwe Nagel) Bump @types/node from 24.5.2 to 24.6.1
