@@ -845,7 +845,7 @@ class Bluesound extends utils.Adapter {
 if (require.main !== module) {
     // Export the constructor in compact mode
     /**
-     * @param {Partial<utils.AdapterOptions>} [options] Option defined
+     * @param {Partial<utils.AdapterOptions>} [options] Options defined
      */
     module.exports = options => new Bluesound(options);
 } else {
