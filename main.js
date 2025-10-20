@@ -405,11 +405,11 @@ class Bluesound extends utils.Adapter {
                             });
                         break;
                     case 'command':
-                        this.log.info(`key=${state.val}`);
+                        //                        this.log.info(`key=${state.val}`);
                         var key;
                         try {
                             key = JSON.parse(`${state.val}`)['browseKey'];
-                            this.log.debug(`BrowseKey New: ${key}`);
+                            //                            this.log.debug(`BrowseKey New: ${key}`);
                         } catch (e) {
                             this.log.error(`Error parsing command ${e}`);
                         }
@@ -418,11 +418,10 @@ class Bluesound extends utils.Adapter {
                             this.log.info(`Stack: ${commands.length}`);
                             let a = new Promise(resolve => {
                                 var ret = this.initMenu();
+                                this.log.debug(`Menu initialized`);
                                 resolve(ret);
                             });
-                            a.then(val => {
-                                this.log.debug(`Menu initialized ${val}`);
-                            });
+                            a.then(() => {});
                         } else if (key === 'BACK') {
                             //                            commands.pop();
                             commands.pop();
@@ -698,11 +697,6 @@ class Bluesound extends utils.Adapter {
                         const switchKey = Object.keys(result).toString();
                         this.log.debug(`Root: ${switchKey}`);
                         var entry;
-                        /*                    var entry = {
-                            text: '...',
-                            browseKey: 'BACK',
-                        };
-                        myArr.push(entry);*/
                         switch (switchKey) {
                             case 'screen':
                                 if (result.screen.id === 'screen-LocalMusic') {
@@ -714,20 +708,12 @@ class Bluesound extends utils.Adapter {
                                         myArr.push(entry);
                                     }
                                 } else if (result.screen.id === 'screen-LocalMusic-0') {
+                                    // Artists alphabetical list
                                     entry = {
                                         text: '...',
                                         browseKey: 'BACK',
                                     };
                                     myArr.push(entry);
-                                    /*                                    for (const objItem of result.screen.list.item) {
-                                        var regExP = new RegExp(' ', 'g');
-                                        let artist = `${objItem.title}`.replace(regExP, '%2B');
-                                        entry = {
-                                            text: `${objItem.action.title}`,
-                                            browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
-                                        };
-                                        myArr.push(entry);
-                                    }*/
                                     for (const objItem of result.screen.list.index.item) {
                                         entry = {
                                             text: `${objItem.key}   ->`,
@@ -735,13 +721,6 @@ class Bluesound extends utils.Adapter {
                                         };
                                         myArr.push(entry);
                                     }
-                                    /*                                    if ('nextLink' in result.screen.list) {
-                                        entry = {
-                                            text: 'NEXT',
-                                            browseKey: `${result.screen.list.nextLink}`,
-                                        };
-                                        myArr.push(entry);
-                                    }*/
                                 } else if (result.screen.id === 'screen-LocalMusic-Artist') {
                                     entry = {
                                         text: '...',
@@ -765,12 +744,20 @@ class Bluesound extends utils.Adapter {
                                         myArr.push(entry);
                                     }
                                 } else if (result.screen.id === 'screen-LocalMusic-1') {
+                                    // Albums alphabetical list
                                     entry = {
                                         text: '...',
                                         browseKey: 'BACK',
                                     };
                                     myArr.push(entry);
-                                    for (const objItem of result.screen.list.item) {
+                                    for (const objItem of result.screen.list.index.item) {
+                                        entry = {
+                                            text: `${objItem.key}   ->`,
+                                            browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                    /*                                    for (const objItem of result.screen.list.item) {
                                         entry = {
                                             text: `${objItem.subTitle} - ${objItem.title}`,
                                             browseKey: `${objItem.playAction.URI}`,
@@ -783,7 +770,7 @@ class Bluesound extends utils.Adapter {
                                             browseKey: `${result.screen.list.nextLink}`,
                                         };
                                         myArr.push(entry);
-                                    }
+                                    }*/
                                 } else if (result.screen.id === 'screen-LocalMusic-2') {
                                     entry = {
                                         text: '...',
@@ -840,7 +827,7 @@ class Bluesound extends utils.Adapter {
                                 }
                                 break;
                             case 'list':
-                                this.log.info(`type: ${JSON.stringify(result)}`);
+                                //this.log.info(`type: ${JSON.stringify(result)}`);
                                 entry = {
                                     text: '...',
                                     browseKey: 'BACK',
@@ -866,16 +853,18 @@ class Bluesound extends utils.Adapter {
                                     if (`${result.list.item[0].action.resultType}` === 'Artist') {
                                         //                                        this.log.info(result);
                                         for (const objItem of result.list.item) {
+                                            var regExP = new RegExp(' ', 'g');
+                                            let artist = `${objItem.title}`.replace(regExP, '%2B');
                                             entry = {
                                                 text: `${objItem.action.title}`,
-                                                browseKey: `${objItem.action.URI}`,
+                                                browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
                                             };
                                             myArr.push(entry);
                                         }
                                     } else if (`${result.list.item[0].action.resultType}` === 'Album') {
                                         for (const objItem of result.list.item) {
                                             entry = {
-                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                text: `${objItem.title} - ${objItem.subTitle}`,
                                                 browseKey: `${objItem.playAction.URI}`,
                                             };
                                             myArr.push(entry);
