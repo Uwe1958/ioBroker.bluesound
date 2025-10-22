@@ -757,39 +757,37 @@ class Bluesound extends utils.Adapter {
                                         };
                                         myArr.push(entry);
                                     }
-                                    /*                                    for (const objItem of result.screen.list.item) {
-                                        entry = {
-                                            text: `${objItem.subTitle} - ${objItem.title}`,
-                                            browseKey: `${objItem.playAction.URI}`,
-                                        };
-                                        myArr.push(entry);
-                                    }
-                                    if ('nextLink' in result.screen.list) {
-                                        entry = {
-                                            text: 'NEXT',
-                                            browseKey: `${result.screen.list.nextLink}`,
-                                        };
-                                        myArr.push(entry);
-                                    }*/
                                 } else if (result.screen.id === 'screen-LocalMusic-2') {
                                     entry = {
                                         text: '...',
                                         browseKey: 'BACK',
                                     };
                                     myArr.push(entry);
-                                    for (const objItem of result.screen.list.item) {
+                                    for (const objItem of result.screen.list.index.item) {
                                         entry = {
-                                            text: `${objItem.title}`,
-                                            browseKey: `${objItem.action.URI}`,
+                                            text: `${objItem.key}   ->`,
+                                            browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
                                         };
                                         myArr.push(entry);
                                     }
+                                } else if (result.screen.id === 'screen-LocalMusic-4') {
+                                    // Playlists
                                     entry = {
-                                        text: 'NEXT',
-                                        browseKey: `${commands[commands.length - 1]}&offset=30`,
+                                        text: '...',
+                                        browseKey: 'BACK',
                                     };
                                     myArr.push(entry);
+                                    for (const objItem of result.screen.list.item) {
+                                        var regExp = new RegExp('(?<=id=).+', 'gm');
+                                        var playlistID = `${objItem.playAction.URI}`.match(regExp)[0];
+                                        entry = {
+                                            text: `${objItem.action.title}`,
+                                            browseKey: `/Add?playlistid=${playlistID}&playnow=1&service=LocalMusic&shuffle=1`,
+                                        };
+                                        myArr.push(entry);
+                                    }
                                 } else if (result.screen.id === 'screen-LocalMusic-Genres') {
+                                    // Genres list
                                     entry = {
                                         text: '...',
                                         browseKey: 'BACK',
@@ -798,24 +796,65 @@ class Bluesound extends utils.Adapter {
                                     for (const objItem of result.screen.list.item) {
                                         entry = {
                                             text: `${objItem.title}`,
-                                            browseKey: `${objItem.action.URI}`,
+                                            browseKey: `/ui/browseGrouped?browseIndex=2&menuGroupId=Genres&service=LocalMusic&title=Albums&type=Album&url=%2Flibrary%2Fv1%2FAlbums%3Fgenre%3D${objItem.title}%26service%3DLocalMusic`,
                                         };
                                         myArr.push(entry);
                                     }
-                                    if ('nextLink' in result.screen.list) {
+                                } else if (result.screen.id === 'screen-Genres-2') {
+                                    // Genre
+                                    if ('list' in result.screen) {
                                         entry = {
-                                            text: 'NEXT',
-                                            browseKey: `${result.screen.list.nextLink}`,
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                        };
+                                        myArr.push(entry);
+                                        if (Array.isArray(result.screen.list.item)) {
+                                            for (const objItem of result.screen.list.item) {
+                                                entry = {
+                                                    text: `${objItem.subTitle} - ${objItem.title}`,
+                                                    browseKey: `${objItem.playAction.URI}`,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                        } else {
+                                            const objItem = result.screen.list.item;
+                                            entry = {
+                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                browseKey: `${objItem.playAction.URI}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                        if ('nextLink' in result.screen.list) {
+                                            entry = {
+                                                text: 'NEXT',
+                                                browseKey: `${result.screen.list.nextLink}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    } else {
+                                        entry = {
+                                            text: 'Empty result, ...',
+                                            browseKey: 'BACK',
                                         };
                                         myArr.push(entry);
                                     }
                                 } else if (result.screen.id === 'screen-LocalMusic-Genres-genre') {
+                                    this.log.debug(`result: =${JSON.stringify(result)}`);
                                     entry = {
                                         text: '...',
                                         browseKey: 'BACK',
                                     };
                                     myArr.push(entry);
-                                    for (const objItem of result.screen.row[2].largeThumbnail) {
+                                    if (Array.isArray(result.screen.row[2].largeThumbnail)) {
+                                        for (const objItem of result.screen.row[2].largeThumbnail) {
+                                            entry = {
+                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                browseKey: `${objItem.playAction.URI}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    } else {
+                                        const objItem = result.screen.row[2].largeThumbnail;
                                         entry = {
                                             text: `${objItem.subTitle} - ${objItem.title}`,
                                             browseKey: `${objItem.playAction.URI}`,
@@ -836,6 +875,7 @@ class Bluesound extends utils.Adapter {
                                 if (!('resultType' in result.list.item[0].action)) {
                                     let regExP = new RegExp('(?<=offset=)\\d*');
                                     let newOffset = parseInt(result.list.offset) + 30;
+                                    let maxOffset = parseInt(result.list.total);
                                     let newCmd = commands[commands.length - 1].replace(regExP, `${newOffset}`);
                                     for (const objItem of result.list.item) {
                                         entry = {
@@ -844,11 +884,13 @@ class Bluesound extends utils.Adapter {
                                         };
                                         myArr.push(entry);
                                     }
-                                    entry = {
-                                        text: 'NEXT',
-                                        browseKey: `${newCmd}`,
-                                    };
-                                    myArr.push(entry);
+                                    if (newOffset < maxOffset) {
+                                        entry = {
+                                            text: 'NEXT',
+                                            browseKey: `${newCmd}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
                                 } else {
                                     if (`${result.list.item[0].action.resultType}` === 'Artist') {
                                         //                                        this.log.info(result);
