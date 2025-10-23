@@ -786,6 +786,19 @@ class Bluesound extends utils.Adapter {
                                         };
                                         myArr.push(entry);
                                     }
+                                } else if (result.screen.id === 'screen-LocalMusic-5') {
+                                    entry = {
+                                        text: '...',
+                                        browseKey: 'BACK',
+                                    };
+                                    myArr.push(entry);
+                                    for (const objItem of result.screen.list.index.item) {
+                                        entry = {
+                                            text: `${objItem.key}   ->`,
+                                            browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
                                 } else if (result.screen.id === 'screen-LocalMusic-Genres') {
                                     // Genres list
                                     entry = {
@@ -839,7 +852,7 @@ class Bluesound extends utils.Adapter {
                                         myArr.push(entry);
                                     }
                                 } else if (result.screen.id === 'screen-LocalMusic-Genres-genre') {
-                                    this.log.debug(`result: =${JSON.stringify(result)}`);
+                                    // this.log.debug(`result: =${JSON.stringify(result)}`);
                                     entry = {
                                         text: '...',
                                         browseKey: 'BACK',
@@ -858,6 +871,79 @@ class Bluesound extends utils.Adapter {
                                         entry = {
                                             text: `${objItem.subTitle} - ${objItem.title}`,
                                             browseKey: `${objItem.playAction.URI}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                } else if (result.screen.id === 'screen-LocalMusic-Composer') {
+                                    // Composer result
+                                    entry = {
+                                        text: '...',
+                                        browseKey: 'BACK',
+                                    };
+                                    myArr.push(entry);
+                                    if (Array.isArray(result.screen.row[0].largeThumbnail)) {
+                                        for (const objItem of result.screen.row[0].largeThumbnail) {
+                                            entry = {
+                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                browseKey: `${objItem.playAction.URI}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    } else {
+                                        const objItem = result.screen.row[0].largeThumbnail;
+                                        entry = {
+                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                            browseKey: `${objItem.playAction.URI}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                } else if (
+                                    result.screen.id === 'screen-Folders' &&
+                                    result.screen.screenTitle === 'Folders'
+                                ) {
+                                    // Folders
+                                    entry = {
+                                        text: '...',
+                                        browseKey: 'BACK',
+                                    };
+                                    myArr.push(entry);
+                                    if (Array.isArray(result.screen.list)) {
+                                        for (const objItem of result.screen.list) {
+                                            entry = {
+                                                text: `${objItem.item.title}`,
+                                                browseKey: `${objItem.item.action.URI}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    } else {
+                                        const objItem = result.screen.list;
+                                        entry = {
+                                            text: `${objItem.item.title}`,
+                                            browseKey: `${objItem.item.action.URI}`,
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                } else if (result.screen.id === 'screen-Folders') {
+                                    // Folders list
+                                    this.log.debug(`result: =${JSON.stringify(result)}`);
+                                    entry = {
+                                        text: '...',
+                                        browseKey: 'BACK',
+                                    };
+                                    myArr.push(entry);
+                                    if (Array.isArray(result.screen.list.item)) {
+                                        for (const objItem of result.screen.list.item) {
+                                            entry = {
+                                                text: `${objItem.title}`,
+                                                browseKey: `${objItem.action.URI}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    } else {
+                                        const objItem = result.screen.list.item;
+                                        entry = {
+                                            text: `${objItem.title}`,
+                                            browseKey: `${objItem.action.URI}`,
                                         };
                                         myArr.push(entry);
                                     }
@@ -908,6 +994,18 @@ class Bluesound extends utils.Adapter {
                                             entry = {
                                                 text: `${objItem.title} - ${objItem.subTitle}`,
                                                 browseKey: `${objItem.playAction.URI}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    } else if (`${result.list.item[0].action.resultType}` === 'Composer') {
+                                        //                                        this.log.info(`type: ${JSON.stringify(result)}`);
+                                        for (const objItem of result.list.item) {
+                                            regExP = new RegExp('(?<=composer=).+');
+                                            var myComposer = `${objItem.action.URI}`.match(regExP)[0];
+                                            this.log.info(encodeURIComponent(`${myComposer}`));
+                                            entry = {
+                                                text: `${objItem.title}`,
+                                                browseKey: `/ui/browseContext?service=LocalMusic&title=${myComposer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(myComposer)}`,
                                             };
                                             myArr.push(entry);
                                         }
