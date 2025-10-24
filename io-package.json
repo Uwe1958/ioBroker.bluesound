@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "bluesound",
-        "version": "1.2.0",
+        "version": "1.2.1",
         "news": {
+            "1.2.1": {
+                "en": "Changes according to ioBroker Check\nBump @types/node from 24.5.2 to 24.6.1\nBump chai from 6.0.1 to 6.2.0\nBump typescript from 5.9.2 to 5.9.3\nBump mocha from 11.7.2 to 11.7.3\nCorrect error in main.js, update package-lock.json\nUpdate io-package.json and package.json\nUpdate .vscode/jsonConfig.json and .gitignore\nResolve dependency errors\nBump mocha from 11.1.0 to 11.7.1\nBump globals from 16.2.0 to 16.3.0\nBump @types/node from 24.0.8 to 24.1.0\nBump typescript from 5.7.3 to 5.9.2\nBump chai from 5.2.0 to 5.2.1\nFurther code cleaning (apiclient, getStateAsync)\n@types/xml2js added\nMove to eslint 9 and fix subsequent issues",
+                "de": "Änderungen nach ioBroker Check\nBump @types/node von 24.5.2 bis 24.6.1\nBump chai von 6.0.1 bis 6.2.0\nStammbezeichnung von 5.9.2 bis 5.9.3\nStoß Mocha von 11.7.2 bis 11.7.3\nKorrekter Fehler in main.js, update package-lock.json\nUpdate io-package.json und Paket. Json\nUpdate .vscode/jsonConfig.json und .gitignore\nAuflösung von Abhängigkeitsfehlern\nStoß Mocha von 11.1.0 bis 11.7.1\nBump global von 16.2.0 bis 16.3.0\nBump @types/node von 24.0.8 bis 24.1.0\nStammbezeichnung von 5.7.3 bis 5.9.2\nBump chai von 5.2.0 bis 5.2.1\nWeitere Codereinigung (Apiclient, getStateAsync)\n@types/xml2js hinzugefügt\nVerschieben Sie auf Eslint 9 und beheben Sie anschließende Probleme",
+                "ru": "Изменения в ioBroker Check\nBump @types/node от 24.5.2 до 24.6.1\nBump chai от 6.0.1 до 6.2.0\nРасшифровка шрифта Bump от 5.9.2 до 5.9.3\nБамп-моча от 11.7.2 до 11.7.3\nИсправить ошибку main.js, обновить package-lock.json\nОбновление io-package.json и пакета. Джонсон\nОбновление .vscode/jsonConfig.json и .gitignore\nУстранение ошибок зависимостей\nБамп-моча от 11.1.0 до 11.7.1\nBump globals от 16.2.0 до 16.3.0\nBump @types/node от 24.0.8 до 24.1.0\nРасшифровка шрифта с 5.7.3 до 5.9.2\nBump chai от 5.2.0 до 5.2.1\nДальнейшая очистка кода (apiclient, getStateAsync)\n@types/xml2js добавлено\nПерейдите в eslint 9 и исправьте последующие проблемы",
+                "pt": "Alterações de acordo com a verificação ioBroker\nBump @types/node de 24.5.2 a 24.6.1\nBump chai de 6.0.1 a 6.2.0\nDactilografia Bump de 5.9.2 a 5.9.3\nBump mocha de 11.7.2 a 11.7.3\nErro correto no main.js, update package-lock.json\nAtualizar io-package.json e pacote. json\nActualizar .vscode/jsonConfig.json e .gitignore\nResolver erros de dependência\nBump mocha de 11.1.0 a 11.7.1\nBump global de 16.2.0 a 16.3.0\nBump @types/node de 24.0.8 a 24.1.0\nDactilografia Bump de 5.7.3 a 5.9.2\nBump chai de 5.2.0 a 5.2.2.1\nLimpeza de código adicional (apiciente, getStateAsync)\n@ tipes/xml2js added\nMover para o eslint 9 e corrigir problemas subsequentes",
+                "nl": "Wijzigingen volgens ioBroker Check\nBump @types/node van 24.5.2 tot 24.6.1\nBump chai van 6.0.1 tot 6.2.0\nBump typescript van 5.9.2 naar 5.9.3\nBump mokka van 11.7.2 tot 11.7.3\nCorrecte fout in main.js, update pakket-lock.json\nUpdate io-package.json en pakket. json\n.vscode/jsonConfig.json en .gitignore bijwerken\nAfhankelijkheidsfouten oplossen\nBump mokka van 11.1.0 tot 11.7.1\nBump globals van 16.2,0 naar 16.3.0\nBump @types/node van 24.0.8 tot 24.1.0\nBump typescript van 5.7.3 naar 5.9.2\nBump chai van 5.2.0 tot 5.2.1\nVerdere code reiniging (afpiclient, getStateAsync)\n@types/xml2js toegevoegd\nVerplaats naar eslint 9 en los volgende problemen op",
+                "fr": "Changements selon ioBroker Check\nBump @types/noeud de 24.5.2 à 24.6.1\nChai de bouffée de 6,0.1 à 6,2.0\nType dactylographie du 5.9.2 au 5.9.3\nBump moka de 11.7.2 à 11.7.3\nErreur correcte dans main.js, mise à jour package-lock.json\nMettre à jour io-package.json et paquet. Json\nMettre à jour .vscode/jsonConfig.json et .gitignore\nRésoudre les erreurs de dépendance\nMocha de boules de 11.1.0 à 11.7.1\nGlobales de bump de 16,2,0 à 16,3,0\nBump @types/noeud de 240,8 à 241,0\nType d'écriture de pompe du 5.7.3 au 5.9.2\nChai de bouffée de 5,2.0 à 5.2.1\nNettoyage de code supplémentaire (apiclient, getStateAsync)\n@types/xml2js ajoutés\nDéplacer vers eslint 9 et résoudre les problèmes suivants",
+                "it": "Modifiche secondo ioBroker Check\nBump @types/nodo da 24.5.2 a 24.6.1\nBump chai da 6.0.1 a 6.2.0\nTipografia del buffer da 5.9.2 a 5.9.3\nMocha da 11.7.2 a 11.7.3\nErrore corretto in main.js, aggiornamento pacchetto-lock.json\nAggiornare io-package.json e pacchetto. J\nAggiornamento .vscode/jsonConfig.json e .gitignore\nRisolvere gli errori di dipendenza\nBump mocha dalle 11.1.0 alle 11.7.1\nBump globali da 16.2.0 a 16.3.0\nBump @types/nodo da 24.0.8 a 24.1.0\nDescrizione del tipo Bump da 5.7.3 a 5.9.2\nBump chai da 5.2.0 a 5.2.1\nUlteriore pulizia del codice (apiclient, getStateAsync)\n@types/xml2js aggiunto\nSpostarsi a eslint 9 e risolvere i problemi successivi",
+                "es": "Cambios según ioBroker Check\nBomba @tipos/nodo de 24.5.2 a 24.6.1\nBump chai de 6.0.1 a 6.2.0\nBump typescript from 5.9.2 to 5.9.3\nMocha de bomba de 11.7.2 a 11.7.3\nError correcto en main.js, actualización paquete-lock.json\nActualizar io-package.json y paquete. json\nActualización .vscode/jsonConfig.json y .gitignore\nErrores de dependencia resueltos\nMocha de bomba de 11.1.0 a 11.7.1\nBump globals de 16.2.0 a 16.3.0\nBomba @tipos/nodo de 24.0.8 a 24.1.0\nBump typescript from 5.7.3 to 5.9.2\nBump chai de 5.2.0 a 5.2.1\nMás limpieza de código (apiclient, getStateAsync)\n@tipos/xml2js añadidos\nMover a eslint 9 y solucionar problemas posteriores",
+                "pl": "Zmiany w zależności od sprawdzania jOBrokera\nBump @ types / node od 24.5.2 do 24.6.1\nBump chai od 6.0.1 do 6.2.0\nBump maszynopis od 5.9.2 do 5.9.3\nBump mocha od 11.7.2 do 11.7.3\nPrawidłowy błąd main.js, update package- lock.json\nAktualizuj jo- package.json i pakiet. json\nAktualizacja .vscode / jsonConfig.json i .gitignore\nRozwiązywanie błędów w zależności\nBump mocha od 11.1.0 do 11.7.1\nBump globals od 16.2.0 do 16.3.0\nBump @ types / node od 24.0.8 do 24.1.0\nBump typeScript od 5.7.3 do 5.9.2\nBump chai od 5.2.0 do 5.2.1\nDalsze czyszczenie kodu (apiclient, getStateAsync)\n@ types / xml2js added\nPrzesuń do eslint 9 i napraw kolejne problemy",
+                "uk": "Зміни відповідно до перевірки ioBroker\nBump @types/node від 24.5.2 до 24.6.1\nBump chai від 6.0.1 до 6.2.0\nBump typescript від 5.9.2 до 5.9.3\nМоха з 11.7.2 до 11.7.3\nПравильна помилка в main.js, оновлення пакет-lock.json\nUpdate io-package.json і пакет. свінгери\nОновлення .vscode/jsonConfig.json і .gitignore\nВирішення помилок залежностей\nEnglish, Українська, Français..\nЗ 16.2.0 до 16.3.0\nBump @types/node від 24.0.8 до 24.1.0\nEnglish, Українська, Français..\nБам-чаї від 5.2.0 до 5.2.1\nДодаткове очищення коду (апіциент, getStateAsync)\n@types/xml2js додано\nПеремістити в eslint 9 і виправити наступні питання",
+                "zh-cn": "根据ioBroker检查的更改\n从24.5.2到24.6.1的跳跃@类型/节点\n从6.0.1到6.2.0\n5.9.2至5.9.3的抽打图\n11.7.2至11.7.3之间的波普摩查\n校正主.js中的错误,更新包锁.json\n更新io-package.json和包. 贾森\n更新 .vscode/jsonConfig.json和.gitignore\n解决依赖性错误\n从11.1.0到11.7.1\n从16.2.0到16.3.0跳跃全球\n跳跃@类型/节点从24.0.8到24.1.0\n5.7.3至5.9.2的笔划\nBump chai 从5.2.0 到 5.2.1\n进一步的代码清理( apiclient, getStateAsync)\n@ types/ xml2js 已添加\n移动到 Eslint 9 并解决后续问题"
+            },
             "1.2.0": {
                 "en": "Logic added to shift playlist forward/backward\nState roles updated\nLogic added to shuffle playlist\nTranslated using Weblate (Dutch)\nUpdate test-and.release.yml to node 24.x\nUpdate testing to minimum node.js version 20",
                 "de": "Logic hinzugefügt, um die Wiedergabeliste vorwärts/zurück zu verschieben\nStaatliche Rollen aktualisiert\nLogic zur Shuffle Playlist hinzugefügt\nÜbersetzt mit Weblate (Dutch)\nTest-and.release.yml auf Knoten 24.x aktualisieren\nUpdate-Tests auf minimal node.js Version 20",
@@ -80,19 +93,6 @@
                 "pl": "Poprawki wymagane do wydania adaptera do repozytorium\nPotencjalnie nieprawidłowe znaki są zastępowane przed utworzeniem obiektu\nużyto setTimeout zamiast setInterval, dodano clearTimeout\nSprawdź wartości PollingTime i TimeOut\nDodano brakujące rozmiary\nRole państwa przewartościowane\nPołączenia subskrybowane w stanie wyeliminowane\nPrzedrostki instancji w ObjectIds są pomijane podczas wywoływania metody setState()\nZmiana stanu honoruje teraz flagę potwierdzenia\nPollingTime i TimeOUT zmieniono na typ numeryczny\nonReady() zatrzymał się, gdy nie ustawiono adresu IP\nTestowanie rozszerzone na węzeł 22.x\nUsunięto przykładowy kod",
                 "uk": "Виправлення, необхідні для випуску адаптера в репозиторій\nПотенційно недійсні символи замінюються перед створенням об'єкта\nsetTimeout використовується замість setInterval, clearTimeout додано\nПеревірте значення для PollingTime і TimeOut\nДодано відсутні розміри\nПереоцінка ролі держави\nВиклики subscribeState усунуті\nПрефікси екземплярів у ObjectIds пропускаються під час виклику setState()\nЗміна стану тепер вшановує прапор підтвердження\nPollingTime і TimeOUT змінено на число типу\nonReady() зупинено, коли IP-адреса не встановлена\nТестування розширено до вузла 22.x\nПриклад коду видалено",
                 "zh-cn": "根据请求进行修复以将适配器发布到存储库\n在创建对象之前替换可能无效的字符\n使用setTimeout代替setInterval，添加clearTimeout\n检查 PollingTime 和 TimeOut 的值\n添加了缺少的尺寸\n重新评估国家角色\n消除了 subscribeState 调用\n调用 setState() 时会省略 ObjectId 中的实例前缀\n状态更改现在尊重 ack 标志\nPollingTime 和 TimeOUT 更改为数字类型\nonReady() 在未设置 IP 时停止\n测试扩展到节点 22.x\n示例代码已删除"
-            },
-            "1.0.3": {
-                "en": "Parsing of /State corrected",
-                "de": "Parsing von /State korrigiert",
-                "ru": "Пересчет / State corrected",
-                "pt": "Parsing de /State corrigido",
-                "nl": "Ontleden van /Gecorrigeerde staat",
-                "fr": "Analyse de /État corrigé",
-                "it": "Parsing di /State corretto",
-                "es": "Parsing /State corrected",
-                "pl": "Część / Korekta państwa",
-                "uk": "Батьки /Державні виправлення",
-                "zh-cn": "分析/国家更正"
             }
         },
         "titleLang": {
@@ -650,36 +650,6 @@
                 "read": true,
                 "write": true,
                 "desc": "Current player state"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.list",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "List"
-                },
-                "type": "json",
-                "role": "string",
-                "read": true,
-                "write": true,
-                "desc": "Object to show a list"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.command",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Command"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": true,
-                "desc": "Object for player commands"
             },
             "native": {}
         }

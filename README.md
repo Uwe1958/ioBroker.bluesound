@@ -42,8 +42,7 @@ The following functions are implemented:
 - Playlist backward (triggered by setting 'control.backward' to true)
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 1.2.1 (2025-10-18)
 
 - (Uwe Nagel) Add info.list and control.command
 - (Uwe Nagel) Changes according to ioBroker Check
