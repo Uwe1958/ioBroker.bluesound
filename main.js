@@ -923,9 +923,13 @@ class Bluesound extends utils.Adapter {
                                         };
                                         myArr.push(entry);
                                     }
-                                } else if (result.screen.id === 'screen-Folders') {
+                                } else if (
+                                    result.screen.id === 'screen-Folders' &&
+                                    result.screen.screenTitle.substring(0, 1) === '/'
+                                ) {
                                     // Folders list
-                                    this.log.debug(`result: =${JSON.stringify(result)}`);
+                                    //                                    this.log.debug(`result: =${JSON.stringify(result)}`);
+                                    //                                    this.log.debug(`cmd: =${commands[commands.length - 1]}`);
                                     entry = {
                                         text: '...',
                                         browseKey: 'BACK',
@@ -947,8 +951,63 @@ class Bluesound extends utils.Adapter {
                                         };
                                         myArr.push(entry);
                                     }
+                                } else if (result.screen.id === 'screen-Folders') {
+                                    // Folders list
+                                    var regPath = new RegExp('(?<=path%3D).+');
+                                    var regFile = new RegExp('(?<=file=).+');
+                                    var regDblQuote = new RegExp('%25', 'g');
+                                    var regPlus = new RegExp('%2B', 'g');
+                                    entry = {
+                                        text: '...',
+                                        browseKey: 'BACK',
+                                    };
+                                    myArr.push(entry);
+                                    if (Array.isArray(result.screen.list.item)) {
+                                        for (const objItem of result.screen.list.item) {
+                                            if (objItem.action.URI.lastIndexOf('path%3D') != -1) {
+                                                var myPath = objItem.action.URI.match(regPath)[0]
+                                                    .replace(regDblQuote, '%')
+                                                    .replace(regPlus, '+');
+                                                entry = {
+                                                    text: `${objItem.title}`,
+                                                    browseKey: `/Add?playnow=1&context=Folder&path=${myPath}`,
+                                                };
+                                                myArr.push(entry);
+                                            } else {
+                                                myPath = objItem.action.URI.match(regFile)[0]
+                                                    .replace(regDblQuote, '%')
+                                                    .replace(regPlus, '+');
+                                                entry = {
+                                                    text: `${objItem.title}`,
+                                                    browseKey: `/Add?playnow=1&file=${myPath}`,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                        }
+                                    } else {
+                                        const objItem = result.screen.list.item;
+                                        if (objItem.action.URI.lastIndexOf('path%3D') != -1) {
+                                            myPath = objItem.action.URI.match(regPath)[0]
+                                                .replace(regDblQuote, '%')
+                                                .replace(regPlus, '+');
+                                            entry = {
+                                                text: `${objItem.title}`,
+                                                browseKey: `/Add?playnow=1&context=Folder&path=${myPath}`,
+                                            };
+                                            myArr.push(entry);
+                                        } else {
+                                            myPath = objItem.action.URI.match(regFile)[0]
+                                                .replace(regDblQuote, '%')
+                                                .replace(regPlus, '+');
+                                            entry = {
+                                                text: `${objItem.title}`,
+                                                browseKey: `/Add?playnow=1&file=${myPath}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    }
                                 } else {
-                                    this.log.debug(`result: =${JSON.stringify(result)}`);
+                                    this.log.debug(`resultNO: =${JSON.stringify(result)}`);
                                 }
                                 break;
                             case 'list':
