@@ -743,6 +743,44 @@ class Bluesound extends utils.Adapter {
                                         };
                                         myArr.push(entry);
                                     }
+                                } else if (result.screen.id === 'screen-LocalMusic-Favourites') {
+                                    // Genre
+                                    if ('list' in result.screen) {
+                                        entry = {
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                        };
+                                        myArr.push(entry);
+                                        /*                                        if (Array.isArray(result.screen.list.item)) {
+                                            for (const objItem of result.screen.list.item) {
+                                                entry = {
+                                                    text: `${objItem.subTitle} - ${objItem.title}`,
+                                                    browseKey: `${objItem.playAction.URI}`,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                        } else {
+                                            const objItem = result.screen.list.item;
+                                            entry = {
+                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                browseKey: `${objItem.playAction.URI}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                        if ('nextLink' in result.screen.list) {
+                                            entry = {
+                                                text: 'NEXT',
+                                                browseKey: `${result.screen.list.nextLink}`,
+                                            };
+                                            myArr.push(entry);
+                                        }*/
+                                    } else {
+                                        entry = {
+                                            text: 'Empty result, ...',
+                                            browseKey: 'BACK',
+                                        };
+                                        myArr.push(entry);
+                                    }
                                 } else if (result.screen.id === 'screen-LocalMusic-1') {
                                     // Albums alphabetical list
                                     entry = {
@@ -814,6 +852,44 @@ class Bluesound extends utils.Adapter {
                                         myArr.push(entry);
                                     }
                                 } else if (result.screen.id === 'screen-Genres-2') {
+                                    // Genre
+                                    if ('list' in result.screen) {
+                                        entry = {
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                        };
+                                        myArr.push(entry);
+                                        if (Array.isArray(result.screen.list.item)) {
+                                            for (const objItem of result.screen.list.item) {
+                                                entry = {
+                                                    text: `${objItem.subTitle} - ${objItem.title}`,
+                                                    browseKey: `${objItem.playAction.URI}`,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                        } else {
+                                            const objItem = result.screen.list.item;
+                                            entry = {
+                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                browseKey: `${objItem.playAction.URI}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                        if ('nextLink' in result.screen.list) {
+                                            entry = {
+                                                text: 'NEXT',
+                                                browseKey: `${result.screen.list.nextLink}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                    } else {
+                                        entry = {
+                                            text: 'Empty result, ...',
+                                            browseKey: 'BACK',
+                                        };
+                                        myArr.push(entry);
+                                    }
+                                } else if (result.screen.id === 'screen-LocalMusic-8') {
                                     // Genre
                                     if ('list' in result.screen) {
                                         entry = {
