@@ -494,6 +494,31 @@
             "native": {}
         },
         {
+            "_id": "info.listheader",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Heading for menu list",
+                    "de": "Header für Menulist",
+                    "ru": "????????? ??? ?????? ????",
+                    "pt": "T�tulo para a lista de menus",
+                    "nl": "Schuifstaat",
+                    "fr": "État de choc",
+                    "it": "Stato di Shuffle",
+                    "es": "Shuffle State",
+                    "pl": "Stan Shuffle",
+                    "uk": "Шафл Стан",
+                    "zh-cn": "摇摆状态"
+                },
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": "Test"
+            },
+            "native": {}
+        },
+        {
             "_id": "control",
             "type": "channel",
             "common": {
