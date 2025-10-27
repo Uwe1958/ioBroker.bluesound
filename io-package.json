@@ -494,12 +494,37 @@
             "native": {}
         },
         {
+            "_id": "info.list",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Menu list",
+                    "de": "Menüliste",
+                    "ru": "Заголовок для списка меню",
+                    "pt": "Lista de menus",
+                    "nl": "Menulijst",
+                    "fr": "Liste des menus",
+                    "it": "L'elenco dei menu",
+                    "es": "Lista de menús",
+                    "pl": "Listy menu",
+                    "uk": "Заголовок для списку меню",
+                    "zh-cn": "菜单列表标题"
+                },
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": "HOME"
+            },
+            "native": {}
+        },
+        {
             "_id": "info.listheader",
             "type": "state",
             "common": {
                 "name": {
                     "en": "Heading for menu list",
-                    "de": "Header für Menulist",
+                    "de": "Überschrift für Menüliste",
                     "ru": "Заголовок для списка меню",
                     "pt": "Título para a lista de menus",
                     "nl": "Koptekst voor menulijst",
@@ -514,7 +539,7 @@
                 "role": "text",
                 "read": true,
                 "write": false,
-                "def": "Test"
+                "def": "Main Menu"
             },
             "native": {}
         },
@@ -675,6 +700,31 @@
                 "read": true,
                 "write": true,
                 "desc": "Current player state"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.command",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Command",
+                    "de": "Befehl",
+                    "ru": "Государство",
+                    "pt": "Estado",
+                    "nl": "Status",
+                    "fr": "État",
+                    "it": "Stato",
+                    "es": "Estado",
+                    "pl": "Państwo",
+                    "uk": "Стан",
+                    "zh-cn": "状态"
+                },
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": true,
+                "desc": "Next command"
             },
             "native": {}
         }
