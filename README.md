@@ -41,7 +41,16 @@ The following functions are implemented:
 - Playlist forward (triggered by setting 'control.forward' to true)
 - Playlist backward (triggered by setting 'control.backward' to true)
 
+Library browsing for LocalMusic is added. A dynamic menu list is available in 'info.list'. This object should be set as the 'Object ID' for a json-table to visualize the current menu. The object 'control.command' is used to pass the next command to the player. It is updated by defining it as the 'Selected ID' of that table. The table header itself is updated by using 'info.listheader' via object binding for the first headers' name. For better visualization only the first header should be shown and its width should be set to 100%.
+
+All contents is drilled down up to the album level (with the exception of the Songs menu, in which songs are directly listed). When an album is selected its content is immediately played, replacing the contents of the current playlist.
+
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+- (Uwe Nagel) Library browsing added
+
 ### 1.2.1 (2025-10-18)
 
 - (Uwe Nagel) Add info.list and control.command
