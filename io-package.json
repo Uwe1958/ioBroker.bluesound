@@ -500,15 +500,15 @@
                 "name": {
                     "en": "Menu list",
                     "de": "Menüliste",
-                    "ru": "Заголовок для списка меню",
+                    "ru": "Список меню",
                     "pt": "Lista de menus",
                     "nl": "Menulijst",
                     "fr": "Liste des menus",
                     "it": "L'elenco dei menu",
                     "es": "Lista de menús",
                     "pl": "Listy menu",
-                    "uk": "Заголовок для списку меню",
-                    "zh-cn": "菜单列表标题"
+                    "uk": "Список меню",
+                    "zh-cn": "菜单列表"
                 },
                 "type": "string",
                 "role": "text",
@@ -710,15 +710,15 @@
                 "name": {
                     "en": "Command",
                     "de": "Befehl",
-                    "ru": "Государство",
-                    "pt": "Estado",
-                    "nl": "Status",
-                    "fr": "État",
-                    "it": "Stato",
-                    "es": "Estado",
-                    "pl": "Państwo",
-                    "uk": "Стан",
-                    "zh-cn": "状态"
+                    "ru": "Kоманда",
+                    "pt": "Comando",
+                    "nl": "Commando",
+                    "fr": "Commande",
+                    "it": "Comando",
+                    "es": "Mandado",
+                    "pl": "Rozkaz",
+                    "uk": "Kоманда",
+                    "zh-cn": "命令"
                 },
                 "type": "string",
                 "role": "text",
