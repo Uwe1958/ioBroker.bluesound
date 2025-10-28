@@ -513,7 +513,7 @@
                 "type": "string",
                 "role": "text",
                 "read": true,
-                "write": false,
+                "write": true,
                 "def": "HOME"
             },
             "native": {}
