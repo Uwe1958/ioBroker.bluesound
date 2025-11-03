@@ -49,6 +49,11 @@ All contents is drilled down up to the album level (with the exception of the So
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Add info.playliststate
+- (Uwe Nagel) Function setPlaylistToggle added
+- (Uwe Nagel) Add control.playlist
+- (Uwe Nagel) Function readPlaylist added
+- (Uwe Nagel) Add info.playlist
 - (Uwe Nagel) Library browsing added
 
 ### 1.2.1 (2025-10-18)
