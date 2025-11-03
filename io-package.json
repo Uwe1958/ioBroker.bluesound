@@ -549,7 +549,16 @@
             "common": {
                 "name": {
                     "en": "Playlist contents",
-                    "de": "Inhalt der Playlist"
+                    "de": "Inhalt der Playlist",
+                    "ru": "Содержимое плейлиста",
+                    "pt": "Conteúdo da lista de reprodução",
+                    "nl": "Inhoud van de afspeellijst",
+                    "fr": "Contenu de la playlist",
+                    "it": "Contenuto della playlist",
+                    "es": "Contenido de la lista de reproducción",
+                    "pl": "Zawartość playlisty",
+                    "uk": "Вміст списку відтворення",
+                    "zh-cn": "播放列表内容"
                 },
                 "type": "string",
                 "role": "text",
@@ -564,7 +573,16 @@
             "common": {
                 "name": {
                     "en": "Playlist Toggle State",
-                    "de": "Status Playlist Toggle"
+                    "de": "Status Playlist Toggle",
+                    "ru": "Состояние переключения плейлиста",
+                    "pt": "Estado de alternância da lista de reprodução",
+                    "nl": "Afspeellijst Wisselstatus",
+                    "fr": "État de basculement de la liste de lecture",
+                    "it": "Stato di attivazione/disattivazione della playlist",
+                    "es": "Estado de alternancia de la lista de reproducción",
+                    "pl": "Przełączanie stanu listy odtwarzania",
+                    "uk": "Стан перемикання списку відтворення",
+                    "zh-cn": "播放列表切换状态"
                 },
                 "type": "boolean",
                 "role": "button",
