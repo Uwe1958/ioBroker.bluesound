@@ -43,7 +43,9 @@ The following functions are implemented:
 
 Library browsing for LocalMusic is added. A dynamic menu list is available in 'info.list'. This object should be set as the 'Object ID' for a json-table to visualize the current menu. The object 'control.command' is used to pass the next command to the player. It is updated by defining it as the 'Selected ID' of that table. The table header itself is updated by using 'info.listheader' via object binding for the first headers' name. For better visualization only the first header should be shown and its width should be set to 100%.
 
-All contents is drilled down up to the album level (with the exception of the Songs menu, in which songs are directly listed). When an album is selected its content is immediately played, replacing the contents of the current playlist.
+All contents is drilled down up to the album level (with the exception of the Songs menu, in which songs are directly listed). When an album is selected its content is immediately played, replacing the contents of the current playlist or added to the current playlist. This behaviour is dependent on the value of info.playliststate. If the value is true the playlist is replaced, in the other case the new content is added. This object can be changed by control.playlist (Button with Toggle mode). Each time this button is pressed, the value of info.playliststate is inverted.
+
+The contents of the current playlist is available in the object info.playlist (JSON) and can be visualized this way.
 
 ## Changelog
 
