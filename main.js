@@ -712,6 +712,7 @@ class Bluesound extends utils.Adapter {
                                 entry = {
                                     title: `${objSong.title}`,
                                     artist: `${objSong.art}`,
+                                    image: `${objSong.image}`,
                                 };
                                 myArr.push(entry);
                             }
@@ -720,6 +721,7 @@ class Bluesound extends utils.Adapter {
                             entry = {
                                 title: `${objSong.title}`,
                                 artist: `${objSong.art}`,
+                                image: `${objSong.image}`,
                             };
                             myArr.push(entry);
                         }
