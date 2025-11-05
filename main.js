@@ -710,6 +710,7 @@ class Bluesound extends utils.Adapter {
                         if (Array.isArray(result.playlist.song)) {
                             for (const objSong of result.playlist.song) {
                                 entry = {
+                                    id: `${objSong.id}`,
                                     title: `${objSong.title}`,
                                     artist: `${objSong.art}`,
                                     image: `${objSong.image}`,
@@ -719,6 +720,7 @@ class Bluesound extends utils.Adapter {
                         } else {
                             const objSong = result.playlist.song;
                             entry = {
+                                id: `${objSong.id}`,
                                 title: `${objSong.title}`,
                                 artist: `${objSong.art}`,
                                 image: `${objSong.image}`,
