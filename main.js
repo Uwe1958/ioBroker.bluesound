@@ -7,6 +7,7 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
+//const { setTimeout } = require('timers/promises');
 const helper = require(`${__dirname}/lib/utils`);
 
 let ip;
@@ -204,10 +205,10 @@ class Bluesound extends utils.Adapter {
         }
 
         // Status
-        this.readPlayerStatus();
+        await this.readPlayerStatus();
 
         // Playlist
-        this.readPlaylist();
+        await this.readPlaylist();
         playlistToggle = 1;
         this.setState('info.playliststate', playlistToggle == 1 ? true : false, true);
 
@@ -289,7 +290,7 @@ class Bluesound extends utils.Adapter {
                         } catch (err) {
                             this.log.error(`Error reading ${id.substring(0, pos)}.id: ${err}`);
                         }
-                        this.readPlayerStatus();
+                        await this.readPlayerStatus();
                         break;
                     case 'pause':
                         apiClient
@@ -311,7 +312,7 @@ class Bluesound extends utils.Adapter {
                                 // Handle errors
                                 this.log.error(`Could not set Pause, Status code ${err}`);
                             });
-                        this.readPlayerStatus();
+                        await this.readPlayerStatus();
                         break;
                     case 'stop':
                         apiClient
@@ -333,7 +334,7 @@ class Bluesound extends utils.Adapter {
                                 // Handle errors
                                 this.log.error(`Could not set stop, Status code ${err}`);
                             });
-                        this.clearPlayerStatus();
+                        await this.clearPlayerStatus();
                         break;
                     case 'stream':
                     case 'play':
@@ -356,7 +357,7 @@ class Bluesound extends utils.Adapter {
                                 // Handle errors
                                 this.log.error(`Could not set play, Status code ${err}`);
                             });
-                        this.readPlayerStatus();
+                        await this.readPlayerStatus();
                         break;
                     case 'volume':
                         apiClient
@@ -366,7 +367,7 @@ class Bluesound extends utils.Adapter {
                                 // Handle errors
                                 this.log.error(`Could not set volume, Status code ${err}`);
                             });
-                        this.readPlayerStatus();
+                        await this.readPlayerStatus();
                         break;
                     case 'shuffle': {
                         const sShuffleTag = 'info.shuffle';
@@ -387,7 +388,7 @@ class Bluesound extends utils.Adapter {
                         } catch (err) {
                             this.log.error(`Error reading ${sShuffleTag}: ${err}`);
                         }
-                        this.readPlayerStatus();
+                        await this.readPlayerStatus();
                         break;
                     }
                     case 'forward':
@@ -401,7 +402,7 @@ class Bluesound extends utils.Adapter {
                                 // Handle errors
                                 this.log.error(`Could not set skip, Status code ${err}`);
                             });
-                        this.readPlayerStatus();
+                        await this.readPlayerStatus();
                         break;
                     case 'playlist':
                         this.setPlaylistToggle();
@@ -419,7 +420,7 @@ class Bluesound extends utils.Adapter {
                                 // Handle errors
                                 this.log.error(`Could not set back, Status code ${err}`);
                             });
-                        this.readPlayerStatus();
+                        await this.readPlayerStatus();
                         break;
                     case 'command':
                         //                        this.log.info(`key=${state.val}`);
@@ -627,6 +628,9 @@ class Bluesound extends utils.Adapter {
                             if (valOld.val != title[i]) {
                                 await this.setState(sStateTag, { val: title[i], ack: true });
                                 this.log.info(`title${i} changed: ${title[i]}`);
+                                if (i == 1) {
+                                    await this.readPlaylist();
+                                }
                             }
                         } catch (err) {
                             this.log.error(`Error reading ${sStateTag}: ${err}`);
@@ -670,6 +674,7 @@ class Bluesound extends utils.Adapter {
                         this.log.error(`Error reading ${sStateTag}: ${err}`);
                     }
                 } else {
+                    await this.readPlaylist();
                     for (i = 1; i < 4; i++) {
                         const sStateTag = `info.title${i}`;
                         await this.setState(sStateTag, { val: '', ack: true });
@@ -698,6 +703,11 @@ class Bluesound extends utils.Adapter {
         return true;
     }
     async readPlaylist() {
+        var curTitle;
+        var curObjTitle = await this.getStateAsync('info.title1');
+        if (curObjTitle || curObjTitle.val) {
+            curTitle = curObjTitle.val;
+        }
         try {
             const response = await apiClient.get('/Playlist');
             if (response.status === 200) {
@@ -709,8 +719,9 @@ class Bluesound extends utils.Adapter {
                     } else {
                         if (Array.isArray(result.playlist.song)) {
                             for (const objSong of result.playlist.song) {
+                                //                                this.log.info(`Playlist: ${objSong.title}, CurTitle: ${curTitle}`);
                                 entry = {
-                                    id: `${objSong.id}`,
+                                    id: `${objSong.title == curTitle ? -1 : parseInt(objSong.id)}`,
                                     title: `${objSong.title}`,
                                     artist: `${objSong.art}`,
                                     image: `${objSong.image}`,
@@ -720,7 +731,7 @@ class Bluesound extends utils.Adapter {
                         } else {
                             const objSong = result.playlist.song;
                             entry = {
-                                id: `${objSong.id}`,
+                                id: `${objSong.title == curTitle ? -1 : parseInt(objSong.id)}`,
                                 title: `${objSong.title}`,
                                 artist: `${objSong.art}`,
                                 image: `${objSong.image}`,
@@ -1448,7 +1459,6 @@ class Bluesound extends utils.Adapter {
                                     headerTitle: `${headers[headers.length - 2]}`,
                                 };
                                 myArr.push(entry);
-                                this.readPlaylist();
                                 break;
                             default:
                                 this.log.info(result);
@@ -1459,6 +1469,8 @@ class Bluesound extends utils.Adapter {
             } else {
                 this.log.error(`Could not retrieve Browse data, Status code ${response.status}`);
             }
+            await this.readPlayerStatus();
+            await this.readPlaylist();
             return res;
         } catch (e) {
             this.log.error(`Could not retrieve Browse data: ${e}`);
