@@ -717,6 +717,7 @@ class Bluesound extends utils.Adapter {
                     if (err) {
                         this.log.error(`Error parsing Playlist XML: ${err}`);
                     } else {
+                        var myHtml = `<body><div><table id="playlist">`;
                         if (Array.isArray(result.playlist.song)) {
                             for (const objSong of result.playlist.song) {
                                 //                                this.log.info(`Playlist: ${objSong.title}, CurTitle: ${curTitle}`);
@@ -727,7 +728,16 @@ class Bluesound extends utils.Adapter {
                                     image: `${objSong.image}`,
                                 };
                                 myArr.push(entry);
+                                myHtml += `<tr><td rowspan="2"><img src="http://${ip}:11000${objSong.image}"</td>`;
+                                if (parseInt(entry.id) == -1) {
+                                    myHtml += `<td class="current">${objSong.title}</td>`;
+                                } else {
+                                    myHtml += `<td class="title">${objSong.title}</td>`;
+                                }
+                                myHtml += `</tr>
+                                  <tr><td class="artist">${objSong.artist}</td></tr>`;
                             }
+                            myHtml += '</table></div></body>';
                         } else {
                             const objSong = result.playlist.song;
                             entry = {
@@ -737,9 +747,19 @@ class Bluesound extends utils.Adapter {
                                 image: `${objSong.image}`,
                             };
                             myArr.push(entry);
+                            myHtml += `<tr><td rowspan="2"><img src="http://${ip}:11000${objSong.image}"</td>`;
+                            if (parseInt(entry.id) == -1) {
+                                myHtml += `<td class="current">${objSong.title}</td>`;
+                            } else {
+                                myHtml += `<td class="title">${objSong.title}</td>`;
+                            }
+                            myHtml += `</tr>
+                                  <tr><td class="artist">${objSong.artist}</td></tr>`;
+                            myHtml += '</table></div></body>';
                         }
-                        this.setState('info.playlist', JSON.stringify(myArr), true);
                     }
+                    this.setState('info.playlist', JSON.stringify(myArr), true);
+                    this.setState('info.playlisthtml', myHtml, true);
                 });
             } else {
                 this.log.error(`Could not retrieve playlist data, Status code ${response.status}`);

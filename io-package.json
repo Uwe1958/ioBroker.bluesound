@@ -568,6 +568,30 @@
             "native": {}
         },
         {
+            "_id": "info.playlisthtml",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Playlist contents Html",
+                    "de": "Inhalt der Playlist Html",
+                    "ru": "Содержимое плейлиста",
+                    "pt": "Conteúdo da lista de reprodução",
+                    "nl": "Inhoud van de afspeellijst",
+                    "fr": "Contenu de la playlist",
+                    "it": "Contenuto della playlist",
+                    "es": "Contenido de la lista de reproducción",
+                    "pl": "Zawartość playlisty",
+                    "uk": "Вміст списку відтворення",
+                    "zh-cn": "播放列表内容"
+                },
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
             "_id": "info.playliststate",
             "type": "state",
             "common": {
