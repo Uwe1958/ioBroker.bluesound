@@ -735,7 +735,7 @@ class Bluesound extends utils.Adapter {
                                     myHtml += `<td class="title">${objSong.title}</td>`;
                                 }
                                 myHtml += `</tr>
-                                  <tr><td class="artist">${objSong.artist}</td></tr>`;
+                                  <tr><td class="artist">${objSong.art}</td></tr>`;
                             }
                             myHtml += '</table></div></body>';
                         } else {
@@ -754,7 +754,7 @@ class Bluesound extends utils.Adapter {
                                 myHtml += `<td class="title">${objSong.title}</td>`;
                             }
                             myHtml += `</tr>
-                                  <tr><td class="artist">${objSong.artist}</td></tr>`;
+                                  <tr><td class="artist">${objSong.art}</td></tr>`;
                             myHtml += '</table></div></body>';
                         }
                     }
