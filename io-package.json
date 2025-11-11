@@ -572,17 +572,17 @@
             "type": "state",
             "common": {
                 "name": {
-                    "en": "Playlist contents Html",
-                    "de": "Inhalt der Playlist Html",
-                    "ru": "Содержимое плейлиста",
-                    "pt": "Conteúdo da lista de reprodução",
-                    "nl": "Inhoud van de afspeellijst",
-                    "fr": "Contenu de la playlist",
-                    "it": "Contenuto della playlist",
-                    "es": "Contenido de la lista de reproducción",
-                    "pl": "Zawartość playlisty",
-                    "uk": "Вміст списку відтворення",
-                    "zh-cn": "播放列表内容"
+                    "en": "Playlist contents (Html)",
+                    "de": "Inhalt der Playlist (Html)",
+                    "ru": "Содержимое плейлиста (Html)",
+                    "pt": "Conteúdo da lista de reprodução (Html)",
+                    "nl": "Inhoud van de afspeellijst (Html)",
+                    "fr": "Contenu de la playlist (Html)",
+                    "it": "Contenuto della playlist (Html)",
+                    "es": "Contenido de la lista de reproducción (Html)",
+                    "pl": "Zawartość playlisty (Html)",
+                    "uk": "Вміст списку відтворення (Html)",
+                    "zh-cn": "播放列表内容 (Html)"
                 },
                 "type": "string",
                 "role": "text",
