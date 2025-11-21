@@ -791,6 +791,20 @@
             "native": {}
         },
         {
+            "_id": "control.search",
+            "type": "state",
+            "common": {
+                "name": "Search Field",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": true,
+                "def": "",
+                "desc": "Input field for library search"
+            },
+            "native": {}
+        },
+        {
             "_id": "control.command",
             "type": "state",
             "common": {

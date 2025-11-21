@@ -473,6 +473,18 @@ class Bluesound extends utils.Adapter {
                         }
                         this.setState(id, state.val, true);
                         break;
+                    case 'search': {
+                        key = `/ui/Search?forService=LocalMusic&q=${state.val}`;
+                        const res = new Promise(resolve => {
+                            var ret = this.readBrowseData(key);
+                            resolve(ret);
+                        });
+                        res.then(val => {
+                            this.setState('info.list', val, true);
+                        });
+                        this.setState(id, state.val, true);
+                        break;
+                    }
                     default:
                 }
             }
@@ -1311,6 +1323,50 @@ class Bluesound extends utils.Adapter {
                                                     myArr.push(entry);
                                                 }
                                             }
+                                        }
+                                        break;
+                                    case 'screen-LocalMusic-Search':
+                                        entry = {
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                            //                                            headerTitle: `Search(${result.screen.search.value})`,
+                                            headerTitle: 'Main Menu',
+                                        };
+                                        myArr.push(entry);
+                                        this.setState(
+                                            'info.listheader',
+                                            `Main Menu Search(${result.screen.search.value})`,
+                                            true,
+                                        );
+                                        if (Array.isArray(result.screen.list)) {
+                                            for (const objItem of result.screen.list) {
+                                                var typeSingle = objItem.title.substring(0, objItem.title.length - 1);
+                                                entry = {
+                                                    text: `${objItem.title}`,
+                                                    browseKey: `/ui/BrowseObjects?browseIndex=0&menuGroupId=LocalMusic-search&service=LocalMusic&title=${objItem.title}&type=${typeSingle}&url=%2Flibrary%2Fv1%2F${objItem.title}%3Fexpr%3D${result.screen.search.value}%26service%3DLocalMusic`,
+                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                        } else {
+                                            const objItem = result.screen.list;
+                                            typeSingle = objItem.title.substring(0, objItem.title.length - 1);
+                                            entry = {
+                                                text: `${objItem.title}`,
+                                                browseKey: `/ui/BrowseObjects?browseIndex=0&menuGroupId=LocalMusic-search&service=LocalMusic&title=${objItem.title}&type=${typeSingle}&url=%2Flibrary%2Fv1%2F${objItem.title}%3Fexpr%3D${result.screen.search.value}%26service%3DLocalMusic`,
+                                                headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                        break;
+                                    case 'screen-LocalMusic-search-0':
+                                        if (result.screen.screenTitle == 'Artists') {
+                                            entry = {
+                                                text: '...',
+                                                browseKey: 'BACK',
+                                                headerTitle: `${headers[headers.length - 1]}`,
+                                            };
+                                            myArr.push(entry);
                                         }
                                         break;
                                     default:
