@@ -23,6 +23,9 @@ const { parseString } = require('xml2js');
 const apiClient = axios.create();
 const strPlus = '%2B';
 const regPlus = new RegExp(strPlus, 'g');
+const regDblQuote = new RegExp('%25', 'g');
+const regPt = new RegExp('\\.', 'g');
+const regAmp = new RegExp('%26', 'g');
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -848,14 +851,30 @@ class Bluesound extends utils.Adapter {
                                         }
                                         break;
                                     case 'screen-LocalMusic-Artist':
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            headerTitle: `${headers[headers.length - 2]}`,
-                                        };
-                                        myArr.push(entry);
-                                        if (Array.isArray(result.screen.row[0].largeThumbnail)) {
-                                            for (const objItem of result.screen.row[0].largeThumbnail) {
+                                        if ('row' in result.screen) {
+                                            entry = {
+                                                text: '...',
+                                                browseKey: 'BACK',
+                                                headerTitle: `${headers[headers.length - 2]}`,
+                                            };
+                                            myArr.push(entry);
+                                            if (Array.isArray(result.screen.row[0].largeThumbnail)) {
+                                                for (const objItem of result.screen.row[0].largeThumbnail) {
+                                                    entry = {
+                                                        text: `${objItem.action.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objItem.playAction.URI}`
+                                                                : `${objItem.playAction.URI}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${result.screen.header.title} -> ${objItem.action.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                            } else {
+                                                const objItem = result.screen.row[0].largeThumbnail;
                                                 entry = {
                                                     text: `${objItem.action.title}`,
                                                     browseKey:
@@ -865,22 +884,19 @@ class Bluesound extends utils.Adapter {
                                                                   'playnow=1',
                                                                   'playnow=0',
                                                               ),
-                                                    headerTitle: `${result.screen.header.title} -> ${objItem.action.title}`,
+                                                    headerTitle: `Artists -> ${result.screen.header.title}`,
                                                 };
                                                 myArr.push(entry);
                                             }
                                         } else {
-                                            const objItem = result.screen.row[0].largeThumbnail;
                                             entry = {
-                                                text: `${objItem.action.title}`,
-                                                browseKey:
-                                                    playlistToggle == 1
-                                                        ? `${objItem.playAction.URI}`
-                                                        : `${objItem.playAction.URI}`.replace('playnow=1', 'playnow=0'),
-                                                headerTitle: `Artists -> ${result.screen.header.title}`,
+                                                text: 'Empty result, ...',
+                                                browseKey: 'BACK',
+                                                headerTitle: `${headers[headers.length - 2]}`,
                                             };
                                             myArr.push(entry);
                                         }
+
                                         break;
                                     case 'screen-LocalMusic-Favourites':
                                         if ('list' in result.screen) {
@@ -1268,7 +1284,6 @@ class Bluesound extends utils.Adapter {
                                             // Folders list
                                             var regPath = new RegExp('(?<=path%3D).+');
                                             var regFile = new RegExp('(?<=file=).+');
-                                            var regDblQuote = new RegExp('%25', 'g');
                                             entry = {
                                                 text: '...',
                                                 browseKey: 'BACK',
@@ -1335,7 +1350,7 @@ class Bluesound extends utils.Adapter {
                                         myArr.push(entry);
                                         this.setState(
                                             'info.listheader',
-                                            `Main Menu Search(${result.screen.search.value})`,
+                                            `Main Menu Search (${result.screen.search.value})`,
                                             true,
                                         );
                                         if (Array.isArray(result.screen.list)) {
@@ -1344,7 +1359,7 @@ class Bluesound extends utils.Adapter {
                                                 entry = {
                                                     text: `${objItem.title}`,
                                                     browseKey: `/ui/BrowseObjects?browseIndex=0&menuGroupId=LocalMusic-search&service=LocalMusic&title=${objItem.title}&type=${typeSingle}&url=%2Flibrary%2Fv1%2F${objItem.title}%3Fexpr%3D${result.screen.search.value}%26service%3DLocalMusic`,
-                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                    headerTitle: `${objItem.title} Search (${result.screen.search.value})`,
                                                 };
                                                 myArr.push(entry);
                                             }
@@ -1367,6 +1382,23 @@ class Bluesound extends utils.Adapter {
                                                 headerTitle: `${headers[headers.length - 1]}`,
                                             };
                                             myArr.push(entry);
+                                            if (Array.isArray(result.screen.list.item)) {
+                                                for (const objItem of result.screen.list.item) {
+                                                    regExP = new RegExp(' ', 'g');
+                                                    let artist = `${objItem.title}`.replace(regExP, strPlus);
+                                                    artist = encodeURIComponent(artist)
+                                                        .replace(regDblQuote, '%')
+                                                        .replace(regPt, '%2E')
+                                                        .replace(regAmp, '%2526')
+                                                        .split('%3B')[0];
+                                                    entry = {
+                                                        text: `${objItem.action.title}`,
+                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
+                                                        headerTitle: `Artist -> ${objItem.action.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                            }
                                         }
                                         break;
                                     default:
