@@ -1516,7 +1516,19 @@ class Bluesound extends utils.Adapter {
                                                 headerTitle: `${headers[headers.length - 1]}`,
                                             };
                                             myArr.push(entry);
-                                            for (const objItem of result.screen.list.item) {
+                                            if (Array.isArray(result.screen.list.item)) {
+                                                for (const objItem of result.screen.list.item) {
+                                                    regExP = new RegExp(' ', 'g');
+                                                    let artist = `${objItem.title}`.replace(regExP, strPlus);
+                                                    entry = {
+                                                        text: `${objItem.action.title}`,
+                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${artist}`,
+                                                        headerTitle: `Composer -> ${objItem.action.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                            } else {
+                                                const objItem = result.screen.list.item;
                                                 regExP = new RegExp(' ', 'g');
                                                 let artist = `${objItem.title}`.replace(regExP, strPlus);
                                                 entry = {
