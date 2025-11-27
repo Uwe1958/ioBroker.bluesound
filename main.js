@@ -23,9 +23,12 @@ const { parseString } = require('xml2js');
 const apiClient = axios.create();
 const strPlus = '%2B';
 const regPlus = new RegExp(strPlus, 'g');
+const regPlusPlus = new RegExp('\\+', 'g');
 const regDblQuote = new RegExp('%25', 'g');
-const regPt = new RegExp('\\.', 'g');
-const regAmp = new RegExp('%26', 'g');
+const regAmp = new RegExp('&', 'g');
+const regComma = new RegExp(',', 'g');
+const regSemiColon = new RegExp(';', 'g');
+const regDblPt = new RegExp(':', 'g');
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -1341,37 +1344,54 @@ class Bluesound extends utils.Adapter {
                                         }
                                         break;
                                     case 'screen-LocalMusic-Search':
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            //                                            headerTitle: `Search(${result.screen.search.value})`,
-                                            headerTitle: 'Main Menu',
-                                        };
-                                        myArr.push(entry);
-                                        this.setState(
-                                            'info.listheader',
-                                            `Main Menu Search (${result.screen.search.value})`,
-                                            true,
-                                        );
-                                        if (Array.isArray(result.screen.list)) {
-                                            for (const objItem of result.screen.list) {
-                                                var typeSingle = objItem.title.substring(0, objItem.title.length - 1);
+                                        if ('list' in result.screen) {
+                                            entry = {
+                                                text: '...',
+                                                browseKey: 'BACK',
+                                                //                                            headerTitle: `Search(${result.screen.search.value})`,
+                                                headerTitle: 'Main Menu',
+                                            };
+                                            myArr.push(entry);
+                                            this.setState(
+                                                'info.listheader',
+                                                `Main Menu Search (${result.screen.search.value})`,
+                                                true,
+                                            );
+                                            if (Array.isArray(result.screen.list)) {
+                                                for (const objItem of result.screen.list) {
+                                                    var typeSingle = objItem.title.substring(
+                                                        0,
+                                                        objItem.title.length - 1,
+                                                    );
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey: `/ui/BrowseObjects?browseIndex=0&menuGroupId=LocalMusic-search&service=LocalMusic&title=${objItem.title}&type=${typeSingle}&url=%2Flibrary%2Fv1%2F${objItem.title}%3Fexpr%3D${result.screen.search.value}%26service%3DLocalMusic`,
+                                                        headerTitle: `${objItem.title} Search (${result.screen.search.value})`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                            } else {
+                                                const objItem = result.screen.list;
+                                                typeSingle = objItem.title.substring(0, objItem.title.length - 1);
                                                 entry = {
                                                     text: `${objItem.title}`,
                                                     browseKey: `/ui/BrowseObjects?browseIndex=0&menuGroupId=LocalMusic-search&service=LocalMusic&title=${objItem.title}&type=${typeSingle}&url=%2Flibrary%2Fv1%2F${objItem.title}%3Fexpr%3D${result.screen.search.value}%26service%3DLocalMusic`,
-                                                    headerTitle: `${objItem.title} Search (${result.screen.search.value})`,
+                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
                                                 };
                                                 myArr.push(entry);
                                             }
                                         } else {
-                                            const objItem = result.screen.list;
-                                            typeSingle = objItem.title.substring(0, objItem.title.length - 1);
                                             entry = {
-                                                text: `${objItem.title}`,
-                                                browseKey: `/ui/BrowseObjects?browseIndex=0&menuGroupId=LocalMusic-search&service=LocalMusic&title=${objItem.title}&type=${typeSingle}&url=%2Flibrary%2Fv1%2F${objItem.title}%3Fexpr%3D${result.screen.search.value}%26service%3DLocalMusic`,
-                                                headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                text: 'Empty Result, ...',
+                                                browseKey: 'BACK',
+                                                headerTitle: 'Main Menu',
                                             };
                                             myArr.push(entry);
+                                            this.setState(
+                                                'info.listheader',
+                                                `Main Menu Search (${result.screen.search.value})`,
+                                                true,
+                                            );
                                         }
                                         break;
                                     case 'screen-LocalMusic-search-0':
@@ -1385,15 +1405,17 @@ class Bluesound extends utils.Adapter {
                                             if (Array.isArray(result.screen.list.item)) {
                                                 for (const objItem of result.screen.list.item) {
                                                     regExP = new RegExp(' ', 'g');
-                                                    let artist = `${objItem.title}`.replace(regExP, strPlus);
-                                                    artist = encodeURIComponent(artist)
-                                                        .replace(regDblQuote, '%')
-                                                        .replace(regPt, '%2E')
-                                                        .replace(regAmp, '%2526')
-                                                        .split('%3B')[0];
+                                                    let myTitle = `${objItem.title}`
+                                                        .replace(regPlusPlus, '%2B')
+                                                        .replace(regExP, '+')
+                                                        .replace(regComma, '%2C')
+                                                        .replace(regSemiColon, '%3B')
+                                                        .replace(regDblPt, '%3A')
+                                                        .replace(regAmp, '%26');
+                                                    let artist = encodeURIComponent(myTitle);
                                                     entry = {
                                                         text: `${objItem.action.title}`,
-                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
+                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${myTitle}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
                                                         headerTitle: `Artist -> ${objItem.action.title}`,
                                                     };
                                                     myArr.push(entry);
