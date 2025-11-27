@@ -96,6 +96,8 @@ The contents of the current playlist is available in the object info.playlist (J
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Library search added
+- (Uwe Nagel) Add control.search
 - (Uwe Nagel) Add info.playlisthtml
 - (Uwe Nagel) Add info.playliststate
 - (Uwe Nagel) Function setPlaylistToggle added
