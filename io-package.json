@@ -730,7 +730,19 @@
             "_id": "control.playlist",
             "type": "state",
             "common": {
-                "name": "Playlist Toggle",
+                "name": {
+                    "en": "Switch Playlist Status",
+                    "de": "Playlist-Status wechseln",
+                    "ru": "Переключить статус плейлиста",
+                    "pt": "Mudar status da lista de reprodução",
+                    "nl": "Wijzig de afspeellijststatus",
+                    "fr": "Changer le statut de la liste de lecture",
+                    "it": "Cambia lo stato della playlist",
+                    "es": "Cambiar estado de lista de reproducción",
+                    "pl": "Zmień stan listy odtwarzania",
+                    "uk": "Переключити статус списку відтворення",
+                    "zh-cn": "切换播放列表状态"
+                },
                 "type": "boolean",
                 "role": "button",
                 "read": false,
@@ -791,6 +803,32 @@
             "native": {}
         },
         {
+            "_id": "control.search",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Search Field",
+                    "de": "Suchfeld",
+                    "ru": "Поле поиска",
+                    "pt": "Campo de pesquisa",
+                    "nl": "Zoekveld",
+                    "fr": "Champ de recherche",
+                    "it": "Campo di ricerca",
+                    "es": "Campo de búsqueda",
+                    "pl": "Pole wyszukiwania",
+                    "uk": "Поле пошуку",
+                    "zh-cn": "搜索字段"
+                },
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": true,
+                "def": "",
+                "desc": "Input field for library search"
+            },
+            "native": {}
+        },
+        {
             "_id": "control.command",
             "type": "state",
             "common": {
@@ -802,7 +840,7 @@
                     "nl": "Commando",
                     "fr": "Commande",
                     "it": "Comando",
-                    "es": "Mandado",
+                    "es": "Dominio",
                     "pl": "Rozkaz",
                     "uk": "Kоманда",
                     "zh-cn": "命令"
