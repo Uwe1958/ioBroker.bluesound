@@ -1,857 +1,862 @@
 {
-    "common": {
-        "name": "bluesound",
-        "version": "1.2.1",
-        "news": {
-            "1.2.1": {
-                "en": "Changes according to ioBroker Check\nBump @types/node from 24.5.2 to 24.6.1\nBump chai from 6.0.1 to 6.2.0\nBump typescript from 5.9.2 to 5.9.3\nBump mocha from 11.7.2 to 11.7.3\nCorrect error in main.js, update package-lock.json\nUpdate io-package.json and package.json\nUpdate .vscode/jsonConfig.json and .gitignore\nResolve dependency errors\nBump mocha from 11.1.0 to 11.7.1\nBump globals from 16.2.0 to 16.3.0\nBump @types/node from 24.0.8 to 24.1.0\nBump typescript from 5.7.3 to 5.9.2\nBump chai from 5.2.0 to 5.2.1\nFurther code cleaning (apiclient, getStateAsync)\n@types/xml2js added\nMove to eslint 9 and fix subsequent issues",
-                "de": "Änderungen nach ioBroker Check\nBump @types/node von 24.5.2 bis 24.6.1\nBump chai von 6.0.1 bis 6.2.0\nStammbezeichnung von 5.9.2 bis 5.9.3\nStoß Mocha von 11.7.2 bis 11.7.3\nKorrekter Fehler in main.js, update package-lock.json\nUpdate io-package.json und Paket. Json\nUpdate .vscode/jsonConfig.json und .gitignore\nAuflösung von Abhängigkeitsfehlern\nStoß Mocha von 11.1.0 bis 11.7.1\nBump global von 16.2.0 bis 16.3.0\nBump @types/node von 24.0.8 bis 24.1.0\nStammbezeichnung von 5.7.3 bis 5.9.2\nBump chai von 5.2.0 bis 5.2.1\nWeitere Codereinigung (Apiclient, getStateAsync)\n@types/xml2js hinzugefügt\nVerschieben Sie auf Eslint 9 und beheben Sie anschließende Probleme",
-                "ru": "Изменения в ioBroker Check\nBump @types/node от 24.5.2 до 24.6.1\nBump chai от 6.0.1 до 6.2.0\nРасшифровка шрифта Bump от 5.9.2 до 5.9.3\nБамп-моча от 11.7.2 до 11.7.3\nИсправить ошибку main.js, обновить package-lock.json\nОбновление io-package.json и пакета. Джонсон\nОбновление .vscode/jsonConfig.json и .gitignore\nУстранение ошибок зависимостей\nБамп-моча от 11.1.0 до 11.7.1\nBump globals от 16.2.0 до 16.3.0\nBump @types/node от 24.0.8 до 24.1.0\nРасшифровка шрифта с 5.7.3 до 5.9.2\nBump chai от 5.2.0 до 5.2.1\nДальнейшая очистка кода (apiclient, getStateAsync)\n@types/xml2js добавлено\nПерейдите в eslint 9 и исправьте последующие проблемы",
-                "pt": "Alterações de acordo com a verificação ioBroker\nBump @types/node de 24.5.2 a 24.6.1\nBump chai de 6.0.1 a 6.2.0\nDactilografia Bump de 5.9.2 a 5.9.3\nBump mocha de 11.7.2 a 11.7.3\nErro correto no main.js, update package-lock.json\nAtualizar io-package.json e pacote. json\nActualizar .vscode/jsonConfig.json e .gitignore\nResolver erros de dependência\nBump mocha de 11.1.0 a 11.7.1\nBump global de 16.2.0 a 16.3.0\nBump @types/node de 24.0.8 a 24.1.0\nDactilografia Bump de 5.7.3 a 5.9.2\nBump chai de 5.2.0 a 5.2.2.1\nLimpeza de código adicional (apiciente, getStateAsync)\n@ tipes/xml2js added\nMover para o eslint 9 e corrigir problemas subsequentes",
-                "nl": "Wijzigingen volgens ioBroker Check\nBump @types/node van 24.5.2 tot 24.6.1\nBump chai van 6.0.1 tot 6.2.0\nBump typescript van 5.9.2 naar 5.9.3\nBump mokka van 11.7.2 tot 11.7.3\nCorrecte fout in main.js, update pakket-lock.json\nUpdate io-package.json en pakket. json\n.vscode/jsonConfig.json en .gitignore bijwerken\nAfhankelijkheidsfouten oplossen\nBump mokka van 11.1.0 tot 11.7.1\nBump globals van 16.2,0 naar 16.3.0\nBump @types/node van 24.0.8 tot 24.1.0\nBump typescript van 5.7.3 naar 5.9.2\nBump chai van 5.2.0 tot 5.2.1\nVerdere code reiniging (afpiclient, getStateAsync)\n@types/xml2js toegevoegd\nVerplaats naar eslint 9 en los volgende problemen op",
-                "fr": "Changements selon ioBroker Check\nBump @types/noeud de 24.5.2 à 24.6.1\nChai de bouffée de 6,0.1 à 6,2.0\nType dactylographie du 5.9.2 au 5.9.3\nBump moka de 11.7.2 à 11.7.3\nErreur correcte dans main.js, mise à jour package-lock.json\nMettre à jour io-package.json et paquet. Json\nMettre à jour .vscode/jsonConfig.json et .gitignore\nRésoudre les erreurs de dépendance\nMocha de boules de 11.1.0 à 11.7.1\nGlobales de bump de 16,2,0 à 16,3,0\nBump @types/noeud de 240,8 à 241,0\nType d'écriture de pompe du 5.7.3 au 5.9.2\nChai de bouffée de 5,2.0 à 5.2.1\nNettoyage de code supplémentaire (apiclient, getStateAsync)\n@types/xml2js ajoutés\nDéplacer vers eslint 9 et résoudre les problèmes suivants",
-                "it": "Modifiche secondo ioBroker Check\nBump @types/nodo da 24.5.2 a 24.6.1\nBump chai da 6.0.1 a 6.2.0\nTipografia del buffer da 5.9.2 a 5.9.3\nMocha da 11.7.2 a 11.7.3\nErrore corretto in main.js, aggiornamento pacchetto-lock.json\nAggiornare io-package.json e pacchetto. J\nAggiornamento .vscode/jsonConfig.json e .gitignore\nRisolvere gli errori di dipendenza\nBump mocha dalle 11.1.0 alle 11.7.1\nBump globali da 16.2.0 a 16.3.0\nBump @types/nodo da 24.0.8 a 24.1.0\nDescrizione del tipo Bump da 5.7.3 a 5.9.2\nBump chai da 5.2.0 a 5.2.1\nUlteriore pulizia del codice (apiclient, getStateAsync)\n@types/xml2js aggiunto\nSpostarsi a eslint 9 e risolvere i problemi successivi",
-                "es": "Cambios según ioBroker Check\nBomba @tipos/nodo de 24.5.2 a 24.6.1\nBump chai de 6.0.1 a 6.2.0\nBump typescript from 5.9.2 to 5.9.3\nMocha de bomba de 11.7.2 a 11.7.3\nError correcto en main.js, actualización paquete-lock.json\nActualizar io-package.json y paquete. json\nActualización .vscode/jsonConfig.json y .gitignore\nErrores de dependencia resueltos\nMocha de bomba de 11.1.0 a 11.7.1\nBump globals de 16.2.0 a 16.3.0\nBomba @tipos/nodo de 24.0.8 a 24.1.0\nBump typescript from 5.7.3 to 5.9.2\nBump chai de 5.2.0 a 5.2.1\nMás limpieza de código (apiclient, getStateAsync)\n@tipos/xml2js añadidos\nMover a eslint 9 y solucionar problemas posteriores",
-                "pl": "Zmiany w zależności od sprawdzania jOBrokera\nBump @ types / node od 24.5.2 do 24.6.1\nBump chai od 6.0.1 do 6.2.0\nBump maszynopis od 5.9.2 do 5.9.3\nBump mocha od 11.7.2 do 11.7.3\nPrawidłowy błąd main.js, update package- lock.json\nAktualizuj jo- package.json i pakiet. json\nAktualizacja .vscode / jsonConfig.json i .gitignore\nRozwiązywanie błędów w zależności\nBump mocha od 11.1.0 do 11.7.1\nBump globals od 16.2.0 do 16.3.0\nBump @ types / node od 24.0.8 do 24.1.0\nBump typeScript od 5.7.3 do 5.9.2\nBump chai od 5.2.0 do 5.2.1\nDalsze czyszczenie kodu (apiclient, getStateAsync)\n@ types / xml2js added\nPrzesuń do eslint 9 i napraw kolejne problemy",
-                "uk": "Зміни відповідно до перевірки ioBroker\nBump @types/node від 24.5.2 до 24.6.1\nBump chai від 6.0.1 до 6.2.0\nBump typescript від 5.9.2 до 5.9.3\nМоха з 11.7.2 до 11.7.3\nПравильна помилка в main.js, оновлення пакет-lock.json\nUpdate io-package.json і пакет. свінгери\nОновлення .vscode/jsonConfig.json і .gitignore\nВирішення помилок залежностей\nEnglish, Українська, Français..\nЗ 16.2.0 до 16.3.0\nBump @types/node від 24.0.8 до 24.1.0\nEnglish, Українська, Français..\nБам-чаї від 5.2.0 до 5.2.1\nДодаткове очищення коду (апіциент, getStateAsync)\n@types/xml2js додано\nПеремістити в eslint 9 і виправити наступні питання",
-                "zh-cn": "根据ioBroker检查的更改\n从24.5.2到24.6.1的跳跃@类型/节点\n从6.0.1到6.2.0\n5.9.2至5.9.3的抽打图\n11.7.2至11.7.3之间的波普摩查\n校正主.js中的错误,更新包锁.json\n更新io-package.json和包. 贾森\n更新 .vscode/jsonConfig.json和.gitignore\n解决依赖性错误\n从11.1.0到11.7.1\n从16.2.0到16.3.0跳跃全球\n跳跃@类型/节点从24.0.8到24.1.0\n5.7.3至5.9.2的笔划\nBump chai 从5.2.0 到 5.2.1\n进一步的代码清理( apiclient, getStateAsync)\n@ types/ xml2js 已添加\n移动到 Eslint 9 并解决后续问题"
-            },
-            "1.2.0": {
-                "en": "Logic added to shift playlist forward/backward\nState roles updated\nLogic added to shuffle playlist\nTranslated using Weblate (Dutch)\nUpdate test-and.release.yml to node 24.x\nUpdate testing to minimum node.js version 20",
-                "de": "Logic hinzugefügt, um die Wiedergabeliste vorwärts/zurück zu verschieben\nStaatliche Rollen aktualisiert\nLogic zur Shuffle Playlist hinzugefügt\nÜbersetzt mit Weblate (Dutch)\nTest-and.release.yml auf Knoten 24.x aktualisieren\nUpdate-Tests auf minimal node.js Version 20",
-                "ru": "Логика добавлена для смещения плейлиста вперед/назад\nОбновлены роли государства\nЛогика добавлена для перетасовки плейлиста\nПеревод с использованием Weblate (голландский)\nОбновление test-and.release.yml до узла 24.x\nОбновление до минимума node.js версии 20",
-                "pt": "Lógica adicionada à lista de reprodução para a frente/para trás\nFunções do Estado actualizadas\nLógica adicionada à lista de reprodução embaralhada\nTraduzido usando Weblate (Holandês)\nAtualizar test-and.release.yml para o nó 24.x\nAtualizar os testes para a versão 20 do nodo mínimo.js",
-                "nl": "Logica toegevoegd aan shift playlist forward/backward\nStaatsfuncties bijgewerkt\nLogica toegevoegd aan shuffle playlist\nVertaald met Weblate\nUpdate test-and.release.yml to node 24.x\nTesten bijwerken naar minimaal node.js versie 20",
-                "fr": "La logique a été ajoutée pour déplacer la playlist vers l'avant/ vers l'arrière\nMise à jour des rôles des États\nLogique ajoutée à la liste de lecture shuffle\nTraduit en utilisant Weblate (néerlandais)\nMettre à jour test-and.release.yml vers le noeud 24.x\nMettre à jour les tests vers la version minimum node.js 20",
-                "it": "Logica aggiunta a spostare la playlist in avanti / indietro\nRapporti di Stato aggiornati\nLogica aggiunta a shuffle playlist\nTradotto con Weblate (Dutch)\nAggiornamento test-and.release.yml al nodo 24.x\nTest di aggiornamento alla versione minima node.js 20",
-                "es": "Logic añadido para cambiar la lista de reproducción hacia adelante y hacia atrás\nFunciones del Estado actualizadas\nLogic añadido a la lista de reproducción shuffle\nTraducido con Weblate (Dutch)\nActualizar test-and.release.yml al nodo 24.x\nActualizar las pruebas al mínimo node.js versión 20",
-                "pl": "Logika dodana do przesunięcia listy odtwarzania do przodu / do tyłu\nAktualizacja ról państwa\nLogika dodana do listy tasowania\nPrzetłumaczone na Weblate (holenderski)\nAktualizuj test- and.release.yml do węzła 24.x\nAktualizacja testów do minimum node.js wersja 20",
-                "uk": "Logic додано до переадресації списку відтворення вперед / назад\nДержавні ролі оновлено\nЛогічні додані до шапелюстки\nПерекладений за допомогою Weblate (Dutch)\nОновлення тест-і.випуск.yml до вузла 24.x\nОновлення тестування на мінімальний вузол.js версія 20",
-                "zh-cn": "向前/向后移动播放列表时添加逻辑\n更新国家作用\n逻辑添加到洗牌播放列表\n使用 Weblate (荷兰语) 翻译\n更新测试和. release.yml至节点 24.x\n更新测试到最小节点.js 版本 20"
-            },
-            "1.1.5": {
-                "en": "Create version 1.1.5\nUpdate info.connection regularly\nUpdate admin dependency to >=7.4.10\nUpdate @iobroker/adapter-dev to 1.3.0\nFixing test action problems\nBump mocha from 11.0.1 to 11.1.0\nBump eslint-config-prettier from 9.1.0 to 10.0.1\nBump chai and @types/chai\nBump eslint from 9.16.0 to 9.19.0\nCorrected translations (de,pl)\nUpdate @iobroker/adapter-core to 3.2.3\nUpdate @iobroker/testing to 5.0.0",
-                "de": "Version 1.1.5 erstellen\nUpdate info.connection regelmäßig\nAdminabhängigkeit aktualisieren von >=7.4.10\nUpdate @iobroker/adapter-dev auf 1.3.0\nProbleme bei der Prüfung\nStoß Mocha von 11.0.1 bis 11.1.0\nBump eslint-config-prettier von 9.1.0 bis 10.0.1\nBump chai und @types/chai\nBump eslint von 9.16.0 bis 9.19.0\nKorrigierte Übersetzungen (de,pl)\nUpdate @iobroker/Adapter-Core auf 3.2.3\nUpdate @iobroker/Test auf 5.0.0",
-                "ru": "Создать версию 1.1.5\nОбновление info.connection регулярно\nОбновление зависимости администратора от >=7.4.10\nОбновление @iobroker/adapter-dev до 1.3.0\nИсправление проблем с тестом\nBump mocha от 11.0.1 до 11.1.0\nBump eslint-config-prettier от 9.1.0 до 10.0.1\nBump chai и @types/chai\nБамп эслинт от 9.16.0 до 9.19.0\nИсправленные переводы (de,pl)\nОбновление @iobroker/adapter-core до 3.2.3\nОбновление @iobroker/тестирование до 5.0.0",
-                "pt": "Criar versão 1.1.5\nAtualizar info.connection regularmente\nAtualizar dependência de administrador para >=7.4.10\nAtualizar @iobroker/adapter-dev para 1.3.0\nCorrigir problemas de ação de teste\nBump mocha de 11.0.1 para 11.1.0\nBump eslint-config-prettier de 9.1.0 a 10.0.1\nBump chai e @types/chai\nBump eslint de 9.16.0 para 9.19.0\nTraduções corrigidas (de,pl)\nAtualizar @iobroker/adapter-core para 3.2.3\nAtualizar @iobroker/teste para 5.0.0",
-                "nl": "Maak versie 1.1.5 aan\nInfo.connectie regelmatig bijwerken\nDe waarde van niet meer dan 20% van de prijs af fabriek van het product\n@iobroker/adapter-dev bijwerken naar 1.3.0\nProefactieproblemen oplossen\nBump mokka van 11.0.1 tot 11.1.0\nBump eslint-config-prettier van 9.1,0 tot 10.0.1\nBump chai en @types/chai\nBump eslint van 9.16.0 tot 9.19.0\nGecorrigeerde vertalingen (de,pl)\nBijwerken @iobroker/adapter-core naar 3.2.3\nUpdate @iobroker/testing naar 5.0.0",
-                "fr": "Créer la version 1.1.5\nMettre à jour régulièrement info.connection\nMettre à jour la dépendance de l'administration vers >=7.4.10\nMettre à jour @iobroker/adaptateur-dev pour 1.3.0\nCorrection des problèmes d'action lors des essais\nMocha de boules de 11,0.1 à 111,0\nBump eslint-config-prettier de 9.1.0 à 10.0.1\nBump chai et @types/chai\nEscalope de 9.16.0 à 9.19.0\nTraductions corrigées (de,pl)\nMettre à jour @iobroker/adaptateur-core au 3.2.3\nMettre à jour @iobroker/test à 5.0.0",
-                "it": "Creare la versione 1.1.5\nAggiornare info.connection regolarmente\nAggiornare la dipendenza da admin a >=7.4.10\nAggiorna @iobroker/adapter-dev a 1.3.0\nRisolvere i problemi di azione del test\nBump mocha da 11.0.1 a 11.1.0\nBump eslint-config-prettier da 9.1.0 a 10.0.1\nBump chai e @types/chai\nBump eslint da 9.16.0 a 9.19.0\nTraduzioni corrette (de,pl)\nAggiorna @iobroker/adapter-core a 3.2.3\nAggiornamento @iobroker/testing a 5.0.0",
-                "es": "Crear versión 1.1.5\nInformación actualizada.conexión regularmente\nActualizar la dependencia de administración a н=7.4.10\nActualizar @iobroker/adapter-dev a 1.3.0\nProblemas de acción de prueba de fijación\nMocha de bomba de 11.0.1 a 11.1.0\nBump eslint-config-prettier de 9.1.0 a 10.0.1\nBump chai y @tipos/chai\nBump eslint from 9.16.0 to 9.19.0\nTraducciones corregidas (de,pl)\nActualizar @iobroker/adapter-core a 3.2.3\nActualizar @iobroker/testing a 5.0.0",
-                "pl": "Utwórz wersję 1.1.5\nAktualizuj regularne połączenia info.connection\nAktualizacja zależności admin do > = 7.4.10\nAktualizacja @ iobroker / adapter- dev do 1.3.0\nRozwiązanie problemów z działaniem testowym\nBump mocha od 11.0.1 do 11.1.0\nBump eslint- config- pretier od 9.1.0 do 10.0.1\nBump chai i @ types / chai\nEslint bump od 9.16.0 do 9.19.0\nTłumaczenie poprawione (de, pl)\nAktualizacja @ iobroker / adapter- core do 3.2.3\nAktualizacja @ iobroker / testowanie do 5.0.0",
-                "uk": "Створити версію 1.1.5\nОновлення інформації\nОновлення залежності адміністратора до >=7.4.10\nОновлення @iobroker/adapter-dev до 1.3.0\nВиправлення проблем тестової дії\nBump mocha від 11.0.1 до 11.1.0\nBump eslint-config-prettier від 9.1.0 до 10.0.1\nBump chai і @types/chai\nBump eslint від 9.16.0 до 9.19.0\nВиправлені переклади (de,pl)\nОновлення @iobroker/adapter-core до 3.2.3\nОновлення @iobroker/testing до 5.0.0",
-                "zh-cn": "创建 1.1.5 版本\n定期更新信息.连接\n将管理员依赖性更新到 QQ7.4.10\n将 @iobrocco/adapter-dev 更新为 1.3. 0\n解决测试动作问题\n从11.0.1到11.1.0\nBump eslint-config- prettier 从9.1.0 到 10.0.1\nBump chai 和 @ types/ chai\n从9.16.0到9.19.0\n更正的译文(德,pl)\n将 @iobrocco/ adapter- core 更新为 3.2.3\n更新 @ iobus/ testing 到 5. 0.0"
-            },
-            "1.1.4": {
-                "en": "Correct common.news",
-                "de": "Richtig häufig.news",
-                "ru": "Исправный общий.news",
-                "pt": "Correto common.news",
-                "nl": "Correct algemeen nieuws",
-                "fr": "Correct common.news",
-                "it": "Corretto comune.news",
-                "es": "Correcto común.noticias",
-                "pl": "Prawidłowe wiadomości",
-                "uk": "Корисний загальний.news",
-                "zh-cn": "正确的普通新闻"
-            },
-            "1.1.3": {
-                "en": "Changed year in README\nBump prettier from 3.4.1 to 3.4.2\nBump mocha from 10.8.2 to 11.0.1\nBump chai-as-promised and @types/chai-as-promised\nBump sinon from 18.0.0 to 19.0.2\nBump globals from 15.9.0 to 15.14.0",
-                "de": "Geändertes Jahr in README\nStoßfänger von 3.4.1 bis 3.4.2\nStoß Mocha von 10.8.2 bis 11.0.1\nBump chai-as-promised und @types/chai-as-promised\nStoßsinus von 18.0.0 bis 19.0.2\nBump global von 15.9.0 bis 15.14.0",
-                "ru": "Изменение года в README\n3.4.1 - 3.4.2\nС 10.8.2 до 11.0.1\nBump chai-as-promised and @types/chai-as-promised\nBump sinon от 18.0.0 до 19.0.2\nBump globals от 15.9.0 до 15.14.0",
-                "pt": "Ano alterado em README\nBump mais bonita de 3.4.1 para 3.4.2\nBump mocha de 10.8.2 para 11.0.1\nBump chai-as-promised e @types/chai-as-promised\nBump sinon de 18.0.0 para 19.0.2\nBump globals de 15.9.0 para 15.14.0",
-                "nl": "Veranderd jaar in README\nBump mooier van 3.4.1 tot 3.4.2\nBump mokka van 10..8.2 tot 11.0.1\nBump chai-as-promised en @types/chai-as-promised\nBump sinon van 18,0 tot 19,0.2\nBump globals van 15.9.0 naar 15.14.0",
-                "fr": "Année changée en README\nBombe plus jolie du 3.4.1 au 3.4.2\nMocha de pompe du 10.8.2 au 11.0.1\nBump chai-as-promise et @types/chai-as-promise\nPoignée de 18.0.0 à 19.0.2\nBump globals de 15.9.0 à 15.14.0",
-                "it": "Variato anno in README\nPrettier Bump da 3.4.1 a 3.4.2\nBump mocha da 10.8.2 a 11.0.1\nBump chai-as-promised e @types/chai-as-promised\nBump sinon da 18.0.0 a 19.0.2\nBump globali da 15.9.0 a 15.14.0",
-                "es": "Año cambiado en README\nBomba superior de 3.4.1 a 3.4.2\nMocha de bomba de 10.8.2 a 11.0.1\nBump chai-as-promised y @types/chai-as-promised\nBump sinon de 18.0.0 a 19.0.2\nGlobales de bombas de 15.9.0 a 15.14.0",
-                "pl": "Zmieniony rok w README\nPretty od 3.4.1 do 3.4.2\nBump mocha od 10.8.2 do 11.0.1\nBump chai- as- provided i @ types / chai- as- provided\nBump sinon od 18.0.0 do 19.0.2\nBump globals od 15.9.0 do 15.14.0",
-                "uk": "Змінений рік в РЕЖИМ\nBump prettier від 3.4.1 до 3.4.2\nBump mocha від 10.8.2 до 11.0.1\nBump chai-as-promized і @types/chai-as-promized\nЗ 18.0.0 до 19.0.2\nЗ 15.9.0 до 15.14.0",
-                "zh-cn": "读取ME的年份变化\n3.4.1至3.4.2之间的倾角\n从10.8.2到11.0.1\nBump chai-as-promimated and @ types/chai-as-promimated (英语)\n从18.0.0到19.0.2\n从15.9.0到15.14.0的凸起全球"
-            },
-            "1.1.1": {
-                "en": "README.md cosmetics\nAdded Weblate translation badge\nBump cross-spawn from 7.0.3 to 7.0.6\nSwitch to adapter-core3.2.2\nCorrected logic for remote volume changes",
-                "de": "README.md Kosmetika\nHinzugefügt Weblate Übersetzung Badge\nStoßkreuz von 7.0.3 bis 7.0.6\nWechseln Sie zum Adapter-Core3.2.2\nKorrigierte Logik für Remote-Volumenänderungen",
-                "ru": "README.md косметика\nДобавлен значок перевода Weblate\nКросс-спаун с 7.0.3 до 7.0.6\nПереход на адаптер-core3.2.2\nИсправленная логика для изменений удаленного объема",
-                "pt": "Cosméticos README.md\nAdicionado crachá de tradução Weblate\nBump cross-spawn de 7.0.3 para 7.0.6\nMudar para o adaptador-core3.2.2\nLógica correta para mudanças de volume remoto",
-                "nl": "README.md cosmetica\nToegevoegd Weblate translation badge\nBump cross-pion van 7.0.3 tot 7.0.6\nOverschakelen naar adapter-core3.2.2\nGecorrigeerde logica voor volumeveranderingen op afstand",
-                "fr": "Produits cosmétiques README.md\nAjout du badge de traduction Weblate\nBrûlures croisées de 7,0.3 à 7,0,6\nPassez à l'adaptateur-core3.2.2\nLogique corrigée pour les changements de volume à distance",
-                "it": "README.md cosmetici\nAggiunto Weblate traduzione distintivo\nSpawn da 7.0.3 a 7.0.6\nPassare a adattatore-core3.2.2\nLogica corretta per le modifiche del volume remoto",
-                "es": "Cosméticos README.md\nInsignia de traducción de Weblate\nBump cross-spawn de 7.0.3 a 7.0.6\nCambiar a adaptador-core3.2\nLógica corregida para cambios de volumen remoto",
-                "pl": "README.md kosmetyki\nDodano odznakę tłumaczeniową Weblate\nPętla poprzeczna od 7.0.3 do 7.0.6\nPrzełącz na adapter-core3.2.2\nSkorygowana logika dla zdalnych zmian głośności",
-                "uk": "README.md Косметика\nДодано Weblate переклад значок\nБампер-спагін від 7.0.3 до 7.0.6\nПеремикач адаптера-core3.2.2\nВиправлена логіка для зміни віддаленого обсягу",
-                "zh-cn": "README.md 化妆品\n添加 Weblate 翻译徽章\n从7.0.3到7.0.6的交叉弹簧\n切换到适配器核心3.2.2\n远程音量变化的校正逻辑"
-            },
-            "1.1.0": {
-                "en": "Fixes as requested for adapter release to repository\nPotentially invalid characters are replaced before creating an object\nsetTimeout used instead of setInterval, clearTimeout added\nCheck values for PollingTime and TimeOut\nMissing sizes added\nState roles reevaluated\nsubscribeState calls eliminated\nInstance prefixes in ObjectIds are omitted when calling setState()\nState change now honors ack flag\nPollingTime and TimeOUT changed to type number\nonReady() stopped when no IP is set\nTesting extended to node 22.x\nExample code removed",
-                "de": "Behebt die angeforderten Korrekturen für die Adapterfreigabe im Repository\nPotenziell ungültige Zeichen werden vor dem Erstellen eines Objekts ersetzt\nsetTimeout wird anstelle von setInterval verwendet, clearTimeout hinzugefügt\nÜberprüfen Sie die Werte für PollingTime und TimeOut\nFehlende Größen hinzugefügt\nStaatliche Rollen werden neu bewertet\nsubscribeState-Aufrufe eliminiert\nInstanzpräfixe in ObjectIds werden beim Aufruf von setState() weggelassen\nBei der Zustandsänderung wird jetzt die Bestätigungsflagge berücksichtigt\nPollingTime und TimeOUT wurden in Typnummer geändert\nonReady() wurde gestoppt, wenn keine IP festgelegt ist\nTests auf Knoten 22.x ausgeweitet\nBeispielcode entfernt",
-                "ru": "Исправления, запрошенные для выпуска адаптера в репозиторий.\nПотенциально недопустимые символы заменяются перед созданием объекта.\nsetTimeout используется вместо setInterval, добавлен ClearTimeout\nПроверьте значения PollingTime и TimeOut.\nДобавлены недостающие размеры\nРоли государства переоценены\nвызовы subscribeState устранены\nПрефиксы экземпляров в ObjectIds опускаются при вызове setState().\nИзменение штата теперь учитывает флаг подтверждения\nPollingTime и TimeOUT изменены на номер типа\nonReady() останавливается, когда IP не установлен\nТестирование продлено до узла 22.x\nПример кода удален.",
-                "pt": "Correções conforme solicitado para liberação do adaptador no repositório\nCaracteres potencialmente inválidos são substituídos antes da criação de um objeto\nsetTimeout usado em vez de setInterval, clearTimeout adicionado\nVerifique os valores de PollingTime e TimeOut\nTamanhos ausentes adicionados\nPapéis do Estado reavaliados\nchamadas subscribeState eliminadas\nOs prefixos de instância em ObjectIds são omitidos ao chamar setState()\nMudança de estado agora homenageia bandeira de reconhecimento\nPollingTime e TimeOUT alterados para digitar número\nonReady() parou quando nenhum IP foi definido\nTeste estendido ao nó 22.x\nCódigo de exemplo removido",
-                "nl": "Oplossingen zoals gevraagd voor het vrijgeven van de adapter naar de repository\nPotentieel ongeldige tekens worden vervangen voordat een object wordt gemaakt\nsetTimeout gebruikt in plaats van setInterval, clearTimeout toegevoegd\nControleer de waarden voor PollingTime en TimeOut\nOntbrekende maten toegevoegd\nStaatsrollen opnieuw geëvalueerd\nSubscribeStat-oproepen geëlimineerd\nInstantievoorvoegsels in ObjectIds worden weggelaten bij het aanroepen van setState()\nStaatsverandering eert nu de vlag\nPollingTime en TimeOUT gewijzigd in typenummer\nonReady() gestopt wanneer er geen IP is ingesteld\nTesten uitgebreid naar knooppunt 22.x\nVoorbeeldcode verwijderd",
-                "fr": "Correctifs demandés pour la publication de l'adaptateur dans le référentiel\nLes caractères potentiellement invalides sont remplacés avant de créer un objet\nsetTimeout utilisé à la place de setInterval, clearTimeout ajouté\nVérifiez les valeurs de PollingTime et TimeOut\nTailles manquantes ajoutées\nLes rôles de l’État réévalués\nAppels SubscribeState éliminés\nLes préfixes d'instance dans ObjectIds sont omis lors de l'appel de setState()\nLe changement d'état honore désormais le drapeau ack\nPollingTime et TimeOUT ont été remplacés par un numéro de type\nonReady() s'est arrêté lorsqu'aucune adresse IP n'est définie\nTests étendus au nœud 22.x\nExemple de code supprimé",
-                "it": "Correzioni come richiesto per il rilascio dell'adattatore nel repository\nI caratteri potenzialmente non validi vengono sostituiti prima di creare un oggetto\nsetTimeout utilizzato al posto di setInterval, aggiunto clearTimeout\nControllare i valori per PollingTime e TimeOut\nAggiunte taglie mancanti\nRuoli statali rivalutati\nchiamate SubscribeState eliminate\nI prefissi delle istanze negli ObjectId vengono omessi quando si chiama setState()\nIl cambio di stato ora onora la bandiera di ACK\nPollingTime e TimeOUT sono stati modificati nel tipo numero\nonReady() si è interrotto quando non è impostato alcun IP\nTest esteso al nodo 22.x\nCodice di esempio rimosso",
-                "es": "Correcciones según lo solicitado para el lanzamiento del adaptador al repositorio.\nLos caracteres potencialmente no válidos se reemplazan antes de crear un objeto\nSe usó setTimeout en lugar de setInterval, se agregó clearTimeout\nVerifique los valores de PollingTime y TimeOut\nSe agregaron tallas faltantes\nPapeles estatales reevaluados\nSe eliminaron las llamadas de subscribeState.\nLos prefijos de instancia en ObjectIds se omiten al llamar a setState()\nEl cambio de estado ahora honra la bandera ack\nPollingTime y TimeOUT cambiaron al tipo número\nonReady() se detuvo cuando no se establece ninguna IP\nPruebas extendidas al nodo 22.x\nCódigo de ejemplo eliminado",
-                "pl": "Poprawki wymagane do wydania adaptera do repozytorium\nPotencjalnie nieprawidłowe znaki są zastępowane przed utworzeniem obiektu\nużyto setTimeout zamiast setInterval, dodano clearTimeout\nSprawdź wartości PollingTime i TimeOut\nDodano brakujące rozmiary\nRole państwa przewartościowane\nPołączenia subskrybowane w stanie wyeliminowane\nPrzedrostki instancji w ObjectIds są pomijane podczas wywoływania metody setState()\nZmiana stanu honoruje teraz flagę potwierdzenia\nPollingTime i TimeOUT zmieniono na typ numeryczny\nonReady() zatrzymał się, gdy nie ustawiono adresu IP\nTestowanie rozszerzone na węzeł 22.x\nUsunięto przykładowy kod",
-                "uk": "Виправлення, необхідні для випуску адаптера в репозиторій\nПотенційно недійсні символи замінюються перед створенням об'єкта\nsetTimeout використовується замість setInterval, clearTimeout додано\nПеревірте значення для PollingTime і TimeOut\nДодано відсутні розміри\nПереоцінка ролі держави\nВиклики subscribeState усунуті\nПрефікси екземплярів у ObjectIds пропускаються під час виклику setState()\nЗміна стану тепер вшановує прапор підтвердження\nPollingTime і TimeOUT змінено на число типу\nonReady() зупинено, коли IP-адреса не встановлена\nТестування розширено до вузла 22.x\nПриклад коду видалено",
-                "zh-cn": "根据请求进行修复以将适配器发布到存储库\n在创建对象之前替换可能无效的字符\n使用setTimeout代替setInterval，添加clearTimeout\n检查 PollingTime 和 TimeOut 的值\n添加了缺少的尺寸\n重新评估国家角色\n消除了 subscribeState 调用\n调用 setState() 时会省略 ObjectId 中的实例前缀\n状态更改现在尊重 ack 标志\nPollingTime 和 TimeOUT 更改为数字类型\nonReady() 在未设置 IP 时停止\n测试扩展到节点 22.x\n示例代码已删除"
-            }
-        },
-        "titleLang": {
-            "en": "Bluesound Control",
-            "de": "Bluesound-Steuerung",
-            "ru": "Управление Bluesound",
-            "pt": "Controle de som azul",
-            "nl": "Bluesound-controle",
-            "fr": "Contrôle du son bleu",
-            "it": "Controllo Bluesound",
-            "es": "Control de sonido azul",
-            "pl": "Sterowanie Bluesoundem",
-            "uk": "Управління Bluesound",
-            "zh-cn": "蓝声控制"
-        },
-        "desc": {
-            "en": "Adapter to control Bluesound devices",
-            "de": "Adapter zur Steuerung von Bluesound-Geräten",
-            "ru": "Адаптер для управления устройствами Bluesound",
-            "pt": "Adaptador para controlar dispositivos Bluesound",
-            "nl": "Adapter om Bluesound-apparaten te bedienen",
-            "fr": "Adaptateur pour contrôler les appareils Bluesound",
-            "it": "Adattatore per controllare i dispositivi Bluesound",
-            "es": "Adaptador para controlar dispositivos Bluesound",
-            "pl": "Adapter do sterowania urządzeniami Bluesound",
-            "uk": "Адаптер для управління пристроями Bluesound",
-            "zh-cn": "用于控制 Bluesound 设备的适配器"
-        },
-        "authors": ["Uwe Nagel <uwenagel@kabelmail.de>"],
-        "keywords": ["multimedia", "control"],
-        "licenseInformation": {
-            "type": "free",
-            "license": "MIT"
-        },
-        "platform": "Javascript/Node.js",
-        "icon": "bluesound.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Uwe1958/ioBroker.bluesound/main/admin/bluesound.png",
-        "readme": "https://github.com/Uwe1958/ioBroker.bluesound/blob/main/README.md",
-        "loglevel": "info",
-        "tier": 3,
-        "mode": "daemon",
-        "type": "multimedia",
-        "compact": true,
-        "connectionType": "local",
-        "dataSource": "push",
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=6.0.11"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=7.6.17"
-            }
-        ]
+  "common": {
+    "name": "bluesound",
+    "version": "1.3.0",
+    "news": {
+      "1.3.0": {
+        "en": "Library search added\nAdd control.search\nAdd info.playlisthtml\nAdd info.playliststate\nFunction setPlaylistToggle added\nAdd control.playlist\nFunction readPlaylist added\nAdd info.playlist\nLibrary browsing added",
+        "de": "Bibliothekssuche hinzugefügt\nKontrolle hinzufügen.search\nInfo hinzufügen.playlisthtml\nInfo hinzufügen.playliststate\nFunktion setPlaylist Toggle hinzugefügt\nKontrollieren. Auf den Wunschzettel\nFunktion readPlaylist hinzugefügt\nInfo hinzufügen.playlist\nBibliotheksbrowsing hinzugefügt",
+        "ru": "Поиск в библиотеке добавлен\nДобавить control.search\nДобавить info.playlisthtml\nДобавить info.playliststate\nФункция setplaylist Добавлено Toggle\nДобавьте контроль. плейлист\nДобавлена функция readplaylist\nДобавить info.playlist\nБиблиотечный просмотр добавлен",
+        "pt": "Pesquisa de bibliotecas adicionada\nAdicionar control.search\nAdicionar info.playlisthtml\nAdicionar info.playliststate\nConjunto de funçõesPlaylist Alternar adicionado\nAdicionar controle. lista de reprodução\nLer a Lista de Reprodução adicionada\nAdicionar info.playlist\nNavegação da biblioteca adicionada",
+        "nl": "Zoekopdracht toegevoegd\nControle.search toevoegen\nVoeg info.playlisthtml toe\nInfo.playliststate toevoegen\nFunctie setPlaylist Aan/uitzetten\nControle toevoegen. afspeellijst\nFunctie readPlaylist toegevoegd\nInfo.playlist toevoegen\nBibliotheek browsen toegevoegd",
+        "fr": "Recherche de bibliothèque ajoutée\nAjouter control.search\nAjouter info.playlisthtml\nAjouter info.playliststate\nFonctions SetPlaylist Toggle ajouté\nAjoutez le contrôle. Liste de lecture\nFonction readPlaylist ajoutée\nAjouter info.playlist\nNavigation de la bibliothèque ajoutée",
+        "it": "Ricerca della biblioteca aggiunto\nAggiungi controllo.search\nAggiungi info.playlisthtml\nAggiungi info.playliststate\nSet di funzioni Toggle aggiunto\nAggiungi il controllo. playlist\nFunzione readPlaylist aggiunto\nAggiungi info.playlist\nLibreria navigazione aggiunto",
+        "es": "Búsqueda de bibliotecas agregada\nAgregar control.search\nAñadir información.playlisthtml\nAñadir información.playliststate\nJuego de funciones Toggle añadido\nAñadir control. lista\nFunción readPlaylist añadido\nAñadir información.playlist\nNavegación a la biblioteca",
+        "pl": "Dodano wyszukiwanie biblioteki\nDodaj control.search\nDodaj info.playlistthtml\nDodaj info.playliststate\nLista odtwarzania funkcji Włączenie / wyłączenie\nDodaj kontrolę. playlist\nDodano funkcję readPlaylist\nDodaj info.playlist\nDodano przeglądanie biblioteki",
+        "uk": "Пошук бібліотеки\nДодати контроль.search\nДодати інформацію.playlisthtml\nДодати інформацію.playliststate\nНалаштування функції додано\nДодати контроль. Список відтворення\nФункція читатиPlaylist додав\nДодати інформацію.playlist\nДодано бібліотеку",
+        "zh-cn": "增加了图书馆搜索\n添加控件. 搜索\n添加信息. playlisthtml\n添加信息. playlist状态\n函数设置 Playlist 切换已添加\n添加控制器 。 播放列表\n函数已读取 Playlist 已添加\n添加信息. 播放列表\n增加了图书馆浏览"
+      },
+      "1.2.1": {
+        "en": "Changes according to ioBroker Check\nBump @types/node from 24.5.2 to 24.6.1\nBump chai from 6.0.1 to 6.2.0\nBump typescript from 5.9.2 to 5.9.3\nBump mocha from 11.7.2 to 11.7.3\nCorrect error in main.js, update package-lock.json\nUpdate io-package.json and package.json\nUpdate .vscode/jsonConfig.json and .gitignore\nResolve dependency errors\nBump mocha from 11.1.0 to 11.7.1\nBump globals from 16.2.0 to 16.3.0\nBump @types/node from 24.0.8 to 24.1.0\nBump typescript from 5.7.3 to 5.9.2\nBump chai from 5.2.0 to 5.2.1\nFurther code cleaning (apiclient, getStateAsync)\n@types/xml2js added\nMove to eslint 9 and fix subsequent issues",
+        "de": "Änderungen nach ioBroker Check\nBump @types/node von 24.5.2 bis 24.6.1\nBump chai von 6.0.1 bis 6.2.0\nStammbezeichnung von 5.9.2 bis 5.9.3\nStoß Mocha von 11.7.2 bis 11.7.3\nKorrekter Fehler in main.js, update package-lock.json\nUpdate io-package.json und Paket. Json\nUpdate .vscode/jsonConfig.json und .gitignore\nAuflösung von Abhängigkeitsfehlern\nStoß Mocha von 11.1.0 bis 11.7.1\nBump global von 16.2.0 bis 16.3.0\nBump @types/node von 24.0.8 bis 24.1.0\nStammbezeichnung von 5.7.3 bis 5.9.2\nBump chai von 5.2.0 bis 5.2.1\nWeitere Codereinigung (Apiclient, getStateAsync)\n@types/xml2js hinzugefügt\nVerschieben Sie auf Eslint 9 und beheben Sie anschließende Probleme",
+        "ru": "Изменения в ioBroker Check\nBump @types/node от 24.5.2 до 24.6.1\nBump chai от 6.0.1 до 6.2.0\nРасшифровка шрифта Bump от 5.9.2 до 5.9.3\nБамп-моча от 11.7.2 до 11.7.3\nИсправить ошибку main.js, обновить package-lock.json\nОбновление io-package.json и пакета. Джонсон\nОбновление .vscode/jsonConfig.json и .gitignore\nУстранение ошибок зависимостей\nБамп-моча от 11.1.0 до 11.7.1\nBump globals от 16.2.0 до 16.3.0\nBump @types/node от 24.0.8 до 24.1.0\nРасшифровка шрифта с 5.7.3 до 5.9.2\nBump chai от 5.2.0 до 5.2.1\nДальнейшая очистка кода (apiclient, getStateAsync)\n@types/xml2js добавлено\nПерейдите в eslint 9 и исправьте последующие проблемы",
+        "pt": "Alterações de acordo com a verificação ioBroker\nBump @types/node de 24.5.2 a 24.6.1\nBump chai de 6.0.1 a 6.2.0\nDactilografia Bump de 5.9.2 a 5.9.3\nBump mocha de 11.7.2 a 11.7.3\nErro correto no main.js, update package-lock.json\nAtualizar io-package.json e pacote. json\nActualizar .vscode/jsonConfig.json e .gitignore\nResolver erros de dependência\nBump mocha de 11.1.0 a 11.7.1\nBump global de 16.2.0 a 16.3.0\nBump @types/node de 24.0.8 a 24.1.0\nDactilografia Bump de 5.7.3 a 5.9.2\nBump chai de 5.2.0 a 5.2.2.1\nLimpeza de código adicional (apiciente, getStateAsync)\n@ tipes/xml2js added\nMover para o eslint 9 e corrigir problemas subsequentes",
+        "nl": "Wijzigingen volgens ioBroker Check\nBump @types/node van 24.5.2 tot 24.6.1\nBump chai van 6.0.1 tot 6.2.0\nBump typescript van 5.9.2 naar 5.9.3\nBump mokka van 11.7.2 tot 11.7.3\nCorrecte fout in main.js, update pakket-lock.json\nUpdate io-package.json en pakket. json\n.vscode/jsonConfig.json en .gitignore bijwerken\nAfhankelijkheidsfouten oplossen\nBump mokka van 11.1.0 tot 11.7.1\nBump globals van 16.2,0 naar 16.3.0\nBump @types/node van 24.0.8 tot 24.1.0\nBump typescript van 5.7.3 naar 5.9.2\nBump chai van 5.2.0 tot 5.2.1\nVerdere code reiniging (afpiclient, getStateAsync)\n@types/xml2js toegevoegd\nVerplaats naar eslint 9 en los volgende problemen op",
+        "fr": "Changements selon ioBroker Check\nBump @types/noeud de 24.5.2 à 24.6.1\nChai de bouffée de 6,0.1 à 6,2.0\nType dactylographie du 5.9.2 au 5.9.3\nBump moka de 11.7.2 à 11.7.3\nErreur correcte dans main.js, mise à jour package-lock.json\nMettre à jour io-package.json et paquet. Json\nMettre à jour .vscode/jsonConfig.json et .gitignore\nRésoudre les erreurs de dépendance\nMocha de boules de 11.1.0 à 11.7.1\nGlobales de bump de 16,2,0 à 16,3,0\nBump @types/noeud de 240,8 à 241,0\nType d'écriture de pompe du 5.7.3 au 5.9.2\nChai de bouffée de 5,2.0 à 5.2.1\nNettoyage de code supplémentaire (apiclient, getStateAsync)\n@types/xml2js ajoutés\nDéplacer vers eslint 9 et résoudre les problèmes suivants",
+        "it": "Modifiche secondo ioBroker Check\nBump @types/nodo da 24.5.2 a 24.6.1\nBump chai da 6.0.1 a 6.2.0\nTipografia del buffer da 5.9.2 a 5.9.3\nMocha da 11.7.2 a 11.7.3\nErrore corretto in main.js, aggiornamento pacchetto-lock.json\nAggiornare io-package.json e pacchetto. J\nAggiornamento .vscode/jsonConfig.json e .gitignore\nRisolvere gli errori di dipendenza\nBump mocha dalle 11.1.0 alle 11.7.1\nBump globali da 16.2.0 a 16.3.0\nBump @types/nodo da 24.0.8 a 24.1.0\nDescrizione del tipo Bump da 5.7.3 a 5.9.2\nBump chai da 5.2.0 a 5.2.1\nUlteriore pulizia del codice (apiclient, getStateAsync)\n@types/xml2js aggiunto\nSpostarsi a eslint 9 e risolvere i problemi successivi",
+        "es": "Cambios según ioBroker Check\nBomba @tipos/nodo de 24.5.2 a 24.6.1\nBump chai de 6.0.1 a 6.2.0\nBump typescript from 5.9.2 to 5.9.3\nMocha de bomba de 11.7.2 a 11.7.3\nError correcto en main.js, actualización paquete-lock.json\nActualizar io-package.json y paquete. json\nActualización .vscode/jsonConfig.json y .gitignore\nErrores de dependencia resueltos\nMocha de bomba de 11.1.0 a 11.7.1\nBump globals de 16.2.0 a 16.3.0\nBomba @tipos/nodo de 24.0.8 a 24.1.0\nBump typescript from 5.7.3 to 5.9.2\nBump chai de 5.2.0 a 5.2.1\nMás limpieza de código (apiclient, getStateAsync)\n@tipos/xml2js añadidos\nMover a eslint 9 y solucionar problemas posteriores",
+        "pl": "Zmiany w zależności od sprawdzania jOBrokera\nBump @ types / node od 24.5.2 do 24.6.1\nBump chai od 6.0.1 do 6.2.0\nBump maszynopis od 5.9.2 do 5.9.3\nBump mocha od 11.7.2 do 11.7.3\nPrawidłowy błąd main.js, update package- lock.json\nAktualizuj jo- package.json i pakiet. json\nAktualizacja .vscode / jsonConfig.json i .gitignore\nRozwiązywanie błędów w zależności\nBump mocha od 11.1.0 do 11.7.1\nBump globals od 16.2.0 do 16.3.0\nBump @ types / node od 24.0.8 do 24.1.0\nBump typeScript od 5.7.3 do 5.9.2\nBump chai od 5.2.0 do 5.2.1\nDalsze czyszczenie kodu (apiclient, getStateAsync)\n@ types / xml2js added\nPrzesuń do eslint 9 i napraw kolejne problemy",
+        "uk": "Зміни відповідно до перевірки ioBroker\nBump @types/node від 24.5.2 до 24.6.1\nBump chai від 6.0.1 до 6.2.0\nBump typescript від 5.9.2 до 5.9.3\nМоха з 11.7.2 до 11.7.3\nПравильна помилка в main.js, оновлення пакет-lock.json\nUpdate io-package.json і пакет. свінгери\nОновлення .vscode/jsonConfig.json і .gitignore\nВирішення помилок залежностей\nEnglish, Українська, Français..\nЗ 16.2.0 до 16.3.0\nBump @types/node від 24.0.8 до 24.1.0\nEnglish, Українська, Français..\nБам-чаї від 5.2.0 до 5.2.1\nДодаткове очищення коду (апіциент, getStateAsync)\n@types/xml2js додано\nПеремістити в eslint 9 і виправити наступні питання",
+        "zh-cn": "根据ioBroker检查的更改\n从24.5.2到24.6.1的跳跃@类型/节点\n从6.0.1到6.2.0\n5.9.2至5.9.3的抽打图\n11.7.2至11.7.3之间的波普摩查\n校正主.js中的错误,更新包锁.json\n更新io-package.json和包. 贾森\n更新 .vscode/jsonConfig.json和.gitignore\n解决依赖性错误\n从11.1.0到11.7.1\n从16.2.0到16.3.0跳跃全球\n跳跃@类型/节点从24.0.8到24.1.0\n5.7.3至5.9.2的笔划\nBump chai 从5.2.0 到 5.2.1\n进一步的代码清理( apiclient, getStateAsync)\n@ types/ xml2js 已添加\n移动到 Eslint 9 并解决后续问题"
+      },
+      "1.2.0": {
+        "en": "Logic added to shift playlist forward/backward\nState roles updated\nLogic added to shuffle playlist\nTranslated using Weblate (Dutch)\nUpdate test-and.release.yml to node 24.x\nUpdate testing to minimum node.js version 20",
+        "de": "Logic hinzugefügt, um die Wiedergabeliste vorwärts/zurück zu verschieben\nStaatliche Rollen aktualisiert\nLogic zur Shuffle Playlist hinzugefügt\nÜbersetzt mit Weblate (Dutch)\nTest-and.release.yml auf Knoten 24.x aktualisieren\nUpdate-Tests auf minimal node.js Version 20",
+        "ru": "Логика добавлена для смещения плейлиста вперед/назад\nОбновлены роли государства\nЛогика добавлена для перетасовки плейлиста\nПеревод с использованием Weblate (голландский)\nОбновление test-and.release.yml до узла 24.x\nОбновление до минимума node.js версии 20",
+        "pt": "Lógica adicionada à lista de reprodução para a frente/para trás\nFunções do Estado actualizadas\nLógica adicionada à lista de reprodução embaralhada\nTraduzido usando Weblate (Holandês)\nAtualizar test-and.release.yml para o nó 24.x\nAtualizar os testes para a versão 20 do nodo mínimo.js",
+        "nl": "Logica toegevoegd aan shift playlist forward/backward\nStaatsfuncties bijgewerkt\nLogica toegevoegd aan shuffle playlist\nVertaald met Weblate\nUpdate test-and.release.yml to node 24.x\nTesten bijwerken naar minimaal node.js versie 20",
+        "fr": "La logique a été ajoutée pour déplacer la playlist vers l'avant/ vers l'arrière\nMise à jour des rôles des États\nLogique ajoutée à la liste de lecture shuffle\nTraduit en utilisant Weblate (néerlandais)\nMettre à jour test-and.release.yml vers le noeud 24.x\nMettre à jour les tests vers la version minimum node.js 20",
+        "it": "Logica aggiunta a spostare la playlist in avanti / indietro\nRapporti di Stato aggiornati\nLogica aggiunta a shuffle playlist\nTradotto con Weblate (Dutch)\nAggiornamento test-and.release.yml al nodo 24.x\nTest di aggiornamento alla versione minima node.js 20",
+        "es": "Logic añadido para cambiar la lista de reproducción hacia adelante y hacia atrás\nFunciones del Estado actualizadas\nLogic añadido a la lista de reproducción shuffle\nTraducido con Weblate (Dutch)\nActualizar test-and.release.yml al nodo 24.x\nActualizar las pruebas al mínimo node.js versión 20",
+        "pl": "Logika dodana do przesunięcia listy odtwarzania do przodu / do tyłu\nAktualizacja ról państwa\nLogika dodana do listy tasowania\nPrzetłumaczone na Weblate (holenderski)\nAktualizuj test- and.release.yml do węzła 24.x\nAktualizacja testów do minimum node.js wersja 20",
+        "uk": "Logic додано до переадресації списку відтворення вперед / назад\nДержавні ролі оновлено\nЛогічні додані до шапелюстки\nПерекладений за допомогою Weblate (Dutch)\nОновлення тест-і.випуск.yml до вузла 24.x\nОновлення тестування на мінімальний вузол.js версія 20",
+        "zh-cn": "向前/向后移动播放列表时添加逻辑\n更新国家作用\n逻辑添加到洗牌播放列表\n使用 Weblate (荷兰语) 翻译\n更新测试和. release.yml至节点 24.x\n更新测试到最小节点.js 版本 20"
+      },
+      "1.1.5": {
+        "en": "Create version 1.1.5\nUpdate info.connection regularly\nUpdate admin dependency to >=7.4.10\nUpdate @iobroker/adapter-dev to 1.3.0\nFixing test action problems\nBump mocha from 11.0.1 to 11.1.0\nBump eslint-config-prettier from 9.1.0 to 10.0.1\nBump chai and @types/chai\nBump eslint from 9.16.0 to 9.19.0\nCorrected translations (de,pl)\nUpdate @iobroker/adapter-core to 3.2.3\nUpdate @iobroker/testing to 5.0.0",
+        "de": "Version 1.1.5 erstellen\nUpdate info.connection regelmäßig\nAdminabhängigkeit aktualisieren von >=7.4.10\nUpdate @iobroker/adapter-dev auf 1.3.0\nProbleme bei der Prüfung\nStoß Mocha von 11.0.1 bis 11.1.0\nBump eslint-config-prettier von 9.1.0 bis 10.0.1\nBump chai und @types/chai\nBump eslint von 9.16.0 bis 9.19.0\nKorrigierte Übersetzungen (de,pl)\nUpdate @iobroker/Adapter-Core auf 3.2.3\nUpdate @iobroker/Test auf 5.0.0",
+        "ru": "Создать версию 1.1.5\nОбновление info.connection регулярно\nОбновление зависимости администратора от >=7.4.10\nОбновление @iobroker/adapter-dev до 1.3.0\nИсправление проблем с тестом\nBump mocha от 11.0.1 до 11.1.0\nBump eslint-config-prettier от 9.1.0 до 10.0.1\nBump chai и @types/chai\nБамп эслинт от 9.16.0 до 9.19.0\nИсправленные переводы (de,pl)\nОбновление @iobroker/adapter-core до 3.2.3\nОбновление @iobroker/тестирование до 5.0.0",
+        "pt": "Criar versão 1.1.5\nAtualizar info.connection regularmente\nAtualizar dependência de administrador para >=7.4.10\nAtualizar @iobroker/adapter-dev para 1.3.0\nCorrigir problemas de ação de teste\nBump mocha de 11.0.1 para 11.1.0\nBump eslint-config-prettier de 9.1.0 a 10.0.1\nBump chai e @types/chai\nBump eslint de 9.16.0 para 9.19.0\nTraduções corrigidas (de,pl)\nAtualizar @iobroker/adapter-core para 3.2.3\nAtualizar @iobroker/teste para 5.0.0",
+        "nl": "Maak versie 1.1.5 aan\nInfo.connectie regelmatig bijwerken\nDe waarde van niet meer dan 20% van de prijs af fabriek van het product\n@iobroker/adapter-dev bijwerken naar 1.3.0\nProefactieproblemen oplossen\nBump mokka van 11.0.1 tot 11.1.0\nBump eslint-config-prettier van 9.1,0 tot 10.0.1\nBump chai en @types/chai\nBump eslint van 9.16.0 tot 9.19.0\nGecorrigeerde vertalingen (de,pl)\nBijwerken @iobroker/adapter-core naar 3.2.3\nUpdate @iobroker/testing naar 5.0.0",
+        "fr": "Créer la version 1.1.5\nMettre à jour régulièrement info.connection\nMettre à jour la dépendance de l'administration vers >=7.4.10\nMettre à jour @iobroker/adaptateur-dev pour 1.3.0\nCorrection des problèmes d'action lors des essais\nMocha de boules de 11,0.1 à 111,0\nBump eslint-config-prettier de 9.1.0 à 10.0.1\nBump chai et @types/chai\nEscalope de 9.16.0 à 9.19.0\nTraductions corrigées (de,pl)\nMettre à jour @iobroker/adaptateur-core au 3.2.3\nMettre à jour @iobroker/test à 5.0.0",
+        "it": "Creare la versione 1.1.5\nAggiornare info.connection regolarmente\nAggiornare la dipendenza da admin a >=7.4.10\nAggiorna @iobroker/adapter-dev a 1.3.0\nRisolvere i problemi di azione del test\nBump mocha da 11.0.1 a 11.1.0\nBump eslint-config-prettier da 9.1.0 a 10.0.1\nBump chai e @types/chai\nBump eslint da 9.16.0 a 9.19.0\nTraduzioni corrette (de,pl)\nAggiorna @iobroker/adapter-core a 3.2.3\nAggiornamento @iobroker/testing a 5.0.0",
+        "es": "Crear versión 1.1.5\nInformación actualizada.conexión regularmente\nActualizar la dependencia de administración a н=7.4.10\nActualizar @iobroker/adapter-dev a 1.3.0\nProblemas de acción de prueba de fijación\nMocha de bomba de 11.0.1 a 11.1.0\nBump eslint-config-prettier de 9.1.0 a 10.0.1\nBump chai y @tipos/chai\nBump eslint from 9.16.0 to 9.19.0\nTraducciones corregidas (de,pl)\nActualizar @iobroker/adapter-core a 3.2.3\nActualizar @iobroker/testing a 5.0.0",
+        "pl": "Utwórz wersję 1.1.5\nAktualizuj regularne połączenia info.connection\nAktualizacja zależności admin do > = 7.4.10\nAktualizacja @ iobroker / adapter- dev do 1.3.0\nRozwiązanie problemów z działaniem testowym\nBump mocha od 11.0.1 do 11.1.0\nBump eslint- config- pretier od 9.1.0 do 10.0.1\nBump chai i @ types / chai\nEslint bump od 9.16.0 do 9.19.0\nTłumaczenie poprawione (de, pl)\nAktualizacja @ iobroker / adapter- core do 3.2.3\nAktualizacja @ iobroker / testowanie do 5.0.0",
+        "uk": "Створити версію 1.1.5\nОновлення інформації\nОновлення залежності адміністратора до >=7.4.10\nОновлення @iobroker/adapter-dev до 1.3.0\nВиправлення проблем тестової дії\nBump mocha від 11.0.1 до 11.1.0\nBump eslint-config-prettier від 9.1.0 до 10.0.1\nBump chai і @types/chai\nBump eslint від 9.16.0 до 9.19.0\nВиправлені переклади (de,pl)\nОновлення @iobroker/adapter-core до 3.2.3\nОновлення @iobroker/testing до 5.0.0",
+        "zh-cn": "创建 1.1.5 版本\n定期更新信息.连接\n将管理员依赖性更新到 QQ7.4.10\n将 @iobrocco/adapter-dev 更新为 1.3. 0\n解决测试动作问题\n从11.0.1到11.1.0\nBump eslint-config- prettier 从9.1.0 到 10.0.1\nBump chai 和 @ types/ chai\n从9.16.0到9.19.0\n更正的译文(德,pl)\n将 @iobrocco/ adapter- core 更新为 3.2.3\n更新 @ iobus/ testing 到 5. 0.0"
+      },
+      "1.1.4": {
+        "en": "Correct common.news",
+        "de": "Richtig häufig.news",
+        "ru": "Исправный общий.news",
+        "pt": "Correto common.news",
+        "nl": "Correct algemeen nieuws",
+        "fr": "Correct common.news",
+        "it": "Corretto comune.news",
+        "es": "Correcto común.noticias",
+        "pl": "Prawidłowe wiadomości",
+        "uk": "Корисний загальний.news",
+        "zh-cn": "正确的普通新闻"
+      },
+      "1.1.3": {
+        "en": "Changed year in README\nBump prettier from 3.4.1 to 3.4.2\nBump mocha from 10.8.2 to 11.0.1\nBump chai-as-promised and @types/chai-as-promised\nBump sinon from 18.0.0 to 19.0.2\nBump globals from 15.9.0 to 15.14.0",
+        "de": "Geändertes Jahr in README\nStoßfänger von 3.4.1 bis 3.4.2\nStoß Mocha von 10.8.2 bis 11.0.1\nBump chai-as-promised und @types/chai-as-promised\nStoßsinus von 18.0.0 bis 19.0.2\nBump global von 15.9.0 bis 15.14.0",
+        "ru": "Изменение года в README\n3.4.1 - 3.4.2\nС 10.8.2 до 11.0.1\nBump chai-as-promised and @types/chai-as-promised\nBump sinon от 18.0.0 до 19.0.2\nBump globals от 15.9.0 до 15.14.0",
+        "pt": "Ano alterado em README\nBump mais bonita de 3.4.1 para 3.4.2\nBump mocha de 10.8.2 para 11.0.1\nBump chai-as-promised e @types/chai-as-promised\nBump sinon de 18.0.0 para 19.0.2\nBump globals de 15.9.0 para 15.14.0",
+        "nl": "Veranderd jaar in README\nBump mooier van 3.4.1 tot 3.4.2\nBump mokka van 10..8.2 tot 11.0.1\nBump chai-as-promised en @types/chai-as-promised\nBump sinon van 18,0 tot 19,0.2\nBump globals van 15.9.0 naar 15.14.0",
+        "fr": "Année changée en README\nBombe plus jolie du 3.4.1 au 3.4.2\nMocha de pompe du 10.8.2 au 11.0.1\nBump chai-as-promise et @types/chai-as-promise\nPoignée de 18.0.0 à 19.0.2\nBump globals de 15.9.0 à 15.14.0",
+        "it": "Variato anno in README\nPrettier Bump da 3.4.1 a 3.4.2\nBump mocha da 10.8.2 a 11.0.1\nBump chai-as-promised e @types/chai-as-promised\nBump sinon da 18.0.0 a 19.0.2\nBump globali da 15.9.0 a 15.14.0",
+        "es": "Año cambiado en README\nBomba superior de 3.4.1 a 3.4.2\nMocha de bomba de 10.8.2 a 11.0.1\nBump chai-as-promised y @types/chai-as-promised\nBump sinon de 18.0.0 a 19.0.2\nGlobales de bombas de 15.9.0 a 15.14.0",
+        "pl": "Zmieniony rok w README\nPretty od 3.4.1 do 3.4.2\nBump mocha od 10.8.2 do 11.0.1\nBump chai- as- provided i @ types / chai- as- provided\nBump sinon od 18.0.0 do 19.0.2\nBump globals od 15.9.0 do 15.14.0",
+        "uk": "Змінений рік в РЕЖИМ\nBump prettier від 3.4.1 до 3.4.2\nBump mocha від 10.8.2 до 11.0.1\nBump chai-as-promized і @types/chai-as-promized\nЗ 18.0.0 до 19.0.2\nЗ 15.9.0 до 15.14.0",
+        "zh-cn": "读取ME的年份变化\n3.4.1至3.4.2之间的倾角\n从10.8.2到11.0.1\nBump chai-as-promimated and @ types/chai-as-promimated (英语)\n从18.0.0到19.0.2\n从15.9.0到15.14.0的凸起全球"
+      },
+      "1.1.1": {
+        "en": "README.md cosmetics\nAdded Weblate translation badge\nBump cross-spawn from 7.0.3 to 7.0.6\nSwitch to adapter-core3.2.2\nCorrected logic for remote volume changes",
+        "de": "README.md Kosmetika\nHinzugefügt Weblate Übersetzung Badge\nStoßkreuz von 7.0.3 bis 7.0.6\nWechseln Sie zum Adapter-Core3.2.2\nKorrigierte Logik für Remote-Volumenänderungen",
+        "ru": "README.md косметика\nДобавлен значок перевода Weblate\nКросс-спаун с 7.0.3 до 7.0.6\nПереход на адаптер-core3.2.2\nИсправленная логика для изменений удаленного объема",
+        "pt": "Cosméticos README.md\nAdicionado crachá de tradução Weblate\nBump cross-spawn de 7.0.3 para 7.0.6\nMudar para o adaptador-core3.2.2\nLógica correta para mudanças de volume remoto",
+        "nl": "README.md cosmetica\nToegevoegd Weblate translation badge\nBump cross-pion van 7.0.3 tot 7.0.6\nOverschakelen naar adapter-core3.2.2\nGecorrigeerde logica voor volumeveranderingen op afstand",
+        "fr": "Produits cosmétiques README.md\nAjout du badge de traduction Weblate\nBrûlures croisées de 7,0.3 à 7,0,6\nPassez à l'adaptateur-core3.2.2\nLogique corrigée pour les changements de volume à distance",
+        "it": "README.md cosmetici\nAggiunto Weblate traduzione distintivo\nSpawn da 7.0.3 a 7.0.6\nPassare a adattatore-core3.2.2\nLogica corretta per le modifiche del volume remoto",
+        "es": "Cosméticos README.md\nInsignia de traducción de Weblate\nBump cross-spawn de 7.0.3 a 7.0.6\nCambiar a adaptador-core3.2\nLógica corregida para cambios de volumen remoto",
+        "pl": "README.md kosmetyki\nDodano odznakę tłumaczeniową Weblate\nPętla poprzeczna od 7.0.3 do 7.0.6\nPrzełącz na adapter-core3.2.2\nSkorygowana logika dla zdalnych zmian głośności",
+        "uk": "README.md Косметика\nДодано Weblate переклад значок\nБампер-спагін від 7.0.3 до 7.0.6\nПеремикач адаптера-core3.2.2\nВиправлена логіка для зміни віддаленого обсягу",
+        "zh-cn": "README.md 化妆品\n添加 Weblate 翻译徽章\n从7.0.3到7.0.6的交叉弹簧\n切换到适配器核心3.2.2\n远程音量变化的校正逻辑"
+      }
     },
-    "native": {
-        "IP": "",
-        "PollingTime": "",
-        "TimeOut": ""
+    "titleLang": {
+      "en": "Bluesound Control",
+      "de": "Bluesound-Steuerung",
+      "ru": "Управление Bluesound",
+      "pt": "Controle de som azul",
+      "nl": "Bluesound-controle",
+      "fr": "Contrôle du son bleu",
+      "it": "Controllo Bluesound",
+      "es": "Control de sonido azul",
+      "pl": "Sterowanie Bluesoundem",
+      "uk": "Управління Bluesound",
+      "zh-cn": "蓝声控制"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Device or service connected",
-                    "de": "Gerät- oder Service verbunden",
-                    "ru": "Устройство или служба подключены",
-                    "pt": "Dispositivo ou serviço conectado",
-                    "nl": "Apparaat of dienst verbonden",
-                    "fr": "Appareil ou service connecté",
-                    "it": "Dispositivo o servizio collegato",
-                    "es": "Dispositivo o servicio conectado",
-                    "pl": "Przyłączone urządzenie lub usługa",
-                    "uk": "Пристрої або послуги підключені",
-                    "zh-cn": "设备或服务已连接"
-                },
-                "type": "boolean",
-                "role": "indicator.connected",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.modelname",
-            "type": "state",
-            "common": {
-                "name": "Player Model",
-                "type": "string",
-                "role": "info.model",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Modelname from player",
-                    "de": "Modelname vom Spieler",
-                    "ru": "Имя модели от игрока",
-                    "pt": "Nome do modelo do jogador",
-                    "nl": "Modelnaam van speler",
-                    "fr": "Nom de modèle du lecteur",
-                    "it": "Nome modello da giocatore",
-                    "es": "Nombre de modelo del jugador",
-                    "pl": "Nazwa modelu od gracza",
-                    "uk": "Назва моделі від гравця",
-                    "zh-cn": "玩家的模型名称"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.name",
-            "type": "state",
-            "common": {
-                "name": "Player Name",
-                "type": "string",
-                "role": "info.name",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Name from player",
-                    "de": "Name des Spielers",
-                    "ru": "Имя игрока",
-                    "pt": "Nome do jogador",
-                    "nl": "Naam van de speler",
-                    "fr": "Nom du joueur",
-                    "it": "Nome dal giocatore",
-                    "es": "Nombre del jugador",
-                    "pl": "Nazwa gracza",
-                    "uk": "Ім'я гравця",
-                    "zh-cn": "播放器的名称"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.title1",
-            "type": "state",
-            "common": {
-                "name": "Title1",
-                "type": "string",
-                "role": "media.title",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Title1 from player",
-                    "de": "Titel1 vom Spieler",
-                    "ru": "Название 1 от игрока",
-                    "pt": "Título1 do jogador",
-                    "nl": "Titel 1 van de speler",
-                    "fr": "Titre1 du joueur",
-                    "it": "Titolo1 dal giocatore",
-                    "es": "Título1 del jugador",
-                    "pl": "Tytuł 1 od gracza",
-                    "uk": "Назва1 від гравця",
-                    "zh-cn": "标题1 从玩家"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.title2",
-            "type": "state",
-            "common": {
-                "name": "Title2",
-                "type": "string",
-                "role": "media.artist",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Title2 from player",
-                    "de": "Titel2 vom Spieler",
-                    "ru": "Title2 от игрока",
-                    "pt": "Título2 do jogador",
-                    "nl": "Titel2 van de speler",
-                    "fr": "Titre2 du joueur",
-                    "it": "Titolo2 dal giocatore",
-                    "es": "Título2 del jugador",
-                    "pl": "Tytuł 2 od gracza",
-                    "uk": "Назва2 від гравця",
-                    "zh-cn": "标题2 从玩家"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.title3",
-            "type": "state",
-            "common": {
-                "name": "Title3",
-                "type": "string",
-                "role": "media.album",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Title3 from player",
-                    "de": "Titel3 vom Spieler",
-                    "ru": "Название 3 от игрока",
-                    "pt": "Título3 do jogador",
-                    "nl": "Titel3 van de speler",
-                    "fr": "Titre3 du joueur",
-                    "it": "Titolo3 dal giocatore",
-                    "es": "Título3 del jugador",
-                    "pl": "Tytuł 3 od gracza",
-                    "uk": "Назва3 від гравця",
-                    "zh-cn": "标题3 从玩家"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.image",
-            "type": "state",
-            "common": {
-                "name": "Image",
-                "type": "string",
-                "role": "media.cover.small",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Picture of current title",
-                    "de": "Bild des aktuellen Titels",
-                    "ru": "Изображение текущего названия",
-                    "pt": "Imagem do título atual",
-                    "nl": "Afbeelding van de huidige titel",
-                    "fr": "Image du titre actuel",
-                    "it": "Immagine del titolo attuale",
-                    "es": "Imagen del título actual",
-                    "pl": "Zdjęcie aktualnego tytułu",
-                    "uk": "Зображення поточного звання",
-                    "zh-cn": "当前标题的图片"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.secs",
-            "type": "state",
-            "common": {
-                "name": "secs",
-                "type": "number",
-                "role": "media.elapsed",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Seconds played for current title",
-                    "de": "Sekunden für den aktuellen Titel gespielt",
-                    "ru": "Seconds сыграли за текущий титул",
-                    "pt": "Segundos jogados para o título atual",
-                    "nl": "Seconden gespeeld voor huidige titel",
-                    "fr": "Secondes jouées pour le titre actuel",
-                    "it": "Secondi giocati per il titolo attuale",
-                    "es": "Seconds played for current title",
-                    "pl": "Seconds played for current title",
-                    "uk": "Други грали за поточне звання",
-                    "zh-cn": "当前标题播放秒数"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.totlen",
-            "type": "state",
-            "common": {
-                "name": "totlen",
-                "type": "number",
-                "role": "media.duration",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Length of current title",
-                    "de": "Länge des aktuellen Titels",
-                    "ru": "Длина текущего заголовка",
-                    "pt": "Comprimento do título atual",
-                    "nl": "Lengte van de huidige titel",
-                    "fr": "Longueur du titre actuel",
-                    "it": "Lunghezza del titolo corrente",
-                    "es": "Duración del título actual",
-                    "pl": "Długość aktualnego tytułu",
-                    "uk": "Довжина поточного звання",
-                    "zh-cn": "当前标题的长度"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.str_secs",
-            "type": "state",
-            "common": {
-                "name": "str_secs",
-                "type": "string",
-                "role": "media.elapsed.text",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Seconds played for current title",
-                    "de": "Sekunden für den aktuellen Titel gespielt",
-                    "ru": "Seconds сыграли за текущий титул",
-                    "pt": "Segundos jogados para o título atual",
-                    "nl": "Seconden gespeeld voor huidige titel",
-                    "fr": "Secondes jouées pour le titre actuel",
-                    "it": "Secondi giocati per il titolo attuale",
-                    "es": "Seconds played for current title",
-                    "pl": "Seconds played for current title",
-                    "uk": "Други грали за поточне звання",
-                    "zh-cn": "当前标题播放秒数"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.str_totlen",
-            "type": "state",
-            "common": {
-                "name": "str_totlen",
-                "type": "string",
-                "role": "media.duration.text",
-                "read": true,
-                "write": false,
-                "desc": {
-                    "en": "Length of current title",
-                    "de": "Länge des aktuellen Titels",
-                    "ru": "Длина текущего заголовка",
-                    "pt": "Comprimento do título atual",
-                    "nl": "Lengte van de huidige titel",
-                    "fr": "Longueur du titre actuel",
-                    "it": "Lunghezza del titolo corrente",
-                    "es": "Duración del título actual",
-                    "pl": "Długość aktualnego tytułu",
-                    "uk": "Довжина поточного звання",
-                    "zh-cn": "当前标题的长度"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.volume",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Volume",
-                    "de": "Lautstärke",
-                    "ru": "Объем",
-                    "pt": "Volume",
-                    "nl": "Volume",
-                    "fr": "Volume",
-                    "it": "Volume",
-                    "es": "Volumen",
-                    "pl": "Wielkość",
-                    "uk": "Об'єм",
-                    "zh-cn": "音量"
-                },
-                "type": "number",
-                "role": "level.volume",
-                "read": true,
-                "write": false,
-                "desc": "Player volume"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.shuffle",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Shuffle State",
-                    "de": "Status Shuffle",
-                    "ru": "Штат Таффл",
-                    "pt": "Estado do shuffle",
-                    "nl": "Schuifstaat",
-                    "fr": "État de choc",
-                    "it": "Stato di Shuffle",
-                    "es": "Shuffle State",
-                    "pl": "Stan Shuffle",
-                    "uk": "Шафл Стан",
-                    "zh-cn": "摇摆状态"
-                },
-                "type": "boolean",
-                "role": "button",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.list",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Menu list",
-                    "de": "Menüliste",
-                    "ru": "Список меню",
-                    "pt": "Lista de menus",
-                    "nl": "Menulijst",
-                    "fr": "Liste des menus",
-                    "it": "L'elenco dei menu",
-                    "es": "Lista de menús",
-                    "pl": "Listy menu",
-                    "uk": "Список меню",
-                    "zh-cn": "菜单列表"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": true,
-                "def": "HOME"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.listheader",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Heading for menu list",
-                    "de": "Überschrift für Menüliste",
-                    "ru": "Заголовок для списка меню",
-                    "pt": "Título para a lista de menus",
-                    "nl": "Koptekst voor menulijst",
-                    "fr": "Titre pour la liste des menus",
-                    "it": "Titolo per l'elenco dei menu",
-                    "es": "Título para la lista de menús",
-                    "pl": "Nagłówek listy menu",
-                    "uk": "Заголовок для списку меню",
-                    "zh-cn": "菜单列表标题"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false,
-                "def": "Main Menu"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.playlist",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Playlist contents",
-                    "de": "Inhalt der Playlist",
-                    "ru": "Содержимое плейлиста",
-                    "pt": "Conteúdo da lista de reprodução",
-                    "nl": "Inhoud van de afspeellijst",
-                    "fr": "Contenu de la playlist",
-                    "it": "Contenuto della playlist",
-                    "es": "Contenido de la lista de reproducción",
-                    "pl": "Zawartość playlisty",
-                    "uk": "Вміст списку відтворення",
-                    "zh-cn": "播放列表内容"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.playlisthtml",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Playlist contents (Html)",
-                    "de": "Inhalt der Playlist (Html)",
-                    "ru": "Содержимое плейлиста (Html)",
-                    "pt": "Conteúdo da lista de reprodução (Html)",
-                    "nl": "Inhoud van de afspeellijst (Html)",
-                    "fr": "Contenu de la playlist (Html)",
-                    "it": "Contenuto della playlist (Html)",
-                    "es": "Contenido de la lista de reproducción (Html)",
-                    "pl": "Zawartość playlisty (Html)",
-                    "uk": "Вміст списку відтворення (Html)",
-                    "zh-cn": "播放列表内容 (Html)"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.playliststate",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Playlist Toggle State",
-                    "de": "Status Playlist Toggle",
-                    "ru": "Состояние переключения плейлиста",
-                    "pt": "Estado de alternância da lista de reprodução",
-                    "nl": "Afspeellijst Wisselstatus",
-                    "fr": "État de basculement de la liste de lecture",
-                    "it": "Stato di attivazione/disattivazione della playlist",
-                    "es": "Estado de alternancia de la lista de reproducción",
-                    "pl": "Przełączanie stanu listy odtwarzania",
-                    "uk": "Стан перемикання списку відтворення",
-                    "zh-cn": "播放列表切换状态"
-                },
-                "type": "boolean",
-                "role": "button",
-                "read": true,
-                "write": false,
-                "def": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "control",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Device control",
-                    "de": "Gerätesteuerung",
-                    "ru": "Управление устройствами",
-                    "pt": "Controle de dispositivo",
-                    "nl": "Apparaatbesturing",
-                    "fr": "Contrôle du périphérique",
-                    "it": "Controllo dispositivi",
-                    "es": "Control de dispositivos",
-                    "pl": "Sterowanie urządzeniem",
-                    "uk": "Контроль пристрою",
-                    "zh-cn": "设备控制"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.play",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Play",
-                    "de": "Abspielen",
-                    "ru": "Играть",
-                    "pt": "Jogar",
-                    "nl": "Afspelen",
-                    "fr": "Jouer",
-                    "it": "Gioca",
-                    "es": "Jugar",
-                    "pl": "Zagraj",
-                    "uk": "Грати",
-                    "zh-cn": "播放"
-                },
-                "type": "boolean",
-                "role": "button.play",
-                "read": false,
-                "write": true,
-                "desc": "Plays current audio source"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.stop",
-            "type": "state",
-            "common": {
-                "name": "Stop",
-                "type": "boolean",
-                "role": "button.stop",
-                "read": false,
-                "write": true,
-                "desc": "Toggles Stop"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.pause",
-            "type": "state",
-            "common": {
-                "name": "Pause",
-                "type": "boolean",
-                "role": "button.pause",
-                "read": false,
-                "write": true,
-                "desc": "Toggles Pause"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.shuffle",
-            "type": "state",
-            "common": {
-                "name": "Shuffle",
-                "type": "boolean",
-                "role": "button.shuffle",
-                "read": false,
-                "write": true,
-                "desc": "Toggles Shuffle"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.forward",
-            "type": "state",
-            "common": {
-                "name": "Forward",
-                "type": "boolean",
-                "role": "button.forward",
-                "read": false,
-                "write": true,
-                "desc": "Player Forward"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.backward",
-            "type": "state",
-            "common": {
-                "name": "Backward",
-                "type": "boolean",
-                "role": "button.backward",
-                "read": false,
-                "write": true,
-                "desc": "Player Backward"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.playlist",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Switch Playlist Status",
-                    "de": "Playlist-Status wechseln",
-                    "ru": "Переключить статус плейлиста",
-                    "pt": "Mudar status da lista de reprodução",
-                    "nl": "Wijzig de afspeellijststatus",
-                    "fr": "Changer le statut de la liste de lecture",
-                    "it": "Cambia lo stato della playlist",
-                    "es": "Cambiar estado de lista de reproducción",
-                    "pl": "Zmień stan listy odtwarzania",
-                    "uk": "Переключити статус списку відтворення",
-                    "zh-cn": "切换播放列表状态"
-                },
-                "type": "boolean",
-                "role": "button",
-                "read": false,
-                "write": true,
-                "def": true,
-                "desc": "Playlist Toggle"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.volume",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Volume",
-                    "de": "Lautstärke",
-                    "ru": "Объем",
-                    "pt": "Volume",
-                    "nl": "Volume",
-                    "fr": "Volume",
-                    "it": "Volume",
-                    "es": "Volumen",
-                    "pl": "Wielkość",
-                    "uk": "Об'єм",
-                    "zh-cn": "音量"
-                },
-                "type": "number",
-                "role": "level.volume",
-                "read": true,
-                "write": true,
-                "desc": "Player Volume"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.state",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "State",
-                    "de": "Status",
-                    "ru": "Государство",
-                    "pt": "Estado",
-                    "nl": "Status",
-                    "fr": "État",
-                    "it": "Stato",
-                    "es": "Estado",
-                    "pl": "Państwo",
-                    "uk": "Стан",
-                    "zh-cn": "状态"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": true,
-                "desc": "Current player state"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.search",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Search Field",
-                    "de": "Suchfeld",
-                    "ru": "Поле поиска",
-                    "pt": "Campo de pesquisa",
-                    "nl": "Zoekveld",
-                    "fr": "Champ de recherche",
-                    "it": "Campo di ricerca",
-                    "es": "Campo de búsqueda",
-                    "pl": "Pole wyszukiwania",
-                    "uk": "Поле пошуку",
-                    "zh-cn": "搜索字段"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": true,
-                "def": "",
-                "desc": "Input field for library search"
-            },
-            "native": {}
-        },
-        {
-            "_id": "control.command",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Command",
-                    "de": "Befehl",
-                    "ru": "Kоманда",
-                    "pt": "Comando",
-                    "nl": "Commando",
-                    "fr": "Commande",
-                    "it": "Comando",
-                    "es": "Dominio",
-                    "pl": "Rozkaz",
-                    "uk": "Kоманда",
-                    "zh-cn": "命令"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": true,
-                "desc": "Next command"
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "Adapter to control Bluesound devices",
+      "de": "Adapter zur Steuerung von Bluesound-Geräten",
+      "ru": "Адаптер для управления устройствами Bluesound",
+      "pt": "Adaptador para controlar dispositivos Bluesound",
+      "nl": "Adapter om Bluesound-apparaten te bedienen",
+      "fr": "Adaptateur pour contrôler les appareils Bluesound",
+      "it": "Adattatore per controllare i dispositivi Bluesound",
+      "es": "Adaptador para controlar dispositivos Bluesound",
+      "pl": "Adapter do sterowania urządzeniami Bluesound",
+      "uk": "Адаптер для управління пристроями Bluesound",
+      "zh-cn": "用于控制 Bluesound 设备的适配器"
+    },
+    "authors": [
+      "Uwe Nagel <uwenagel@kabelmail.de>"
+    ],
+    "keywords": [
+      "multimedia",
+      "control"
+    ],
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
+    "platform": "Javascript/Node.js",
+    "icon": "bluesound.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Uwe1958/ioBroker.bluesound/main/admin/bluesound.png",
+    "readme": "https://github.com/Uwe1958/ioBroker.bluesound/blob/main/README.md",
+    "loglevel": "info",
+    "tier": 3,
+    "mode": "daemon",
+    "type": "multimedia",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "push",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=7.6.17"
+      }
     ]
+  },
+  "native": {
+    "IP": "",
+    "PollingTime": "",
+    "TimeOut": ""
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Device or service connected",
+          "de": "Gerät- oder Service verbunden",
+          "ru": "Устройство или служба подключены",
+          "pt": "Dispositivo ou serviço conectado",
+          "nl": "Apparaat of dienst verbonden",
+          "fr": "Appareil ou service connecté",
+          "it": "Dispositivo o servizio collegato",
+          "es": "Dispositivo o servicio conectado",
+          "pl": "Przyłączone urządzenie lub usługa",
+          "uk": "Пристрої або послуги підключені",
+          "zh-cn": "设备或服务已连接"
+        },
+        "type": "boolean",
+        "role": "indicator.connected",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.modelname",
+      "type": "state",
+      "common": {
+        "name": "Player Model",
+        "type": "string",
+        "role": "info.model",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Modelname from player",
+          "de": "Modelname vom Spieler",
+          "ru": "Имя модели от игрока",
+          "pt": "Nome do modelo do jogador",
+          "nl": "Modelnaam van speler",
+          "fr": "Nom de modèle du lecteur",
+          "it": "Nome modello da giocatore",
+          "es": "Nombre de modelo del jugador",
+          "pl": "Nazwa modelu od gracza",
+          "uk": "Назва моделі від гравця",
+          "zh-cn": "玩家的模型名称"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.name",
+      "type": "state",
+      "common": {
+        "name": "Player Name",
+        "type": "string",
+        "role": "info.name",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Name from player",
+          "de": "Name des Spielers",
+          "ru": "Имя игрока",
+          "pt": "Nome do jogador",
+          "nl": "Naam van de speler",
+          "fr": "Nom du joueur",
+          "it": "Nome dal giocatore",
+          "es": "Nombre del jugador",
+          "pl": "Nazwa gracza",
+          "uk": "Ім'я гравця",
+          "zh-cn": "播放器的名称"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.title1",
+      "type": "state",
+      "common": {
+        "name": "Title1",
+        "type": "string",
+        "role": "media.title",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Title1 from player",
+          "de": "Titel1 vom Spieler",
+          "ru": "Название 1 от игрока",
+          "pt": "Título1 do jogador",
+          "nl": "Titel 1 van de speler",
+          "fr": "Titre1 du joueur",
+          "it": "Titolo1 dal giocatore",
+          "es": "Título1 del jugador",
+          "pl": "Tytuł 1 od gracza",
+          "uk": "Назва1 від гравця",
+          "zh-cn": "标题1 从玩家"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.title2",
+      "type": "state",
+      "common": {
+        "name": "Title2",
+        "type": "string",
+        "role": "media.artist",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Title2 from player",
+          "de": "Titel2 vom Spieler",
+          "ru": "Title2 от игрока",
+          "pt": "Título2 do jogador",
+          "nl": "Titel2 van de speler",
+          "fr": "Titre2 du joueur",
+          "it": "Titolo2 dal giocatore",
+          "es": "Título2 del jugador",
+          "pl": "Tytuł 2 od gracza",
+          "uk": "Назва2 від гравця",
+          "zh-cn": "标题2 从玩家"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.title3",
+      "type": "state",
+      "common": {
+        "name": "Title3",
+        "type": "string",
+        "role": "media.album",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Title3 from player",
+          "de": "Titel3 vom Spieler",
+          "ru": "Название 3 от игрока",
+          "pt": "Título3 do jogador",
+          "nl": "Titel3 van de speler",
+          "fr": "Titre3 du joueur",
+          "it": "Titolo3 dal giocatore",
+          "es": "Título3 del jugador",
+          "pl": "Tytuł 3 od gracza",
+          "uk": "Назва3 від гравця",
+          "zh-cn": "标题3 从玩家"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.image",
+      "type": "state",
+      "common": {
+        "name": "Image",
+        "type": "string",
+        "role": "media.cover.small",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Picture of current title",
+          "de": "Bild des aktuellen Titels",
+          "ru": "Изображение текущего названия",
+          "pt": "Imagem do título atual",
+          "nl": "Afbeelding van de huidige titel",
+          "fr": "Image du titre actuel",
+          "it": "Immagine del titolo attuale",
+          "es": "Imagen del título actual",
+          "pl": "Zdjęcie aktualnego tytułu",
+          "uk": "Зображення поточного звання",
+          "zh-cn": "当前标题的图片"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.secs",
+      "type": "state",
+      "common": {
+        "name": "secs",
+        "type": "number",
+        "role": "media.elapsed",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Seconds played for current title",
+          "de": "Sekunden für den aktuellen Titel gespielt",
+          "ru": "Seconds сыграли за текущий титул",
+          "pt": "Segundos jogados para o título atual",
+          "nl": "Seconden gespeeld voor huidige titel",
+          "fr": "Secondes jouées pour le titre actuel",
+          "it": "Secondi giocati per il titolo attuale",
+          "es": "Seconds played for current title",
+          "pl": "Seconds played for current title",
+          "uk": "Други грали за поточне звання",
+          "zh-cn": "当前标题播放秒数"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.totlen",
+      "type": "state",
+      "common": {
+        "name": "totlen",
+        "type": "number",
+        "role": "media.duration",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Length of current title",
+          "de": "Länge des aktuellen Titels",
+          "ru": "Длина текущего заголовка",
+          "pt": "Comprimento do título atual",
+          "nl": "Lengte van de huidige titel",
+          "fr": "Longueur du titre actuel",
+          "it": "Lunghezza del titolo corrente",
+          "es": "Duración del título actual",
+          "pl": "Długość aktualnego tytułu",
+          "uk": "Довжина поточного звання",
+          "zh-cn": "当前标题的长度"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.str_secs",
+      "type": "state",
+      "common": {
+        "name": "str_secs",
+        "type": "string",
+        "role": "media.elapsed.text",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Seconds played for current title",
+          "de": "Sekunden für den aktuellen Titel gespielt",
+          "ru": "Seconds сыграли за текущий титул",
+          "pt": "Segundos jogados para o título atual",
+          "nl": "Seconden gespeeld voor huidige titel",
+          "fr": "Secondes jouées pour le titre actuel",
+          "it": "Secondi giocati per il titolo attuale",
+          "es": "Seconds played for current title",
+          "pl": "Seconds played for current title",
+          "uk": "Други грали за поточне звання",
+          "zh-cn": "当前标题播放秒数"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.str_totlen",
+      "type": "state",
+      "common": {
+        "name": "str_totlen",
+        "type": "string",
+        "role": "media.duration.text",
+        "read": true,
+        "write": false,
+        "desc": {
+          "en": "Length of current title",
+          "de": "Länge des aktuellen Titels",
+          "ru": "Длина текущего заголовка",
+          "pt": "Comprimento do título atual",
+          "nl": "Lengte van de huidige titel",
+          "fr": "Longueur du titre actuel",
+          "it": "Lunghezza del titolo corrente",
+          "es": "Duración del título actual",
+          "pl": "Długość aktualnego tytułu",
+          "uk": "Довжина поточного звання",
+          "zh-cn": "当前标题的长度"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.volume",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Volume",
+          "de": "Lautstärke",
+          "ru": "Объем",
+          "pt": "Volume",
+          "nl": "Volume",
+          "fr": "Volume",
+          "it": "Volume",
+          "es": "Volumen",
+          "pl": "Wielkość",
+          "uk": "Об'єм",
+          "zh-cn": "音量"
+        },
+        "type": "number",
+        "role": "level.volume",
+        "read": true,
+        "write": false,
+        "desc": "Player volume"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.shuffle",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Shuffle State",
+          "de": "Status Shuffle",
+          "ru": "Штат Таффл",
+          "pt": "Estado do shuffle",
+          "nl": "Schuifstaat",
+          "fr": "État de choc",
+          "it": "Stato di Shuffle",
+          "es": "Shuffle State",
+          "pl": "Stan Shuffle",
+          "uk": "Шафл Стан",
+          "zh-cn": "摇摆状态"
+        },
+        "type": "boolean",
+        "role": "button",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.list",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Menu list",
+          "de": "Menüliste",
+          "ru": "Список меню",
+          "pt": "Lista de menus",
+          "nl": "Menulijst",
+          "fr": "Liste des menus",
+          "it": "L'elenco dei menu",
+          "es": "Lista de menús",
+          "pl": "Listy menu",
+          "uk": "Список меню",
+          "zh-cn": "菜单列表"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "def": "HOME"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.listheader",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Heading for menu list",
+          "de": "Überschrift für Menüliste",
+          "ru": "Заголовок для списка меню",
+          "pt": "Título para a lista de menus",
+          "nl": "Koptekst voor menulijst",
+          "fr": "Titre pour la liste des menus",
+          "it": "Titolo per l'elenco dei menu",
+          "es": "Título para la lista de menús",
+          "pl": "Nagłówek listy menu",
+          "uk": "Заголовок для списку меню",
+          "zh-cn": "菜单列表标题"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "def": "Main Menu"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.playlist",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Playlist contents",
+          "de": "Inhalt der Playlist",
+          "ru": "Содержимое плейлиста",
+          "pt": "Conteúdo da lista de reprodução",
+          "nl": "Inhoud van de afspeellijst",
+          "fr": "Contenu de la playlist",
+          "it": "Contenuto della playlist",
+          "es": "Contenido de la lista de reproducción",
+          "pl": "Zawartość playlisty",
+          "uk": "Вміст списку відтворення",
+          "zh-cn": "播放列表内容"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.playlisthtml",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Playlist contents (Html)",
+          "de": "Inhalt der Playlist (Html)",
+          "ru": "Содержимое плейлиста (Html)",
+          "pt": "Conteúdo da lista de reprodução (Html)",
+          "nl": "Inhoud van de afspeellijst (Html)",
+          "fr": "Contenu de la playlist (Html)",
+          "it": "Contenuto della playlist (Html)",
+          "es": "Contenido de la lista de reproducción (Html)",
+          "pl": "Zawartość playlisty (Html)",
+          "uk": "Вміст списку відтворення (Html)",
+          "zh-cn": "播放列表内容 (Html)"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.playliststate",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Playlist Toggle State",
+          "de": "Status Playlist Toggle",
+          "ru": "Состояние переключения плейлиста",
+          "pt": "Estado de alternância da lista de reprodução",
+          "nl": "Afspeellijst Wisselstatus",
+          "fr": "État de basculement de la liste de lecture",
+          "it": "Stato di attivazione/disattivazione della playlist",
+          "es": "Estado de alternancia de la lista de reproducción",
+          "pl": "Przełączanie stanu listy odtwarzania",
+          "uk": "Стан перемикання списку відтворення",
+          "zh-cn": "播放列表切换状态"
+        },
+        "type": "boolean",
+        "role": "button",
+        "read": true,
+        "write": false,
+        "def": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "control",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Device control",
+          "de": "Gerätesteuerung",
+          "ru": "Управление устройствами",
+          "pt": "Controle de dispositivo",
+          "nl": "Apparaatbesturing",
+          "fr": "Contrôle du périphérique",
+          "it": "Controllo dispositivi",
+          "es": "Control de dispositivos",
+          "pl": "Sterowanie urządzeniem",
+          "uk": "Контроль пристрою",
+          "zh-cn": "设备控制"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.play",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Play",
+          "de": "Abspielen",
+          "ru": "Играть",
+          "pt": "Jogar",
+          "nl": "Afspelen",
+          "fr": "Jouer",
+          "it": "Gioca",
+          "es": "Jugar",
+          "pl": "Zagraj",
+          "uk": "Грати",
+          "zh-cn": "播放"
+        },
+        "type": "boolean",
+        "role": "button.play",
+        "read": false,
+        "write": true,
+        "desc": "Plays current audio source"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.stop",
+      "type": "state",
+      "common": {
+        "name": "Stop",
+        "type": "boolean",
+        "role": "button.stop",
+        "read": false,
+        "write": true,
+        "desc": "Toggles Stop"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.pause",
+      "type": "state",
+      "common": {
+        "name": "Pause",
+        "type": "boolean",
+        "role": "button.pause",
+        "read": false,
+        "write": true,
+        "desc": "Toggles Pause"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.shuffle",
+      "type": "state",
+      "common": {
+        "name": "Shuffle",
+        "type": "boolean",
+        "role": "button.shuffle",
+        "read": false,
+        "write": true,
+        "desc": "Toggles Shuffle"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.forward",
+      "type": "state",
+      "common": {
+        "name": "Forward",
+        "type": "boolean",
+        "role": "button.forward",
+        "read": false,
+        "write": true,
+        "desc": "Player Forward"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.backward",
+      "type": "state",
+      "common": {
+        "name": "Backward",
+        "type": "boolean",
+        "role": "button.backward",
+        "read": false,
+        "write": true,
+        "desc": "Player Backward"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.playlist",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Switch Playlist Status",
+          "de": "Playlist-Status wechseln",
+          "ru": "Переключить статус плейлиста",
+          "pt": "Mudar status da lista de reprodução",
+          "nl": "Wijzig de afspeellijststatus",
+          "fr": "Changer le statut de la liste de lecture",
+          "it": "Cambia lo stato della playlist",
+          "es": "Cambiar estado de lista de reproducción",
+          "pl": "Zmień stan listy odtwarzania",
+          "uk": "Переключити статус списку відтворення",
+          "zh-cn": "切换播放列表状态"
+        },
+        "type": "boolean",
+        "role": "button",
+        "read": false,
+        "write": true,
+        "def": true,
+        "desc": "Playlist Toggle"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.volume",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Volume",
+          "de": "Lautstärke",
+          "ru": "Объем",
+          "pt": "Volume",
+          "nl": "Volume",
+          "fr": "Volume",
+          "it": "Volume",
+          "es": "Volumen",
+          "pl": "Wielkość",
+          "uk": "Об'єм",
+          "zh-cn": "音量"
+        },
+        "type": "number",
+        "role": "level.volume",
+        "read": true,
+        "write": true,
+        "desc": "Player Volume"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.state",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "State",
+          "de": "Status",
+          "ru": "Государство",
+          "pt": "Estado",
+          "nl": "Status",
+          "fr": "État",
+          "it": "Stato",
+          "es": "Estado",
+          "pl": "Państwo",
+          "uk": "Стан",
+          "zh-cn": "状态"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "desc": "Current player state"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.search",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Search Field",
+          "de": "Suchfeld",
+          "ru": "Поле поиска",
+          "pt": "Campo de pesquisa",
+          "nl": "Zoekveld",
+          "fr": "Champ de recherche",
+          "it": "Campo di ricerca",
+          "es": "Campo de búsqueda",
+          "pl": "Pole wyszukiwania",
+          "uk": "Поле пошуку",
+          "zh-cn": "搜索字段"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "def": "",
+        "desc": "Input field for library search"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.command",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Command",
+          "de": "Befehl",
+          "ru": "Kоманда",
+          "pt": "Comando",
+          "nl": "Commando",
+          "fr": "Commande",
+          "it": "Comando",
+          "es": "Dominio",
+          "pl": "Rozkaz",
+          "uk": "Kоманда",
+          "zh-cn": "命令"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "desc": "Next command"
+      },
+      "native": {}
+    }
+  ]
 }

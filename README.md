@@ -95,8 +95,7 @@ The contents of the current playlist is available in the object info.playlist (J
 ```
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 1.3.0 (2025-12-03)
 
 - (Uwe Nagel) Library search added
 - (Uwe Nagel) Add control.search
