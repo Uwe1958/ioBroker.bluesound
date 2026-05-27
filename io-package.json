@@ -199,7 +199,7 @@
             "common": {
                 "name": "Player Model",
                 "type": "string",
-                "role": "info.model",
+                "role": "media.player.type",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -224,7 +224,7 @@
             "common": {
                 "name": "Player Name",
                 "type": "string",
-                "role": "info.name",
+                "role": "media.player.name",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -324,7 +324,7 @@
             "common": {
                 "name": "Image",
                 "type": "string",
-                "role": "media.cover.small",
+                "role": "media.cover",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -399,7 +399,7 @@
             "common": {
                 "name": "str_secs",
                 "type": "string",
-                "role": "media.elapsed.text",
+                "role": "value.state",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -424,7 +424,7 @@
             "common": {
                 "name": "str_totlen",
                 "type": "string",
-                "role": "media.duration.text",
+                "role": "value.state",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -693,7 +693,7 @@
             "common": {
                 "name": "Shuffle",
                 "type": "boolean",
-                "role": "button.shuffle",
+                "role": "media.mode.shuffle",
                 "read": false,
                 "write": true,
                 "desc": "Toggles Shuffle"
@@ -719,7 +719,7 @@
             "common": {
                 "name": "Backward",
                 "type": "boolean",
-                "role": "button.backward",
+                "role": "button.prev",
                 "read": false,
                 "write": true,
                 "desc": "Player Backward"
