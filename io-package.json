@@ -487,8 +487,8 @@
                 },
                 "type": "boolean",
                 "role": "button",
-                "read": true,
-                "write": false,
+                "read": false,
+                "write": true,
                 "def": false
             },
             "native": {}
@@ -610,8 +610,8 @@
                 },
                 "type": "boolean",
                 "role": "button",
-                "read": true,
-                "write": false,
+                "read": false,
+                "write": true,
                 "def": true
             },
             "native": {}
