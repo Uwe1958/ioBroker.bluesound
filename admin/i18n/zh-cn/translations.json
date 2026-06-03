@@ -12,7 +12,6 @@
     "Picture of current title": "当前标题的图片",
     "Player volume": "播放器音量",
     "Plays current audio source": "播放当前音频源",
-    "PollingTime": "轮询间隔",
     "Pollinginterval [msec]": "PollingInterval [MSEC]",
     "Pollinginterval [sec]": "轮询间隔 [秒]",
     "Seconds played for current title": "当前游戏的播放秒数",
