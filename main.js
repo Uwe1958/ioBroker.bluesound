@@ -134,7 +134,7 @@ class Bluesound extends utils.Adapter {
         this.setState(sNameTag, '', true);
         // shuffle = false
         sNameTag = 'control.shuffle';
-        this.setState(sNameTag, false, true);
+        this.setState(sNameTag, 0, true);
         sNameTag = 'control.forward';
         this.setState(sNameTag, false, true);
         sNameTag = 'control.backward';
@@ -380,9 +380,9 @@ class Bluesound extends utils.Adapter {
                         try {
                             const valShuffle = await this.getStateAsync(sShuffleTag);
                             let val = valShuffle.val;
-                            val = !val;
+                            val = val == 0 ? 1 : 0;
                             apiClient
-                                .get(`/Shuffle?state=${Number(val)}`)
+                                .get(`/Shuffle?state=${val}`)
                                 .then(() => {
                                     this.setState(sShuffleTag, val, true);
                                     this.setState(id, state.val, true);
@@ -573,18 +573,21 @@ class Bluesound extends utils.Adapter {
                     } else {
                         title[1] = result.status.title1[0];
                     }
+                    this.log.debug(`title1: ${title[1]}`);
 
                     if (response.data.toString().lastIndexOf('title2') === -1) {
                         title[2] = '';
                     } else {
                         title[2] = result.status.title2[0];
                     }
+                    this.log.debug(`title2: ${title[2]}`);
 
                     if (response.data.toString().lastIndexOf('title3') === -1) {
                         title[3] = '';
                     } else {
                         title[3] = result.status.title3[0];
                     }
+                    this.log.debug(`title3: ${title[3]}`);
 
                     varSecs = result.status.secs[0];
                     strSecs = this.convertSecs(varSecs);
@@ -594,24 +597,31 @@ class Bluesound extends utils.Adapter {
                     } else {
                         varTotLen = result.status.totlen[0];
                     }
+                    this.log.debug(`varTotLen: ${varTotLen}`);
 
                     if (response.data.toString().lastIndexOf('image') === -1) {
                         imageUrl = '';
                     } else {
                         imageUrl = result.status.image[0];
                     }
+                    this.log.debug(`imageUrl: ${imageUrl}`);
 
                     varVolume = result.status.volume[0];
+                    this.log.debug(`varVolume: ${varVolume}`);
                     pState = result.status.state[0];
+                    this.log.debug(`pState: ${pState}`);
 
-                    varShuffle = result.status.shuffle[0] == 0 ? false : true;
+                    varShuffle = result.status.shuffle[0] == 0 ? 0 : 1;
+                    this.log.debug(`varShuffle: ${varShuffle}`);
                 });
 
                 strTotLen = this.convertSecs(Number(varTotLen));
+                this.log.debug(`strTotLen: ${strTotLen}`);
 
                 if (imageUrl.substring(0, 4) != 'http') {
                     imageUrl = `http://${ip}:11000${imageUrl}`;
                 }
+                this.log.debug(`imageUrl: ${imageUrl}`);
 
                 await Promise.all(promises);
 
@@ -629,10 +639,12 @@ class Bluesound extends utils.Adapter {
                 const sNameTag = 'control.state';
                 try {
                     const pStateOld = await this.getStateAsync(sNameTag);
+                    this.log.debug(`pStateOld: ${pStateOld.val}`);
 
                     if (pState != pStateOld.val) {
                         let sStateTag = 'control.state';
                         await this.setState(sStateTag, { val: pState, ack: true });
+                        this.log.debug(`Tag '${sNameTag}' written: ${pState}`);
                     }
                 } catch (err) {
                     this.log.error(`Error reading ${sNameTag}: ${err}`);
@@ -714,19 +726,20 @@ class Bluesound extends utils.Adapter {
                 this.setState('info.connection', false, true);
             }
         } catch (e) {
-            this.log.error(`Could not retrieve status data: ${e}`);
+            this.log.error(`Could not retrieve status data _a: ${e}`);
             // Set the connection indicator to false on unsuccesful read
             this.setState('info.connection', false, true);
         }
         return true;
     }
     async readPlaylist() {
-        var curTitle;
-        var curObjTitle = await this.getStateAsync('info.title1');
-        if (curObjTitle || curObjTitle.val) {
-            curTitle = curObjTitle.val;
-        }
         try {
+            var curTitle;
+            var curObjTitle = await this.getStateAsync('info.title1');
+            this.log.debug(`curObjTitle: ${curObjTitle.val}`);
+            if (curObjTitle || curObjTitle.val) {
+                curTitle = curObjTitle.val;
+            }
             const response = await apiClient.get('/Playlist');
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {

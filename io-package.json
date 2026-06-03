@@ -485,11 +485,11 @@
                     "uk": "Шафл Стан",
                     "zh-cn": "摇摆状态"
                 },
-                "type": "boolean",
-                "role": "button",
+                "type": "number",
+                "role": "media.mode.shuffle",
                 "read": false,
                 "write": true,
-                "def": false
+                "def": 0
             },
             "native": {}
         },
@@ -692,7 +692,7 @@
             "type": "state",
             "common": {
                 "name": "Shuffle",
-                "type": "boolean",
+                "type": "number",
                 "role": "media.mode.shuffle",
                 "read": false,
                 "write": true,
