@@ -12,7 +12,7 @@
     "Picture of current title": "Изображение текущего названия",
     "Player volume": "Громкость проигрывателя",
     "Plays current audio source": "Воспроизводит текущий источник звука",
-    "PollingTime": "Интервал опроса",
+    "Polling Interval": "Интервал опроса",
     "Pollinginterval [msec]": "Интервал опроса [мс]",
     "Pollinginterval [sec]": "Интервал опроса [сек]",
     "Seconds played for current title": "Секунды, сыгранные за текущий титул",
