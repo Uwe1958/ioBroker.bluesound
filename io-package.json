@@ -199,7 +199,7 @@
             "common": {
                 "name": "Player Model",
                 "type": "string",
-                "role": "media.player.type",
+                "role": "text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -224,7 +224,7 @@
             "common": {
                 "name": "Player Name",
                 "type": "string",
-                "role": "media.player.name",
+                "role": "text",
                 "read": true,
                 "write": false,
                 "desc": {
@@ -463,7 +463,7 @@
                 "type": "number",
                 "role": "level.volume",
                 "read": true,
-                "write": false,
+                "write": true,
                 "desc": "Player volume"
             },
             "native": {}
