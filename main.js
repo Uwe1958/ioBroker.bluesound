@@ -270,28 +270,30 @@ class Bluesound extends utils.Adapter {
                     case 'start':
                         try {
                             const obj = await this.getStateAsync(`${id.substring(0, pos)}.id`);
-                            if (obj || obj.val) {
-                                const preset = obj.val;
-                                apiClient
-                                    .get(`/Preset?id=${preset}`)
-                                    .then(response => {
-                                        // Handle response
-                                        parseString(response.data, (err, result) => {
-                                            if (err) {
-                                                this.log.error(`Error parsing Preset XML: ${err}`);
-                                                return;
-                                            }
-                                            const sStateTag = 'control.state';
-                                            this.setState(sStateTag, result.state ?? '', true);
-                                            this.setState(id, true, true); // Set acknowledged
-                                            this.log.info(`${this.namespace} Preset${preset} Start`);
+                            if (obj) {
+                                if (obj.val) {
+                                    const preset = obj.val;
+                                    apiClient
+                                        .get(`/Preset?id=${preset}`)
+                                        .then(response => {
+                                            // Handle response
+                                            parseString(response.data, (err, result) => {
+                                                if (err) {
+                                                    this.log.error(`Error parsing Preset XML: ${err}`);
+                                                    return;
+                                                }
+                                                const sStateTag = 'control.state';
+                                                this.setState(sStateTag, result.state ?? '', true);
+                                                this.setState(id, true, true); // Set acknowledged
+                                                this.log.info(`${this.namespace} Preset${preset} Start`);
+                                            });
+                                        })
+                                        .catch(err => {
+                                            // Handle errors
+                                            // adapter.log.error("Could not start preset, Status code " + response.status);
+                                            this.log.error(`Could not start preset, Status code ${err}`);
                                         });
-                                    })
-                                    .catch(err => {
-                                        // Handle errors
-                                        // adapter.log.error("Could not start preset, Status code " + response.status);
-                                        this.log.error(`Could not start preset, Status code ${err}`);
-                                    });
+                                }
                             }
                         } catch (err) {
                             this.log.error(`Error reading ${id.substring(0, pos)}.id: ${err}`);
@@ -379,7 +381,12 @@ class Bluesound extends utils.Adapter {
                         const sShuffleTag = 'info.shuffle';
                         try {
                             const valShuffle = await this.getStateAsync(sShuffleTag);
-                            let val = valShuffle.val;
+                            var val;
+                            if (valShuffle) {
+                                val = valShuffle.val;
+                            } else {
+                                val = 0;
+                            }
                             val = val == 0 ? 1 : 0;
                             apiClient
                                 .get(`/Shuffle?state=${val}`)
@@ -510,13 +517,12 @@ class Bluesound extends utils.Adapter {
 
     /**
      *
-     * @param {number} secs - the string
+     * @param {number} secs - the number of seconds
      */
 
     convertSecs(secs) {
-        const date = new Date(null);
-        date.setSeconds(secs);
-
+        secs %= 86400;
+        const date = new Date(secs * 1000);
         let res = '';
 
         if (secs >= 3600) {
@@ -547,9 +553,11 @@ class Bluesound extends utils.Adapter {
         const promises = [];
         const title = [];
         let i;
-        let varSecs;
+        let varSecs = 0;
         let strSecs;
-        let varTotLen, strTotLen, varVolume, pState, varShuffle;
+        let varTotLen = 0;
+        let varVolume = 0;
+        let strTotLen, pState, varShuffle;
         let imageUrl = new String();
 
         for (i = 1; i < 4; i++) {
@@ -589,13 +597,13 @@ class Bluesound extends utils.Adapter {
                     }
                     this.log.debug(`title3: ${title[3]}`);
 
-                    varSecs = result.status.secs[0];
+                    varSecs = parseInt(result.status.secs[0]);
                     strSecs = this.convertSecs(varSecs);
 
                     if (response.data.toString().lastIndexOf('totlen') === -1) {
                         varTotLen = 28800;
                     } else {
-                        varTotLen = result.status.totlen[0];
+                        varTotLen = parseInt(result.status.totlen[0]);
                     }
                     this.log.debug(`varTotLen: ${varTotLen}`);
 
@@ -606,7 +614,7 @@ class Bluesound extends utils.Adapter {
                     }
                     this.log.debug(`imageUrl: ${imageUrl}`);
 
-                    varVolume = result.status.volume[0];
+                    varVolume = parseInt(result.status.volume[0]) || 0;
                     this.log.debug(`varVolume: ${varVolume}`);
                     pState = result.status.state[0];
                     this.log.debug(`pState: ${pState}`);
@@ -615,7 +623,7 @@ class Bluesound extends utils.Adapter {
                     this.log.debug(`varShuffle: ${varShuffle}`);
                 });
 
-                strTotLen = this.convertSecs(Number(varTotLen));
+                strTotLen = this.convertSecs(varTotLen);
                 this.log.debug(`strTotLen: ${strTotLen}`);
 
                 if (imageUrl.substring(0, 4) != 'http') {
@@ -629,8 +637,10 @@ class Bluesound extends utils.Adapter {
                 try {
                     const sShuffleOld = await this.getStateAsync(sShuffleTag);
 
-                    if (varShuffle != sShuffleOld.val) {
-                        await this.setState(sShuffleTag, { val: varShuffle, ack: true });
+                    if (sShuffleOld) {
+                        if (varShuffle != sShuffleOld.val) {
+                            await this.setState(sShuffleTag, { val: varShuffle, ack: true });
+                        }
                     }
                 } catch (err) {
                     this.log.error(`Error reading ${sShuffleTag}: ${err}`);
@@ -639,12 +649,14 @@ class Bluesound extends utils.Adapter {
                 const sNameTag = 'control.state';
                 try {
                     const pStateOld = await this.getStateAsync(sNameTag);
-                    this.log.debug(`pStateOld: ${pStateOld.val}`);
+                    if (pStateOld) {
+                        this.log.debug(`pStateOld: ${pStateOld.val}`);
 
-                    if (pState != pStateOld.val) {
-                        let sStateTag = 'control.state';
-                        await this.setState(sStateTag, { val: pState, ack: true });
-                        this.log.debug(`Tag '${sNameTag}' written: ${pState}`);
+                        if (pState != pStateOld.val) {
+                            let sStateTag = 'control.state';
+                            await this.setState(sStateTag, { val: pState, ack: true });
+                            this.log.debug(`Tag '${sNameTag}' written: ${pState}`);
+                        }
                     }
                 } catch (err) {
                     this.log.error(`Error reading ${sNameTag}: ${err}`);
@@ -655,11 +667,13 @@ class Bluesound extends utils.Adapter {
                         let sStateTag = `info.title${i}`;
                         try {
                             const valOld = await this.getStateAsync(sStateTag);
-                            if (valOld.val != title[i]) {
-                                await this.setState(sStateTag, { val: title[i], ack: true });
-                                this.log.info(`title${i} changed: ${title[i]}`);
-                                if (i == 1) {
-                                    await this.readPlaylist();
+                            if (valOld) {
+                                if (valOld.val != title[i]) {
+                                    await this.setState(sStateTag, { val: title[i], ack: true });
+                                    this.log.info(`title${i} changed: ${title[i]}`);
+                                    if (i == 1) {
+                                        await this.readPlaylist();
+                                    }
                                 }
                             }
                         } catch (err) {
@@ -668,10 +682,10 @@ class Bluesound extends utils.Adapter {
                     }
 
                     let sStateTag = 'info.secs';
-                    await this.setState(sStateTag, { val: parseInt(varSecs), ack: true });
+                    await this.setState(sStateTag, { val: varSecs, ack: true });
 
                     sStateTag = 'info.totlen';
-                    await this.setState(sStateTag, { val: parseInt(varTotLen), ack: true });
+                    await this.setState(sStateTag, { val: varTotLen, ack: true });
 
                     sStateTag = 'info.str_secs';
                     await this.setState(sStateTag, { val: strSecs, ack: true });
@@ -683,9 +697,11 @@ class Bluesound extends utils.Adapter {
                     try {
                         let valOld = await this.getStateAsync(sStateTag);
 
-                        if (valOld.val != imageUrl) {
-                            await this.setState(sStateTag, { val: imageUrl.toString(), ack: true });
-                            this.log.info(`Image changed: ${imageUrl}`);
+                        if (valOld) {
+                            if (valOld.val != imageUrl) {
+                                await this.setState(sStateTag, { val: imageUrl.toString(), ack: true });
+                                this.log.info(`Image changed: ${imageUrl}`);
+                            }
                         }
                     } catch (err) {
                         this.log.error(`Error reading ${sStateTag}: ${err}`);
@@ -694,11 +710,13 @@ class Bluesound extends utils.Adapter {
                     sStateTag = 'info.volume';
                     try {
                         let valOld = await this.getStateAsync(sStateTag);
-                        if (valOld.val != varVolume) {
-                            await this.setState(sStateTag, { val: parseInt(varVolume), ack: true });
-                            sStateTag = 'control.volume';
-                            await this.setState(sStateTag, { val: parseInt(varVolume), ack: true });
-                            this.log.info(`Volume changed: ${varVolume}`);
+                        if (valOld) {
+                            if (Number(valOld.val) != varVolume) {
+                                await this.setState(sStateTag, { val: varVolume, ack: true });
+                                sStateTag = 'control.volume';
+                                await this.setState(sStateTag, { val: varVolume, ack: true });
+                                this.log.info(`Volume changed: ${varVolume}`);
+                            }
                         }
                     } catch (err) {
                         this.log.error(`Error reading ${sStateTag}: ${err}`);
@@ -735,20 +753,21 @@ class Bluesound extends utils.Adapter {
     async readPlaylist() {
         try {
             var curTitle;
-            var curObjTitle = await this.getStateAsync('info.title1');
+            /*            var curObjTitle = await this.getStateAsync('info.title1');
             this.log.debug(`curObjTitle: ${curObjTitle.val}`);
             if (curObjTitle || curObjTitle.val) {
                 curTitle = curObjTitle.val;
-            }
+            }*/
             const response = await apiClient.get('/Playlist');
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
                     var myArr = [];
                     var entry;
+                    var myHtml = '';
                     if (err) {
                         this.log.error(`Error parsing Playlist XML: ${err}`);
                     } else {
-                        var myHtml = `<body><div><table id="playlist">`;
+                        myHtml = `<body><div><table id="playlist">`;
                         if (Array.isArray(result.playlist.song)) {
                             for (const objSong of result.playlist.song) {
                                 //                                this.log.info(`Playlist: ${objSong.title}, CurTitle: ${curTitle}`);
@@ -1564,11 +1583,11 @@ class Bluesound extends utils.Adapter {
                                     headerTitle: `${headers[headers.length - 2]}`,
                                 };
                                 myArr.push(entry);
+                                var maxOffset = 0;
                                 if (!('resultType' in result.list.item[0].action)) {
                                     var regExP = new RegExp('(?<=offset=)\\d*');
                                     var curOffset = parseInt(result.list.offset);
                                     var newOffset = curOffset + 30;
-                                    var maxOffset;
                                     let newCmd = commands[commands.length - 1].replace(regExP, `${newOffset}`);
                                     var lstCommand = headers[headers.length - 1];
                                     var searchKey = lstCommand.substring(lstCommand.length - 1);
