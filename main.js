@@ -1016,8 +1016,7 @@ class Bluesound extends utils.Adapter {
                                         myArr.push(entry);
                                         for (const objItem of result.screen.list.item) {
                                             var regExp = new RegExp('(?<=id=).+', 'gm');
-                                            // @ts-expect-error: Object is possibly 'null'
-                                            var playlistID = `${objItem.playAction.URI}`.match(regExp)[0];
+                                            var playlistID = objItem.playAction.URI.match(regExp)[0];
                                             entry = {
                                                 text: `${objItem.action.title}`,
                                                 browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=LocalMusic&shuffle=1`,
@@ -1707,7 +1706,7 @@ class Bluesound extends utils.Adapter {
                                             }
                                             for (const objItem of result.list.item) {
                                                 regExP = new RegExp('(?<=composer=).+');
-                                                var myComposer = `${objItem.action.URI}`.match(regExP)[0];
+                                                var myComposer = objItem.action.URI.match(regExP)[0];
                                                 entry = {
                                                     text: `${objItem.title}`,
                                                     browseKey: `/ui/browseContext?service=LocalMusic&title=${myComposer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(myComposer)}`,
