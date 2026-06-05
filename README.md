@@ -100,9 +100,9 @@ The contents of the current playlist is available in the object info.playlist (J
 
 - (copilot) Adapter requires node.js >= 22 now
 - (Uwe Nagel) Code consolidation and update @alcalzone/release-script to 5.2.1
-- (Uwe Nagel) [#184] (https://github.com/Uwe1958/ioBroker.bluesound/issues/184)
-- (Uwe Nagel) [#152] (https://github.com/Uwe1958/ioBroker.bluesound/issues/152)
-- (Uwe Nagel) [#162] (https://github.com/Uwe1958/ioBroker.bluesound/issues/162)
+- (Uwe Nagel) Fixed issue 184
+- (Uwe Nagel) Fixed issue 152
+- (Uwe Nagel) Fixed issue 162
 
 ### 1.3.0 (2025-12-03)
 
