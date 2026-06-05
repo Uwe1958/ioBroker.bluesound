@@ -1016,6 +1016,7 @@ class Bluesound extends utils.Adapter {
                                         myArr.push(entry);
                                         for (const objItem of result.screen.list.item) {
                                             var regExp = new RegExp('(?<=id=).+', 'gm');
+                                            // @ts-expect-error: Object is possibly 'null'
                                             var playlistID = `${objItem.playAction.URI}`.match(regExp)[0];
                                             entry = {
                                                 text: `${objItem.action.title}`,
