@@ -95,6 +95,13 @@ The contents of the current playlist is available in the object info.playlist (J
 ```
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+- (dependabot) Bump @iobroker/eslint-config from 2.2.0 to 2.3.4
+- (dependabot) Bump axios from 1.16.0 to 1.16.1
+- (dependabot) Bump @types/node from 25.6.0 to 25.9.1
+
 ### 1.3.1 (2026-06-05)
 
 - (copilot) Adapter requires node.js >= 22 now
