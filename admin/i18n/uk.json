@@ -16,6 +16,7 @@
     "Pollinginterval [msec]": "Опитування Enterval [MSEC]",
     "Pollinginterval [sec]": "Інтервал опитування [с]",
     "Seconds played for current title": "Секунди, зіграні за поточний титул",
+    "Timeout": "Timeout",
     "Timeout for API calls [msec]": "Тайм -аут для дзвінків API [MSEC]",
     "Timeout for API calls [sec]": "Тайм-аут для викликів API [с]",
     "Title1 from player": "Назва 1 від гравця",

@@ -16,6 +16,7 @@
     "Pollinginterval [msec]": "PollingInterval [MSEC]",
     "Pollinginterval [sec]": "轮询间隔 [秒]",
     "Seconds played for current title": "当前游戏的播放秒数",
+    "Timeout": "Timeout",
     "Timeout for API calls [msec]": "API呼叫的超时[MSEC]",
     "Timeout for API calls [sec]": "API 调用超时 [秒]",
     "Title1 from player": "玩家的标题1",

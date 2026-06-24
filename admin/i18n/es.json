@@ -16,6 +16,7 @@
     "Pollinginterval [msec]": "Pollinginterval [msec]",
     "Pollinginterval [sec]": "Intervalo de sondeo [seg]",
     "Seconds played for current title": "Segundos jugados por el título actual",
+    "Timeout": "Timeout",
     "Timeout for API calls [msec]": "Tiempo de espera para las llamadas de API [msec]",
     "Timeout for API calls [sec]": "Tiempo de espera para llamadas API [seg]",
     "Title1 from player": "Título1 del jugador",

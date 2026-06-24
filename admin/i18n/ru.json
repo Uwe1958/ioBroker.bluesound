@@ -16,6 +16,7 @@
     "Pollinginterval [msec]": "Интервал опроса [мс]",
     "Pollinginterval [sec]": "Интервал опроса [сек]",
     "Seconds played for current title": "Секунды, сыгранные за текущий титул",
+    "Timeout": "Timeout",
     "Timeout for API calls [msec]": "Таймаут для вызовов API [мс]",
     "Timeout for API calls [sec]": "Таймаут для вызовов API [сек]",
     "Title1 from player": "Title1 от игрока",
