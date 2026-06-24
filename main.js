@@ -436,7 +436,7 @@ class Bluesound extends utils.Adapter {
                         await this.readPlayerStatus();
                         break;
                     case 'command':
-                        //                        this.log.info(`key=${state.val}`);
+                        // this.log.info(`key=${state.val}`);
                         var key;
                         try {
                             key = JSON.parse(`${state.val}`)['browseKey'];
@@ -445,37 +445,39 @@ class Bluesound extends utils.Adapter {
                         } catch (e) {
                             this.log.error(`Error parsing command ${e}`);
                         }
-                        if (key === 'HOME' || (key === 'BACK' && commands.length < 2)) {
+                        // this.log.info(`key1=${key}`);
+                        //                        if (key === 'HOME' || (key === 'BACK' && commands.length < 2)) {
+                        if (key === 'HOME') {
                             commands.length = 0;
                             headers.length = 0;
-                            let a = new Promise(resolve => {
-                                var ret = this.initMenu();
-                                this.log.info(`Menu initialized`);
-                                resolve(ret);
-                            });
-                            a.then(() => {});
+                            this.initMenu();
                         } else if (key === 'BACK') {
                             //                            commands.pop();
-                            commands.pop();
-                            headers.pop();
-                            var newKey = commands[commands.length - 1];
-                            //                            headerTitle = headers[headers.length - 1];
-                            let res = new Promise(resolve => {
-                                var ret = this.readBrowseData(newKey);
-                                resolve(ret);
+                            commands.forEach(el => {
+                                this.log.debug(`BACK Commands: ${el}`);
                             });
-                            res.then(val => {
-                                this.setState('info.list', val, true);
+                            headers.forEach(el => {
+                                this.log.debug(`BACK Headers: ${el}`);
                             });
+                            if (headers.length <= 1) {
+                                commands.length = 0;
+                                headers.length = 0;
+                                this.initMenu();
+                            } else {
+                                commands.pop();
+                                headers.pop();
+                                var newKey = commands[commands.length - 1];
+                                let res = new Promise(resolve => {
+                                    var ret = this.readBrowseData(newKey);
+                                    resolve(ret);
+                                });
+                                res.then(val => {
+                                    this.setState('info.list', val, true);
+                                });
+                            }
                         } else {
                             commands.push(key);
                             headers.push(headerTitle);
-                            /*                            commands.forEach(el => {
-                                this.log.info(`Commands: ${el}`);
-                            });
-                            headers.forEach(el => {
-                                this.log.info(`Headers: ${el}`);
-                            });*/
                             let res = new Promise(resolve => {
                                 var ret = this.readBrowseData(key);
                                 resolve(ret);
@@ -833,8 +835,12 @@ class Bluesound extends utils.Adapter {
         let res = JSON.stringify(-1);
         var browseKey;
 
-        if (key === '' || key === 'HOME') {
+        this.log.info(`key: ${key}`);
+
+        if (key === 'LOCAL') {
             browseKey = '/ui/browseMenuGroup?service=LocalMusic';
+        } else if (key === 'RADIO') {
+            browseKey = '/ui/browseMenuGroup?service=Airable';
         } else {
             browseKey = `${key}`;
         }
@@ -856,6 +862,12 @@ class Bluesound extends utils.Adapter {
                                 this.log.info(`Id: ${result.screen.id}`);
                                 switch (result.screen.id) {
                                     case 'screen-LocalMusic':
+                                        entry = {
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                            headerTitle: 'Main Menu',
+                                        };
+                                        myArr.push(entry);
                                         for (const objRow of result.screen.row) {
                                             entry = {
                                                 text: `${objRow.action.title}`,
@@ -873,7 +885,7 @@ class Bluesound extends utils.Adapter {
                                         entry = {
                                             text: '...',
                                             browseKey: 'BACK',
-                                            headerTitle: 'Main Menu',
+                                            headerTitle: 'Local Music',
                                         };
                                         myArr.push(entry);
                                         for (const objItem of result.screen.list.index.item) {
@@ -1572,8 +1584,51 @@ class Bluesound extends utils.Adapter {
                                             }
                                         }
                                         break;
+                                    case 'screen-Airable':
+                                        entry = {
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                            headerTitle: 'Main Menu',
+                                        };
+                                        myArr.push(entry);
+                                        for (const objItem of result.screen.list.item) {
+                                            entry = {
+                                                text: `${objItem.action['title']}`,
+                                                browseKey: `${objItem.action['URI']}`,
+                                                headerTitle: `${objItem.action['title']}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                        break;
                                     default:
-                                        this.log.debug(`resultNO: =${JSON.stringify(result)}`);
+                                        if (
+                                            result.screen.id.substring(0, 35) === 'screen-/RadioBrowse?service=Airable'
+                                        ) {
+                                            entry = {
+                                                text: '...',
+                                                browseKey: 'BACK',
+                                                headerTitle: `${headers[headers.length - 2]}`,
+                                            };
+                                            myArr.push(entry);
+                                            for (const objItem of result.screen.list.item) {
+                                                entry = {
+                                                    text: `${objItem.title}`,
+                                                    browseKey: `${objItem.action['URI']}`,
+                                                    headerTitle: `${objItem.title}`,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                            if ('nextLink' in result.screen.list) {
+                                                entry = {
+                                                    text: 'NEXT',
+                                                    browseKey: `${result.screen.list.nextLink}`,
+                                                    headerTitle: `${headers[headers.length - 1]}`,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                        } else {
+                                            this.log.debug(`resultNO: =${JSON.stringify(result)}`);
+                                        }
                                 }
                                 break;
                             case 'list':
@@ -1585,40 +1640,59 @@ class Bluesound extends utils.Adapter {
                                 myArr.push(entry);
                                 var maxOffset = 0;
                                 if (!('resultType' in result.list.item[0].action)) {
-                                    var regExP = new RegExp('(?<=offset=)\\d*');
-                                    var curOffset = parseInt(result.list.offset);
-                                    var newOffset = curOffset + 30;
-                                    let newCmd = commands[commands.length - 1].replace(regExP, `${newOffset}`);
-                                    var lstCommand = headers[headers.length - 1];
-                                    var searchKey = lstCommand.substring(lstCommand.length - 1);
-                                    for (const objKey of result.list.index.item) {
-                                        if (objKey.key == searchKey) {
-                                            maxOffset = parseInt(objKey.offset) + parseInt(objKey.length);
-                                            break;
+                                    if (!('offset' in result.list)) {
+                                        for (const objItem of result.list.item) {
+                                            entry = {
+                                                text: `${objItem.title}`,
+                                                browseKey: `${objItem.action.URI}`,
+                                                headerTitle: `${objItem.title}`,
+                                            };
+                                            myArr.push(entry);
                                         }
-                                    }
-                                    for (const objItem of result.list.item) {
-                                        entry = {
-                                            text: `${objItem.title}`,
-                                            browseKey:
-                                                playlistToggle == 1
-                                                    ? `${objItem.action.URI}`
-                                                    : `${objItem.action.URI}`.replace('playnow=1', 'playnow=0'),
-                                            headerTitle: `${objItem.title}`,
-                                        };
-                                        myArr.push(entry);
-                                        curOffset++;
-                                        if (curOffset > maxOffset - 1) {
-                                            break;
+                                        if ('nextLink' in result.list) {
+                                            entry = {
+                                                text: 'NEXT',
+                                                browseKey: `${result.list.nextLink}`,
+                                                headerTitle: `${headers[headers.length - 1]}`,
+                                            };
+                                            myArr.push(entry);
                                         }
-                                    }
-                                    if (curOffset < maxOffset) {
-                                        entry = {
-                                            text: 'NEXT',
-                                            browseKey: `${newCmd}`,
-                                            headerTitle: `${headers[headers.length - 1]}`,
-                                        };
-                                        myArr.push(entry);
+                                    } else {
+                                        var regExP = new RegExp('(?<=offset=)\\d*');
+                                        var curOffset = parseInt(result.list.offset);
+                                        var newOffset = curOffset + 30;
+                                        let newCmd = commands[commands.length - 1].replace(regExP, `${newOffset}`);
+                                        var lstCommand = headers[headers.length - 1];
+                                        var searchKey = lstCommand.substring(lstCommand.length - 1);
+                                        for (const objKey of result.list.index.item) {
+                                            if (objKey.key == searchKey) {
+                                                maxOffset = parseInt(objKey.offset) + parseInt(objKey.length);
+                                                break;
+                                            }
+                                        }
+                                        for (const objItem of result.list.item) {
+                                            entry = {
+                                                text: `${objItem.title}`,
+                                                browseKey:
+                                                    playlistToggle == 1
+                                                        ? `${objItem.action.URI}`
+                                                        : `${objItem.action.URI}`.replace('playnow=1', 'playnow=0'),
+                                                headerTitle: `${objItem.title}`,
+                                            };
+                                            myArr.push(entry);
+                                            curOffset++;
+                                            if (curOffset > maxOffset - 1) {
+                                                break;
+                                            }
+                                        }
+                                        if (curOffset < maxOffset) {
+                                            entry = {
+                                                text: 'NEXT',
+                                                browseKey: `${newCmd}`,
+                                                headerTitle: `${headers[headers.length - 1]}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
                                     }
                                 } else {
                                     switch (result.list.item[0].action.resultType) {
@@ -1727,11 +1801,31 @@ class Bluesound extends utils.Adapter {
                                                 myArr.push(entry);
                                             }
                                             break;
+                                        case 'screen':
+                                            for (const objItem of result.list.item) {
+                                                entry = {
+                                                    text: objItem.title,
+                                                    browseKey: objItem.action.URI,
+                                                    headerTitle: objItem.title,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                            if ('nextLink' in result.list) {
+                                                entry = {
+                                                    text: 'NEXT',
+                                                    browseKey: `${result.list.nextLink}`,
+                                                    headerTitle: `${headers[headers.length - 1]}`,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                            break;
                                         default:
+                                            this.log.info('hhh');
                                     }
                                 }
                                 break;
                             case 'playlist':
+                            case 'state':
                                 entry = {
                                     text: 'Content added, ... ',
                                     browseKey: 'BACK',
@@ -1757,8 +1851,22 @@ class Bluesound extends utils.Adapter {
         }
     }
     async initMenu() {
-        var templist = await this.readBrowseData(); // Top level menu
-
+        //        var templist = await this.readBrowseData(); // Top level menu
+        var myArr = [];
+        var entry;
+        entry = {
+            text: 'Local Music',
+            browseKey: 'LOCAL',
+            headerTitle: 'Local Music',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Radio Stations',
+            browseKey: 'RADIO',
+            headerTitle: 'Radio Stations',
+        };
+        myArr.push(entry);
+        var templist = JSON.stringify(myArr);
         this.setState('info.list', templist, true);
         this.setState('info.listheader', 'Main Menu', true);
     }
