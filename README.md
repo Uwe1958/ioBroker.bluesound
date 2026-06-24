@@ -98,6 +98,8 @@ The contents of the current playlist is available in the object info.playlist (J
 
 ### **WORK IN PROGRESS**
 
+- (Uwe Nagel) Bump @iobroker/adapter-core from 3.3.2 to 3.4.1
+- (Uwe Nagel) Translation converted to short format
 - (dependabot) Bump @iobroker/eslint-config from 2.2.0 to 2.3.4
 - (dependabot) Bump axios from 1.16.0 to 1.16.1
 - (dependabot) Bump @types/node from 25.6.0 to 25.9.1
