@@ -990,7 +990,7 @@ class Bluesound extends utils.Adapter {
                                         entry = {
                                             text: '...',
                                             browseKey: 'BACK',
-                                            headerTitle: 'Main Menu',
+                                            headerTitle: 'Local Music',
                                         };
                                         myArr.push(entry);
                                         for (const objItem of result.screen.list.index.item) {
@@ -1006,7 +1006,7 @@ class Bluesound extends utils.Adapter {
                                         entry = {
                                             text: '...',
                                             browseKey: 'BACK',
-                                            headerTitle: 'Main Menu',
+                                            headerTitle: 'Local Music',
                                         };
                                         myArr.push(entry);
                                         for (const objItem of result.screen.list.index.item) {
@@ -1023,7 +1023,8 @@ class Bluesound extends utils.Adapter {
                                         entry = {
                                             text: '...',
                                             browseKey: 'BACK',
-                                            headerTitle: `${headers[headers.length - 1]}`,
+                                            //                                            headerTitle: `${headers[headers.length - 1]}`,
+                                            headerTitle: `Local Music`,
                                         };
                                         myArr.push(entry);
                                         for (const objItem of result.screen.list.item) {
@@ -1041,7 +1042,8 @@ class Bluesound extends utils.Adapter {
                                         entry = {
                                             text: '...',
                                             browseKey: 'BACK',
-                                            headerTitle: `${headers[headers.length - 1]}`,
+                                            //                                            headerTitle: `${headers[headers.length - 1]}`,
+                                            headerTitle: `Local Music`,
                                         };
                                         myArr.push(entry);
                                         for (const objItem of result.screen.list.index.item) {
@@ -1132,7 +1134,7 @@ class Bluesound extends utils.Adapter {
                                             entry = {
                                                 text: '...',
                                                 browseKey: 'BACK',
-                                                headerTitle: 'Main Menu',
+                                                headerTitle: 'Local Music',
                                             };
                                             myArr.push(entry);
                                             if (Array.isArray(result.screen.list.item)) {
@@ -1259,7 +1261,7 @@ class Bluesound extends utils.Adapter {
                                             entry = {
                                                 text: '...',
                                                 browseKey: 'BACK',
-                                                headerTitle: 'Main Menu',
+                                                headerTitle: 'Local Music',
                                             };
                                             myArr.push(entry);
                                             if (Array.isArray(result.screen.list)) {
@@ -1610,7 +1612,17 @@ class Bluesound extends utils.Adapter {
                                                 headerTitle: `${headers[headers.length - 2]}`,
                                             };
                                             myArr.push(entry);
-                                            for (const objItem of result.screen.list.item) {
+                                            if (Array.isArray(result.screen.list.item)) {
+                                                for (const objItem of result.screen.list.item) {
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey: `${objItem.action['URI']}`,
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                            } else {
+                                                const objItem = result.screen.list.item;
                                                 entry = {
                                                     text: `${objItem.title}`,
                                                     browseKey: `${objItem.action['URI']}`,
