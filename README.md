@@ -47,6 +47,8 @@ All contents is drilled down up to the album level (with the exception of the So
 
 Library search is added. If a search string is entered in 'control.search' (via an input filed in the browser) the result of the search is shown in 'info.list' and can be further drilled down like in library browsing.
 
+It is now also possible to stream music from Radio Stations. The stations are organized in a menu structure supplied by the player. When a station is selected, music is immediately played.
+
 The contents of the current playlist is available in the object info.playlist (JSON) and can be visualized this way. It is also available as an html- table in info.playlisthtml and can be directly visualized in a html widget. The format of the resulting table can be modified using CSS
 
 ```javascript
@@ -105,6 +107,7 @@ The contents of the current playlist is available in the object info.playlist (J
 - (dependabot) Bump @iobroker/eslint-config from 2.2.0 to 2.3.4
 - (dependabot) Bump axios from 1.16.0 to 1.16.1
 - (dependabot) Bump @types/node from 25.6.0 to 25.9.1
+- (Uwe Nagel) Radio stations added
 
 ### 1.3.1 (2026-06-05)
 
