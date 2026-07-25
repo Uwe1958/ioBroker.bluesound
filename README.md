@@ -97,8 +97,7 @@ The contents of the current playlist is available in the object info.playlist (J
 ```
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 1.4.0 (2026-07-25)
 
 - (Uwe Nagel) Fixes @types/node version
 - (Uwe Nagel) Corrected translation files
@@ -158,21 +157,6 @@ The contents of the current playlist is available in the object info.playlist (J
 - (Uwe Nagel) Translated using Weblate (Dutch)
 - (Uwe Nagel) Update test-and.release.yml to node 24.x
 - (Uwe Nagel) Update testing to minimum node.js version 20
-
-### 1.1.5 (2025-03-10)
-
-- (Uwe Nagel) Create version 1.1.5
-- (Uwe Nagel) Update info.connection regularly
-- (Uwe Nagel) Update admin dependency to >=7.4.10
-- (Uwe Nagel) Update @iobroker/adapter-dev to 1.3.0
-- (Uwe Nagel) Fixing test action problems
-- (Uwe Nagel) Bump mocha from 11.0.1 to 11.1.0
-- (Uwe Nagel) Bump eslint-config-prettier from 9.1.0 to 10.0.1
-- (Uwe Nagel) Bump chai and @types/chai
-- (Uwe Nagel) Bump eslint from 9.16.0 to 9.19.0
-- (Uwe Nagel) Corrected translations (de,pl)
-- (Uwe Nagel) Update @iobroker/adapter-core to 3.2.3
-- (Uwe Nagel) Update @iobroker/testing to 5.0.0
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
