@@ -843,6 +843,8 @@ class Bluesound extends utils.Adapter {
             browseKey = '/ui/browseMenuGroup?service=Airable';
         } else if (key === 'Amazon') {
             browseKey = '/ui/browseMenuGroup?service=Amazon';
+        } else if (key === 'TuneIn') {
+            browseKey = '/ui/browseMenuGroup?service=TuneIn';
         } else {
             browseKey = `${key}`;
         }
@@ -1625,6 +1627,22 @@ class Bluesound extends utils.Adapter {
                                             i++;
                                         }
                                         break;
+                                    case 'screen-TuneIn':
+                                        entry = {
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                            headerTitle: 'Main Menu',
+                                        };
+                                        myArr.push(entry);
+                                        for (const objItem of result.screen.list.item) {
+                                            entry = {
+                                                text: `${objItem.title}`,
+                                                browseKey: `${objItem.action['URI']}`,
+                                                headerTitle: `${objItem.title}`,
+                                            };
+                                            myArr.push(entry);
+                                        }
+                                        break;
                                     default:
                                         if (
                                             result.screen.id.substring(0, 35) ===
@@ -1665,6 +1683,57 @@ class Bluesound extends utils.Adapter {
                                                     headerTitle: `${headers[headers.length - 1]}`,
                                                 };
                                                 myArr.push(entry);
+                                            }
+                                        } else if (
+                                            result.screen.id.substring(0, 34) === 'screen-/RadioBrowse?service=TuneIn'
+                                        ) {
+                                            entry = {
+                                                text: '...',
+                                                browseKey: 'BACK',
+                                                headerTitle: `${headers[headers.length - 2]}`,
+                                            };
+                                            myArr.push(entry);
+                                            if (Array.isArray(result.screen.list)) {
+                                                for (const objList of result.screen.list) {
+                                                    if (Array.isArray(objList.item)) {
+                                                        for (const objItem of objList.item) {
+                                                            entry = {
+                                                                text: `${objItem.title}`,
+                                                                browseKey: `${objItem.action['URI']}`,
+                                                                headerTitle: `${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = objList.item;
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey: `${objItem.action['URI']}`,
+                                                            headerTitle: `${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                }
+                                            } else {
+                                                const objList = result.screen.list;
+                                                if (Array.isArray(objList.item)) {
+                                                    for (const objItem of objList.item) {
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey: `${objItem.action['URI']}`,
+                                                            headerTitle: `${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = objList.item;
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey: `${objItem.action['URI']}`,
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
                                             }
                                         } else {
                                             this.log.debug(`resultNO: =${JSON.stringify(result)}`);
@@ -1910,6 +1979,12 @@ class Bluesound extends utils.Adapter {
             text: 'Amazon Music',
             browseKey: 'Amazon',
             headerTitle: 'Amazon Music',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'TuneIn',
+            browseKey: 'TuneIn',
+            headerTitle: 'TuneIn',
         };
         myArr.push(entry);
         var templist = JSON.stringify(myArr);
