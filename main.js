@@ -841,6 +841,8 @@ class Bluesound extends utils.Adapter {
             browseKey = '/ui/browseMenuGroup?service=LocalMusic';
         } else if (key === 'RADIO') {
             browseKey = '/ui/browseMenuGroup?service=Airable';
+        } else if (key === 'Amazon') {
+            browseKey = '/ui/browseMenuGroup?service=Amazon';
         } else {
             browseKey = `${key}`;
         }
@@ -1602,9 +1604,32 @@ class Bluesound extends utils.Adapter {
                                             myArr.push(entry);
                                         }
                                         break;
+                                    case 'screen-Amazon':
+                                        entry = {
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                            headerTitle: 'Main Menu',
+                                        };
+                                        myArr.push(entry);
+                                        var i = 0;
+                                        for (const objItem of result.screen.list.item) {
+                                            if (i != 0) {
+                                                // Suppress first item (Amazon ad)
+                                                entry = {
+                                                    text: `${objItem.title}`,
+                                                    browseKey: `${objItem.action['URI']}`,
+                                                    headerTitle: `${objItem.title}`,
+                                                };
+                                                myArr.push(entry);
+                                            }
+                                            i++;
+                                        }
+                                        break;
                                     default:
                                         if (
-                                            result.screen.id.substring(0, 35) === 'screen-/RadioBrowse?service=Airable'
+                                            result.screen.id.substring(0, 35) ===
+                                                'screen-/RadioBrowse?service=Airable' ||
+                                            result.screen.id.substring(0, 34) === 'screen-/RadioBrowse?service=Amazon'
                                         ) {
                                             entry = {
                                                 text: '...',
@@ -1614,12 +1639,15 @@ class Bluesound extends utils.Adapter {
                                             myArr.push(entry);
                                             if (Array.isArray(result.screen.list.item)) {
                                                 for (const objItem of result.screen.list.item) {
-                                                    entry = {
-                                                        text: `${objItem.title}`,
-                                                        browseKey: `${objItem.action['URI']}`,
-                                                        headerTitle: `${objItem.title}`,
-                                                    };
-                                                    myArr.push(entry);
+                                                    if (objItem.action['URI'].toString().indexOf('purchased') == -1) {
+                                                        // Suppress purchased entry
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey: `${objItem.action['URI']}`,
+                                                            headerTitle: `${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
                                                 }
                                             } else {
                                                 const objItem = result.screen.list.item;
@@ -1876,6 +1904,12 @@ class Bluesound extends utils.Adapter {
             text: 'Radio Stations',
             browseKey: 'RADIO',
             headerTitle: 'Radio Stations',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Amazon Music',
+            browseKey: 'Amazon',
+            headerTitle: 'Amazon Music',
         };
         myArr.push(entry);
         var templist = JSON.stringify(myArr);

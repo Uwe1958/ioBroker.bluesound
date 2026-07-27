@@ -97,6 +97,11 @@ The contents of the current playlist is available in the object info.playlist (J
 ```
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+- (Uwe Nagel) Amazon service added
+
 ### 1.4.0 (2026-07-25)
 
 - (Uwe Nagel) Fixes @types/node version
