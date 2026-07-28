@@ -91,7 +91,7 @@ class Bluesound extends utils.Adapter {
             return;
         }
         apiClient.defaults.baseURL = `http://${ip}:11000`;
-        apiClient.defaults.timeout = timeOUT;
+        //        apiClient.defaults.timeout = timeOUT;
         apiClient.defaults.responseEncoding = 'utf8';
 
         axiosRetry(apiClient, {
@@ -1691,18 +1691,12 @@ class Bluesound extends utils.Adapter {
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
                                                         for (const objItem of result.screen.list.item) {
-                                                            if (
-                                                                objItem.action['URI'].toString().indexOf('purchased') ==
-                                                                -1
-                                                            ) {
-                                                                // Suppress purchased entry
-                                                                entry = {
-                                                                    text: `${objItem.title}`,
-                                                                    browseKey: `${objItem.action['URI']}`,
-                                                                    headerTitle: `${objItem.title}`,
-                                                                };
-                                                                myArr.push(entry);
-                                                            }
+                                                            entry = {
+                                                                text: `${objItem.title}`,
+                                                                browseKey: `${objItem.action['URI']}`,
+                                                                headerTitle: `${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
                                                         }
                                                     } else {
                                                         const objItem = result.screen.list.item;
