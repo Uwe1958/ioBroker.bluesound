@@ -855,6 +855,8 @@ class Bluesound extends utils.Adapter {
             browseKey = '/ui/browseMenuGroup?service=TuneIn';
         } else if (key === 'CalmRadio') {
             browseKey = '/ui/browseMenuGroup?service=CalmRadio';
+        } else if (key === 'Deezer') {
+            browseKey = '/ui/browseMenuGroup?service=Deezer';
         } else {
             browseKey = `${key}`;
         }
@@ -962,7 +964,6 @@ class Bluesound extends utils.Adapter {
                                                     };
                                                     myArr.push(entry);
                                                 }
-
                                                 break;
                                             case 'screen-LocalMusic-Favourites':
                                                 if ('list' in result.screen) {
@@ -1674,6 +1675,70 @@ class Bluesound extends utils.Adapter {
                                                     myArr.push(entry);
                                                 }
                                                 break;
+                                            case 'screen-Deezer':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.row) {
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey: `${objItem.action['URI']}`,
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case "screen-Deezer-What's Hot":
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.row) {
+                                                    if (Array.isArray(objItem.largeThumbnail)) {
+                                                        for (const objThumb of objItem.largeThumbnail) {
+                                                            entry = {
+                                                                text: `${objThumb.title}`,
+                                                                browseKey: `${objThumb.action['URI']}`,
+                                                                headerTitle: `${objThumb.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else if (Array.isArray(objItem.smallThumbnail)) {
+                                                        for (const objThumb of objItem.smallThumbnail) {
+                                                            entry = {
+                                                                text: `${objThumb.title}`,
+                                                                browseKey: `${objThumb.action['URI']}`,
+                                                                headerTitle: `${objThumb.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        if (Array.isArray(objItem.list.item)) {
+                                                            for (const objSong of objItem.list.item) {
+                                                                entry = {
+                                                                    text: `${objSong.title}`,
+                                                                    browseKey: `${objSong.action['URI']}`,
+                                                                    headerTitle: `${objSong.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        } else {
+                                                            const objSong = objItem.list.item;
+                                                            entry = {
+                                                                text: `${objSong.title}`,
+                                                                browseKey: `${objSong.action['URI']}`,
+                                                                headerTitle: `${objSong.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    }
+                                                }
+                                                break;
                                             default:
                                                 if (
                                                     result.screen.id.substring(0, 35) ===
@@ -1681,7 +1746,8 @@ class Bluesound extends utils.Adapter {
                                                     result.screen.id.substring(0, 34) ===
                                                         'screen-/RadioBrowse?service=Amazon' ||
                                                     result.screen.id.substring(0, 37) ===
-                                                        'screen-/RadioBrowse?service=CalmRadio'
+                                                        'screen-/RadioBrowse?service=CalmRadio' ||
+                                                    result.screen.id === 'screen-Deezer-0'
                                                 ) {
                                                     entry = {
                                                         text: '...',
@@ -1769,6 +1835,12 @@ class Bluesound extends utils.Adapter {
                                                     }
                                                 } else {
                                                     this.log.debug(`resultNO: =${JSON.stringify(result)}`);
+                                                    entry = {
+                                                        text: 'Empty result, ...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
+                                                    };
+                                                    myArr.push(entry);
                                                 }
                                         }
                                         break;
@@ -2034,6 +2106,12 @@ class Bluesound extends utils.Adapter {
             text: 'Calm Radio',
             browseKey: 'CalmRadio',
             headerTitle: 'Calm Radio',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Deezer',
+            browseKey: 'Deezer',
+            headerTitle: 'Deezer',
         };
         myArr.push(entry);
         var templist = JSON.stringify(myArr);
