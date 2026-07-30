@@ -1739,6 +1739,128 @@ class Bluesound extends utils.Adapter {
                                                     }
                                                 }
                                                 break;
+                                            case 'screen-Deezer-Genres-genre':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.row) {
+                                                    if (Array.isArray(objItem.largeThumbnail)) {
+                                                        for (const objThumb of objItem.largeThumbnail) {
+                                                            var newKey = objThumb.action['URI'];
+                                                            if (newKey.indexOf('playlistid') == -1) {
+                                                                newKey = newKey.replace('/Albums?', '/Add?playnow=1&');
+                                                            } else {
+                                                                var playlistid = newKey.substring(
+                                                                    newKey.indexOf('playlistid') + 11,
+                                                                );
+                                                                newKey = `/Add?playlistid=${playlistid}&playnow=1&service=Deezer&shuffle=1`;
+                                                                newKey =
+                                                                    playlistToggle == 1
+                                                                        ? `${newKey}`
+                                                                        : `${newKey}`.replace('playnow=1', 'playnow=0');
+                                                            }
+                                                            entry = {
+                                                                text: `${objThumb.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${newKey}`
+                                                                        : `${newKey}`.replace('playnow=1', 'playnow=0'),
+                                                                headerTitle: `${objThumb.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else if (Array.isArray(objItem.smallThumbnail)) {
+                                                        for (const objThumb of objItem.smallThumbnail) {
+                                                            newKey = objThumb.action['URI'];
+                                                            if (newKey.indexOf('artistid') == -1) {
+                                                                this.log.debug(`newKeyA: ${objThumb.action['URI']}`);
+                                                            } else {
+                                                                var artistid = newKey.substring(
+                                                                    newKey.indexOf('artistid') + 9,
+                                                                );
+                                                                newKey = `/ui/browseContext?service=Deezer&type=Artist&url=%2FArtists%3Fservice%3DDeezer%26artistid%3D${artistid}`;
+                                                            }
+                                                            entry = {
+                                                                text: `${objThumb.title}`,
+                                                                browseKey: `${newKey}`,
+                                                                headerTitle: `${objThumb.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        if (Array.isArray(objItem.list.item)) {
+                                                            for (const objSong of objItem.list.item) {
+                                                                entry = {
+                                                                    text: `${objSong.title}`,
+                                                                    browseKey: `${objSong.action['URI']}`,
+                                                                    headerTitle: `${objSong.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        } else {
+                                                            const objSong = objItem.list.item;
+                                                            entry = {
+                                                                text: `${objSong.title}`,
+                                                                browseKey: `${objSong.action['URI']}`,
+                                                                headerTitle: `${objSong.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Deezer-Artist':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if ('row' in result.screen) {
+                                                    for (const objItem of result.screen.row) {
+                                                        if (objItem.id == 'Deezer-Artist-0') {
+                                                            parseString(
+                                                                result,
+                                                                { mergeAttrs: true, explicitArray: false },
+                                                                (err, result) => {
+                                                                    this.log.debug(result);
+                                                                },
+                                                            );
+                                                        }
+                                                    }
+                                                } else {
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.title}`,
+                                                                browseKey: `${objItem.playAction['URI']}`,
+                                                                headerTitle: `${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey: `${objItem.playAction['URI']}`,
+                                                            headerTitle: `${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
+                                                        this.log.debug(`nextLink: ${result.screen.list.nextLink}`);
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                }
+                                                break;
                                             default:
                                                 if (
                                                     result.screen.id.substring(0, 35) ===
@@ -1747,7 +1869,8 @@ class Bluesound extends utils.Adapter {
                                                         'screen-/RadioBrowse?service=Amazon' ||
                                                     result.screen.id.substring(0, 37) ===
                                                         'screen-/RadioBrowse?service=CalmRadio' ||
-                                                    result.screen.id === 'screen-Deezer-0'
+                                                    result.screen.id === 'screen-Deezer-0' ||
+                                                    result.screen.id === 'screen-Deezer-Genres'
                                                 ) {
                                                     entry = {
                                                         text: '...',
@@ -1836,7 +1959,7 @@ class Bluesound extends utils.Adapter {
                                                 } else {
                                                     this.log.debug(`resultNO: =${JSON.stringify(result)}`);
                                                     entry = {
-                                                        text: 'Empty result, ...',
+                                                        text: 'No result, ...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
                                                     };
@@ -1950,42 +2073,62 @@ class Bluesound extends utils.Adapter {
                                                     }
                                                     break;
                                                 case 'Album':
-                                                    lstCommand = headers[headers.length - 1];
-                                                    searchKey = lstCommand.substring(lstCommand.length - 1);
-                                                    maxOffset;
-                                                    curOffset = parseInt(result.list.offset);
-                                                    for (const objKey of result.list.index.item) {
-                                                        if (objKey.key == searchKey) {
-                                                            maxOffset =
-                                                                parseInt(objKey.offset) + parseInt(objKey.length);
-                                                            break;
+                                                    if (result.list.item[0].action['URI'].indexOf('Deezer') == -1) {
+                                                        lstCommand = headers[headers.length - 1];
+                                                        searchKey = lstCommand.substring(lstCommand.length - 1);
+                                                        maxOffset;
+                                                        curOffset = parseInt(result.list.offset);
+                                                        for (const objKey of result.list.index.item) {
+                                                            if (objKey.key == searchKey) {
+                                                                maxOffset =
+                                                                    parseInt(objKey.offset) + parseInt(objKey.length);
+                                                                break;
+                                                            }
                                                         }
-                                                    }
-                                                    for (const objItem of result.list.item) {
-                                                        entry = {
-                                                            text: `${objItem.title} - ${objItem.subTitle}`,
-                                                            browseKey:
-                                                                playlistToggle == 1
-                                                                    ? `${objItem.playAction.URI}`
-                                                                    : `${objItem.playAction.URI}`.replace(
-                                                                          'playnow=1',
-                                                                          'playnow=0',
-                                                                      ),
-                                                            headerTitle: `${objItem.title} - ${objItem.subTitle}`,
-                                                        };
-                                                        myArr.push(entry);
-                                                        curOffset++;
-                                                        if (curOffset > maxOffset - 1) {
-                                                            break;
+                                                        for (const objItem of result.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.title} - ${objItem.subTitle}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.playAction.URI}`
+                                                                        : `${objItem.playAction.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `${objItem.title} - ${objItem.subTitle}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                            curOffset++;
+                                                            if (curOffset > maxOffset - 1) {
+                                                                break;
+                                                            }
                                                         }
-                                                    }
-                                                    if (curOffset < maxOffset && 'nextLink' in result.list) {
-                                                        entry = {
-                                                            text: 'NEXT',
-                                                            browseKey: `${result.list.nextLink}`,
-                                                            headerTitle: `${headers[headers.length - 1]}`,
-                                                        };
-                                                        myArr.push(entry);
+                                                        if (curOffset < maxOffset && 'nextLink' in result.list) {
+                                                            entry = {
+                                                                text: 'NEXT',
+                                                                browseKey: `${result.list.nextLink}`,
+                                                                headerTitle: `${headers[headers.length - 1]}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        this.log.debug('hier');
+                                                        for (const objItem of result.list.item) {
+                                                            entry = {
+                                                                text: objItem.title,
+                                                                browseKey: objItem.playAction.URI,
+                                                                headerTitle: objItem.title,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                        if ('nextLink' in result.list) {
+                                                            entry = {
+                                                                text: 'NEXT',
+                                                                browseKey: `${result.list.nextLink}`,
+                                                                headerTitle: `${headers[headers.length - 1]}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
                                                     }
                                                     break;
                                                 case 'Composer':
