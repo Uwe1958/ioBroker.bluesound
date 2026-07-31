@@ -763,11 +763,6 @@ class Bluesound extends utils.Adapter {
     async readPlaylist() {
         try {
             var curTitle;
-            /*            var curObjTitle = await this.getStateAsync('info.title1');
-            this.log.debug(`curObjTitle: ${curObjTitle.val}`);
-            if (curObjTitle || curObjTitle.val) {
-                curTitle = curObjTitle.val;
-            }*/
             const response = await apiClient.get('/Playlist');
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
@@ -1739,6 +1734,7 @@ class Bluesound extends utils.Adapter {
                                                     }
                                                 }
                                                 break;
+                                            case 'screen-Deezer-Recommendations':
                                             case 'screen-Deezer-Genres-genre':
                                                 entry = {
                                                     text: '...',
@@ -1751,7 +1747,7 @@ class Bluesound extends utils.Adapter {
                                                         for (const objThumb of objItem.largeThumbnail) {
                                                             var newKey = objThumb.action['URI'];
                                                             if (newKey.indexOf('playlistid') == -1) {
-                                                                newKey = newKey.replace('/Albums?', '/Add?playnow=1&');
+                                                                newKey = objThumb.playAction['URI'];
                                                             } else {
                                                                 var playlistid = newKey.substring(
                                                                     newKey.indexOf('playlistid') + 11,
@@ -1822,13 +1818,65 @@ class Bluesound extends utils.Adapter {
                                                 if ('row' in result.screen) {
                                                     for (const objItem of result.screen.row) {
                                                         if (objItem.id == 'Deezer-Artist-0') {
-                                                            parseString(
-                                                                result,
-                                                                { mergeAttrs: true, explicitArray: false },
-                                                                (err, result) => {
-                                                                    this.log.debug(result);
-                                                                },
-                                                            );
+                                                            for (const objLTN of objItem.largeThumbnail) {
+                                                                entry = {
+                                                                    text: `${objLTN.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objLTN.playAction['URI']}`
+                                                                            : `${objLTN.playAction['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objLTN.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        } else if (objItem.id == 'Deezer-Artist-1') {
+                                                            if (Array.isArray(objItem.list.item)) {
+                                                                for (const objEntry of objItem.list.item) {
+                                                                    entry = {
+                                                                        text: `${objEntry.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objEntry.action['URI']}`
+                                                                                : `${objEntry.action['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${objEntry.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            } else {
+                                                                const objEntry = objItem.list.item;
+                                                                entry = {
+                                                                    text: `${objEntry.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objEntry.action['URI']}`
+                                                                            : `${objEntry.action['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objEntry.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        } else {
+                                                            for (const objSTN of objItem.smallThumbnail) {
+                                                                newKey = objSTN.action['URI'];
+                                                                artistid = newKey.substring(
+                                                                    newKey.indexOf('artistid') + 9,
+                                                                );
+                                                                newKey = `/ui/browseContext?service=Deezer&type=Artist&url=%2FArtists%3Fservice%3DDeezer%26artistid%3D${artistid}`;
+                                                                entry = {
+                                                                    text: `${objSTN.title}`,
+                                                                    browseKey: `${newKey}`,
+                                                                    headerTitle: `${objSTN.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
                                                         }
                                                     }
                                                 } else {
@@ -1836,7 +1884,13 @@ class Bluesound extends utils.Adapter {
                                                         for (const objItem of result.screen.list.item) {
                                                             entry = {
                                                                 text: `${objItem.title}`,
-                                                                browseKey: `${objItem.playAction['URI']}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.playAction['URI']}`
+                                                                        : `${objItem.playAction['URI']}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
                                                                 headerTitle: `${objItem.title}`,
                                                             };
                                                             myArr.push(entry);
@@ -1845,19 +1899,98 @@ class Bluesound extends utils.Adapter {
                                                         const objItem = result.screen.list.item;
                                                         entry = {
                                                             text: `${objItem.title}`,
-                                                            browseKey: `${objItem.playAction['URI']}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.playAction['URI']}`
+                                                                    : `${objItem.playAction['URI']}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
                                                             headerTitle: `${objItem.title}`,
                                                         };
                                                         myArr.push(entry);
                                                     }
                                                     if ('nextLink' in result.screen.list) {
-                                                        this.log.debug(`nextLink: ${result.screen.list.nextLink}`);
                                                         entry = {
                                                             text: 'NEXT',
                                                             browseKey: `${result.screen.list.nextLink}`,
                                                             headerTitle: `${headers[headers.length - 1]}`,
                                                         };
                                                         myArr.push(entry);
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Deezer-Favourites':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    switch (objRow.id) {
+                                                        case 'Deezer-Favourites-0':
+                                                            for (const objItem of objRow.list.item) {
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.action['URI']}`
+                                                                            : `${objItem.action['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objItem.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case 'Deezer-Favourites-1':
+                                                            for (const objLTN of objRow.largeThumbnail) {
+                                                                regExp = new RegExp('(?<=id=).+', 'gm');
+                                                                playlistID = objLTN.action.URI.match(regExp)[0];
+                                                                entry = {
+                                                                    text: `${objLTN.action.title}`,
+                                                                    browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Deezer&shuffle=1`,
+                                                                    headerTitle: `${objLTN.action.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                                //this.log.debug(`LTN: ${objLTN.action['URI']}`);
+                                                            }
+                                                            break;
+                                                        case 'Deezer-Favourites-2':
+                                                            for (const objLTN of objRow.largeThumbnail) {
+                                                                entry = {
+                                                                    text: `${objLTN.action.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objLTN.playAction['URI']}`
+                                                                            : `${objLTN.playAction['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objLTN.action.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case 'Deezer-Favourites-3':
+                                                            for (const objSTN of objRow.smallThumbnail) {
+                                                                newKey = objSTN.action['URI'];
+                                                                artistid = newKey.substring(
+                                                                    newKey.indexOf('artistid') + 9,
+                                                                );
+                                                                newKey = `/ui/browseContext?service=Deezer&type=Artist&url=%2FArtists%3Fservice%3DDeezer%26artistid%3D${artistid}`;
+                                                                entry = {
+                                                                    text: `${objSTN.title}`,
+                                                                    browseKey: `${newKey}`,
+                                                                    headerTitle: `${objSTN.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        default:
+                                                            this.log.debug(`Row: ${objRow.id}`);
                                                     }
                                                 }
                                                 break;
