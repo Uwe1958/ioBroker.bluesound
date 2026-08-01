@@ -852,6 +852,8 @@ class Bluesound extends utils.Adapter {
             browseKey = '/ui/browseMenuGroup?service=CalmRadio';
         } else if (key === 'Deezer') {
             browseKey = '/ui/browseMenuGroup?service=Deezer';
+        } else if (key === 'NYA') {
+            browseKey = '/ui/browseMenuGroup?service=NYA';
         } else {
             browseKey = `${key}`;
         }
@@ -2035,6 +2037,84 @@ class Bluesound extends utils.Adapter {
                                                     }
                                                 }
                                                 break;
+                                            case 'screen-NYA':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    switch (objRow.id) {
+                                                        case 'NYA-0':
+                                                            if (Array.isArray(objRow.list.item)) {
+                                                                for (const objSong of objRow.list.item) {
+                                                                    entry = {
+                                                                        text: `${objSong.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objSong.action['URI']}`
+                                                                                : `${objSong.action['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${objSong.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            } else {
+                                                                const objSong = objRow.list.item;
+                                                                entry = {
+                                                                    text: `${objSong.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objSong.action['URI']}`
+                                                                            : `${objSong.action['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objSong.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case 'NYA-1':
+                                                            if (Array.isArray(objRow.largeThumbnail)) {
+                                                                for (const objAlbum of objRow.largeThumbnail) {
+                                                                    entry = {
+                                                                        text: `${objAlbum.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objAlbum.playAction['URI']}`
+                                                                                : `${objAlbum.playAction['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${objAlbum.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            } else {
+                                                                const objAlbum = objRow.largeThumbnail;
+                                                                entry = {
+                                                                    text: `${objAlbum.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objAlbum.playAction['URI']}`
+                                                                            : `${objAlbum.playAction['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objAlbum.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        default:
+                                                            this.log.debug(`Unknown row (NYA): ${objRow.id}`);
+                                                    }
+                                                }
+                                                break;
                                             default:
                                                 if (
                                                     result.screen.id.substring(0, 35) ===
@@ -2429,6 +2509,12 @@ class Bluesound extends utils.Adapter {
             text: 'Deezer',
             browseKey: 'Deezer',
             headerTitle: 'Deezer',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Neil Young Archives',
+            browseKey: 'NYA',
+            headerTitle: 'Neil Young Archives',
         };
         myArr.push(entry);
         var templist = JSON.stringify(myArr);
