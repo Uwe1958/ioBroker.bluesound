@@ -1693,28 +1693,73 @@ class Bluesound extends utils.Adapter {
                                                     headerTitle: `${headers[headers.length - 2]}`,
                                                 };
                                                 myArr.push(entry);
-                                                for (const objItem of result.screen.row) {
-                                                    if (Array.isArray(objItem.largeThumbnail)) {
-                                                        for (const objThumb of objItem.largeThumbnail) {
-                                                            entry = {
-                                                                text: `${objThumb.title}`,
-                                                                browseKey: `${objThumb.action['URI']}`,
-                                                                headerTitle: `${objThumb.title}`,
-                                                            };
-                                                            myArr.push(entry);
-                                                        }
-                                                    } else if (Array.isArray(objItem.smallThumbnail)) {
-                                                        for (const objThumb of objItem.smallThumbnail) {
-                                                            entry = {
-                                                                text: `${objThumb.title}`,
-                                                                browseKey: `${objThumb.action['URI']}`,
-                                                                headerTitle: `${objThumb.title}`,
-                                                            };
-                                                            myArr.push(entry);
-                                                        }
-                                                    } else {
-                                                        if (Array.isArray(objItem.list.item)) {
-                                                            for (const objSong of objItem.list.item) {
+                                                for (const objRow of result.screen.row) {
+                                                    switch (objRow.id) {
+                                                        case `Deezer-What's Hot-0`:
+                                                            for (const objThumb of objRow.largeThumbnail) {
+                                                                var newKey = objThumb.action['URI'];
+                                                                if (newKey.indexOf('playlistid') == -1) {
+                                                                    newKey = objThumb.playAction['URI'];
+                                                                } else {
+                                                                    var playlistid = newKey.substring(
+                                                                        newKey.indexOf('playlistid') + 11,
+                                                                    );
+                                                                    newKey = `/Add?playlistid=${playlistid}&playnow=1&service=Deezer&shuffle=1`;
+                                                                    newKey =
+                                                                        playlistToggle == 1
+                                                                            ? `${newKey}`
+                                                                            : `${newKey}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              );
+                                                                }
+                                                                entry = {
+                                                                    text: `${objThumb.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${newKey}`
+                                                                            : `${newKey}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objThumb.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case `Deezer-What's Hot-1`:
+                                                            for (const objThumb of objRow.smallThumbnail) {
+                                                                newKey = objThumb.action['URI'];
+                                                                if (newKey.indexOf('artistid') == -1) {
+                                                                    this.log.debug(
+                                                                        `newKeyA: ${objThumb.action['URI']}`,
+                                                                    );
+                                                                } else {
+                                                                    var artistid = newKey.substring(
+                                                                        newKey.indexOf('artistid') + 9,
+                                                                    );
+                                                                    newKey = `/ui/browseContext?service=Deezer&type=Artist&url=%2FArtists%3Fservice%3DDeezer%26artistid%3D${artistid}`;
+                                                                }
+                                                                entry = {
+                                                                    text: `${objThumb.title}`,
+                                                                    browseKey: `${newKey}`,
+                                                                    headerTitle: `${objThumb.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case `Deezer-What's Hot-2`:
+                                                            for (const objThumb of objRow.largeThumbnail) {
+                                                                entry = {
+                                                                    text: `${objThumb.title}`,
+                                                                    browseKey: `${objThumb.playAction['URI']}`,
+                                                                    headerTitle: `${objThumb.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case `Deezer-What's Hot-3`:
+                                                            for (const objSong of objRow.list.item) {
                                                                 entry = {
                                                                     text: `${objSong.title}`,
                                                                     browseKey: `${objSong.action['URI']}`,
@@ -1722,15 +1767,11 @@ class Bluesound extends utils.Adapter {
                                                                 };
                                                                 myArr.push(entry);
                                                             }
-                                                        } else {
-                                                            const objSong = objItem.list.item;
-                                                            entry = {
-                                                                text: `${objSong.title}`,
-                                                                browseKey: `${objSong.action['URI']}`,
-                                                                headerTitle: `${objSong.title}`,
-                                                            };
-                                                            myArr.push(entry);
-                                                        }
+                                                            break;
+                                                        default:
+                                                            this.log.debug(
+                                                                `screen-Deezer-What's Hot, Unknown Row: ${objRow.id}`,
+                                                            );
                                                     }
                                                 }
                                                 break;
@@ -1745,11 +1786,11 @@ class Bluesound extends utils.Adapter {
                                                 for (const objItem of result.screen.row) {
                                                     if (Array.isArray(objItem.largeThumbnail)) {
                                                         for (const objThumb of objItem.largeThumbnail) {
-                                                            var newKey = objThumb.action['URI'];
+                                                            newKey = objThumb.action['URI'];
                                                             if (newKey.indexOf('playlistid') == -1) {
                                                                 newKey = objThumb.playAction['URI'];
                                                             } else {
-                                                                var playlistid = newKey.substring(
+                                                                playlistid = newKey.substring(
                                                                     newKey.indexOf('playlistid') + 11,
                                                                 );
                                                                 newKey = `/Add?playlistid=${playlistid}&playnow=1&service=Deezer&shuffle=1`;
@@ -1774,7 +1815,7 @@ class Bluesound extends utils.Adapter {
                                                             if (newKey.indexOf('artistid') == -1) {
                                                                 this.log.debug(`newKeyA: ${objThumb.action['URI']}`);
                                                             } else {
-                                                                var artistid = newKey.substring(
+                                                                artistid = newKey.substring(
                                                                     newKey.indexOf('artistid') + 9,
                                                                 );
                                                                 newKey = `/ui/browseContext?service=Deezer&type=Artist&url=%2FArtists%3Fservice%3DDeezer%26artistid%3D${artistid}`;

@@ -102,6 +102,7 @@ The contents of the current playlist is available in the object info.playlist (J
 
 - (Uwe Nagel) Amazon service added
 - (Uwe Nagel) TuneIn service added
+- (Uwe Nagel) Deezer service added
 
 ### 1.4.0 (2026-07-25)
 
