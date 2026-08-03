@@ -854,6 +854,8 @@ class Bluesound extends utils.Adapter {
             browseKey = '/ui/browseMenuGroup?service=Deezer';
         } else if (key === 'NYA') {
             browseKey = '/ui/browseMenuGroup?service=NYA';
+        } else if (key === 'Qobuz') {
+            browseKey = '/ui/browseMenuGroup?service=Qobuz';
         } else {
             browseKey = `${key}`;
         }
@@ -2115,6 +2117,110 @@ class Bluesound extends utils.Adapter {
                                                     }
                                                 }
                                                 break;
+                                            case 'screen-Qobuz':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    switch (objRow.id) {
+                                                        case 'Qobuz-0':
+                                                            if (Array.isArray(objRow.largeThumbnail)) {
+                                                                for (const objAlbum of objRow.largeThumbnail) {
+                                                                    entry = {
+                                                                        text: `${objAlbum.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objAlbum.playAction['URI']}`
+                                                                                : `${objAlbum.playAction['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${objAlbum.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            } else {
+                                                                const objAlbum = objRow.largeThumbnail;
+                                                                entry = {
+                                                                    text: `${objAlbum.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objAlbum.playAction['URI']}`
+                                                                            : `${objAlbum.playAction['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objAlbum.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case 'Qobuz-1':
+                                                        case 'Qobuz-2':
+                                                        case 'Qobuz-3':
+                                                        case '':
+                                                        case 'Qobuz-Favourites':
+                                                            entry = {
+                                                                text: `${objRow.title}`,
+                                                                browseKey: `${objRow.action['URI']}`,
+                                                                headerTitle: `${objRow.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                            break;
+                                                        default:
+                                                            this.log.debug(`Unknown row (Qobuz): ${objRow.id}`);
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Qobuz-1':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Qobuz',
+                                                };
+                                                myArr.push(entry);
+                                                if (Array.isArray(result.screen.list.item)) {
+                                                    for (const objAlbum of result.screen.list.item) {
+                                                        entry = {
+                                                            text: `${objAlbum.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objAlbum.playAction['URI']}`
+                                                                    : `${objAlbum.playAction['URI']}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objAlbum.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objAlbum = result.screen.list.item;
+                                                    entry = {
+                                                        text: `${objAlbum.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objAlbum.playAction['URI']}`
+                                                                : `${objAlbum.playAction['URI']}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${objAlbum.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
                                             default:
                                                 if (
                                                     result.screen.id.substring(0, 35) ===
@@ -2327,7 +2433,10 @@ class Bluesound extends utils.Adapter {
                                                     }
                                                     break;
                                                 case 'Album':
-                                                    if (result.list.item[0].action['URI'].indexOf('Deezer') == -1) {
+                                                    if (
+                                                        result.list.item[0].action['URI'].indexOf('Deezer') == -1 &&
+                                                        result.list.item[0].action['URI'].indexOf('Qobuz') == -1
+                                                    ) {
                                                         lstCommand = headers[headers.length - 1];
                                                         searchKey = lstCommand.substring(lstCommand.length - 1);
                                                         maxOffset;
@@ -2366,11 +2475,16 @@ class Bluesound extends utils.Adapter {
                                                             myArr.push(entry);
                                                         }
                                                     } else {
-                                                        this.log.debug('hier');
                                                         for (const objItem of result.list.item) {
                                                             entry = {
                                                                 text: objItem.title,
-                                                                browseKey: objItem.playAction.URI,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.playAction['URI']}`
+                                                                        : `${objItem.playAction['URI']}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
                                                                 headerTitle: objItem.title,
                                                             };
                                                             myArr.push(entry);
@@ -2515,6 +2629,12 @@ class Bluesound extends utils.Adapter {
             text: 'Neil Young Archives',
             browseKey: 'NYA',
             headerTitle: 'Neil Young Archives',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Qobuz',
+            browseKey: 'Qobuz',
+            headerTitle: 'Qobuz',
         };
         myArr.push(entry);
         var templist = JSON.stringify(myArr);
