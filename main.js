@@ -856,6 +856,8 @@ class Bluesound extends utils.Adapter {
             browseKey = '/ui/browseMenuGroup?service=NYA';
         } else if (key === 'Qobuz') {
             browseKey = '/ui/browseMenuGroup?service=Qobuz';
+        } else if (key === 'RadioParadise') {
+            browseKey = '/ui/browseMenuGroup?service=RadioParadise';
         } else {
             browseKey = `${key}`;
         }
@@ -972,29 +974,29 @@ class Bluesound extends utils.Adapter {
                                                         headerTitle: `${headers[headers.length - 2]}`,
                                                     };
                                                     myArr.push(entry);
-                                                    /*                                        if (Array.isArray(result.screen.list.item)) {
-                                            for (const objItem of result.screen.list.item) {
-                                                entry = {
-                                                    text: `${objItem.subTitle} - ${objItem.title}`,
-                                                    browseKey: `${objItem.playAction.URI}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                        } else {
-                                            const objItem = result.screen.list.item;
-                                            entry = {
-                                                text: `${objItem.subTitle} - ${objItem.title}`,
-                                                browseKey: `${objItem.playAction.URI}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        if ('nextLink' in result.screen.list) {
-                                            entry = {
-                                                text: 'NEXT',
-                                                browseKey: `${result.screen.list.nextLink}`,
-                                            };
-                                            myArr.push(entry);
-                                        }*/
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                browseKey: `${objItem.playAction.URI}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        entry = {
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                                            browseKey: `${objItem.playAction.URI}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
                                                 } else {
                                                     entry = {
                                                         text: 'Empty result, ...',
@@ -1091,7 +1093,11 @@ class Bluesound extends utils.Adapter {
                                                     myArr.push(entry);
                                                 }
                                                 break;
+                                            case 'screen-Genres-0':
                                             case 'screen-Genres-2':
+                                            case 'screen-Genres-3':
+                                            case 'screen-Qobuz-Favourites-1':
+                                            case 'screen-Qobuz-Favourites-4':
                                                 // Genre
                                                 if ('list' in result.screen) {
                                                     entry = {
@@ -2125,57 +2131,17 @@ class Bluesound extends utils.Adapter {
                                                 };
                                                 myArr.push(entry);
                                                 for (const objRow of result.screen.row) {
-                                                    switch (objRow.id) {
-                                                        case 'Qobuz-0':
-                                                            if (Array.isArray(objRow.largeThumbnail)) {
-                                                                for (const objAlbum of objRow.largeThumbnail) {
-                                                                    entry = {
-                                                                        text: `${objAlbum.title}`,
-                                                                        browseKey:
-                                                                            playlistToggle == 1
-                                                                                ? `${objAlbum.playAction['URI']}`
-                                                                                : `${objAlbum.playAction['URI']}`.replace(
-                                                                                      'playnow=1',
-                                                                                      'playnow=0',
-                                                                                  ),
-                                                                        headerTitle: `${objAlbum.title}`,
-                                                                    };
-                                                                    myArr.push(entry);
-                                                                }
-                                                            } else {
-                                                                const objAlbum = objRow.largeThumbnail;
-                                                                entry = {
-                                                                    text: `${objAlbum.title}`,
-                                                                    browseKey:
-                                                                        playlistToggle == 1
-                                                                            ? `${objAlbum.playAction['URI']}`
-                                                                            : `${objAlbum.playAction['URI']}`.replace(
-                                                                                  'playnow=1',
-                                                                                  'playnow=0',
-                                                                              ),
-                                                                    headerTitle: `${objAlbum.title}`,
-                                                                };
-                                                                myArr.push(entry);
-                                                            }
-                                                            break;
-                                                        case 'Qobuz-1':
-                                                        case 'Qobuz-2':
-                                                        case 'Qobuz-3':
-                                                        case '':
-                                                        case 'Qobuz-Favourites':
-                                                            entry = {
-                                                                text: `${objRow.title}`,
-                                                                browseKey: `${objRow.action['URI']}`,
-                                                                headerTitle: `${objRow.title}`,
-                                                            };
-                                                            myArr.push(entry);
-                                                            break;
-                                                        default:
-                                                            this.log.debug(`Unknown row (Qobuz): ${objRow.id}`);
-                                                    }
+                                                    entry = {
+                                                        text: `${objRow.title}`,
+                                                        browseKey: `${objRow.action['URI']}`,
+                                                        headerTitle: `${objRow.title}`,
+                                                    };
+                                                    myArr.push(entry);
                                                 }
                                                 break;
+                                            case 'screen-Qobuz-0':
                                             case 'screen-Qobuz-1':
+                                            case 'screen-Qobuz-3':
                                                 entry = {
                                                     text: '...',
                                                     browseKey: 'BACK',
@@ -2221,6 +2187,78 @@ class Bluesound extends utils.Adapter {
                                                     myArr.push(entry);
                                                 }
                                                 break;
+                                            case 'screen-Genres-1':
+                                            case 'screen-Qobuz-2':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Qobuz',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.item) {
+                                                    regExp = new RegExp('(?<=id=).+', 'gm');
+                                                    playlistID = objItem.playAction.URI.match(regExp)[0];
+                                                    entry = {
+                                                        text: `${objItem.action.title}`,
+                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Qobuz&shuffle=1`,
+                                                        headerTitle: `${objItem.action.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Qobuz-Favourites':
+                                            case 'screen-Qobuz-Genres-genre':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    entry = {
+                                                        text: `${objRow.title}`,
+                                                        browseKey: `${objRow.action['URI']}`,
+                                                        headerTitle: `${objRow.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Qobuz-Favourites-0':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.item) {
+                                                    regExp = new RegExp('(?<=id=).+', 'gm');
+                                                    playlistID = objItem.playAction.URI.match(regExp)[0];
+                                                    entry = {
+                                                        text: `${objItem.action.title}`,
+                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Qobuz&shuffle=1`,
+                                                        headerTitle: `${objItem.action.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-RadioParadise':
+                                                break;
                                             default:
                                                 if (
                                                     result.screen.id.substring(0, 35) ===
@@ -2230,7 +2268,8 @@ class Bluesound extends utils.Adapter {
                                                     result.screen.id.substring(0, 37) ===
                                                         'screen-/RadioBrowse?service=CalmRadio' ||
                                                     result.screen.id === 'screen-Deezer-0' ||
-                                                    result.screen.id === 'screen-Deezer-Genres'
+                                                    result.screen.id === 'screen-Deezer-Genres' ||
+                                                    result.screen.id === 'screen-Qobuz-Genres'
                                                 ) {
                                                     entry = {
                                                         text: '...',
@@ -2635,6 +2674,12 @@ class Bluesound extends utils.Adapter {
             text: 'Qobuz',
             browseKey: 'Qobuz',
             headerTitle: 'Qobuz',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Radio Paradise',
+            browseKey: 'RadioParadise',
+            headerTitle: 'Radio Paradise',
         };
         myArr.push(entry);
         var templist = JSON.stringify(myArr);
