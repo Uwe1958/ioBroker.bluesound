@@ -2399,6 +2399,34 @@ class Bluesound extends utils.Adapter {
                                                 }
                                                 break;
                                             case 'screen-RadioParadise':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objList of result.screen.list) {
+                                                    if (objList.id == 'RadioParadise-4') {
+                                                        if (Array.isArray(objList.item)) {
+                                                            for (const objItem of objList.item) {
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey: `${objItem.action['URI']}`,
+                                                                    headerTitle: `${objItem.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        } else {
+                                                            const objItem = objList.item;
+                                                            entry = {
+                                                                text: `${objItem.title}`,
+                                                                browseKey: `${objItem.action['URI']}`,
+                                                                headerTitle: `${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    }
+                                                }
                                                 break;
                                             default:
                                                 if (

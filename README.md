@@ -105,6 +105,7 @@ The contents of the current playlist is available in the object info.playlist (J
 - (Uwe Nagel) Deezer service added
 - (Uwe Nagel) NYA service added
 - (Uwe Nagel) Qobuz service added
+- (Uwe Nagel) RadioParadise service added
 
 ### 1.4.0 (2026-07-25)
 
