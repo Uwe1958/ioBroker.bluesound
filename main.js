@@ -1438,30 +1438,171 @@ class Bluesound extends utils.Adapter {
                                                         true,
                                                     );
                                                     if (Array.isArray(result.screen.list)) {
-                                                        for (const objItem of result.screen.list) {
-                                                            var typeSingle = objItem.title.substring(
-                                                                0,
-                                                                objItem.title.length - 1,
-                                                            );
-                                                            entry = {
-                                                                text: `${objItem.title}`,
-                                                                browseKey: `/ui/BrowseObjects?browseIndex=0&menuGroupId=LocalMusic-search&service=LocalMusic&title=${objItem.title}&type=${typeSingle}&url=%2Flibrary%2Fv1%2F${objItem.title}%3Fexpr%3D${result.screen.search.value}%26service%3DLocalMusic`,
-                                                                headerTitle: `${objItem.title} Search (${result.screen.search.value})`,
-                                                            };
-                                                            myArr.push(entry);
+                                                        for (const objList of result.screen.list) {
+                                                            if (Array.isArray(objList.item)) {
+                                                                for (const objItem of objList.item) {
+                                                                    if (objItem.action.resultType == 'Artist') {
+                                                                        regExp = new RegExp('(?<=artist=).+', 'gm');
+                                                                        artistid =
+                                                                            objItem.action['URI'].match(regExp)[0];
+                                                                        entry = {
+                                                                            text: `${objItem.title}`,
+                                                                            browseKey: `/ui/browseContext?service=LocalMusic&title=${artistid}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${encodeURIComponent(artistid)}`,
+                                                                            headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    } else if (objItem.action.resultType == 'Album') {
+                                                                        entry = {
+                                                                            text: `${objItem.title}`,
+                                                                            browseKey: `${objItem.playAction['URI']}`,
+                                                                            headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    } else if (
+                                                                        objItem.action.resultType == 'Composer'
+                                                                    ) {
+                                                                        regExp = new RegExp('(?<=composer=).+', 'gm');
+                                                                        var composer =
+                                                                            objItem.action['URI'].match(regExp)[0];
+                                                                        entry = {
+                                                                            text: `${objItem.title}`,
+                                                                            browseKey: `/ui/browseContext?service=LocalMusic&title=${composer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(composer)}`,
+                                                                            headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    } else {
+                                                                        entry = {
+                                                                            text: `${objItem.title}`,
+                                                                            browseKey: `${objItem.action['URI']}`,
+                                                                            headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                const objItem = objList.item;
+                                                                if (objItem.action.resultType == 'Artist') {
+                                                                    regExp = new RegExp('(?<=artist=).+', 'gm');
+                                                                    artistid = objItem.action['URI'].match(regExp)[0];
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${artistid}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${encodeURIComponent(artistid)}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else if (objItem.action.resultType == 'Album') {
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `${objItem.playAction['URI']}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else if (objItem.action.resultType == 'Composer') {
+                                                                    regExp = new RegExp('(?<=composer=).+', 'gm');
+                                                                    composer = objItem.action['URI'].match(regExp)[0];
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${composer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(composer)}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else {
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `${objItem.action['URI']}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            }
                                                         }
                                                     } else {
-                                                        const objItem = result.screen.list;
-                                                        typeSingle = objItem.title.substring(
-                                                            0,
-                                                            objItem.title.length - 1,
-                                                        );
-                                                        entry = {
-                                                            text: `${objItem.title}`,
-                                                            browseKey: `/ui/BrowseObjects?browseIndex=0&menuGroupId=LocalMusic-search&service=LocalMusic&title=${objItem.title}&type=${typeSingle}&url=%2Flibrary%2Fv1%2F${objItem.title}%3Fexpr%3D${result.screen.search.value}%26service%3DLocalMusic`,
-                                                            headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
-                                                        };
-                                                        myArr.push(entry);
+                                                        const objList = result.screen.list;
+                                                        if (Array.isArray(objList.item)) {
+                                                            for (const objItem of objList.item) {
+                                                                if (objItem.action.resultType == 'Artist') {
+                                                                    regExp = new RegExp('(?<=artist=).+', 'gm');
+                                                                    artistid = objItem.action['URI'].match(regExp)[0];
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${artistid}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${encodeURIComponent(artistid)}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else if (objItem.action.resultType == 'Album') {
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `${objItem.playAction['URI']}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else if (objItem.action.resultType == 'Composer') {
+                                                                    regExp = new RegExp('(?<=composer=).+', 'gm');
+                                                                    var composer =
+                                                                        objItem.action['URI'].match(regExp)[0];
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${composer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(composer)}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else {
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `${objItem.action['URI']}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            }
+                                                        } else {
+                                                            const objItem = objList.item;
+                                                            if (objItem.action.resultType == 'Artist') {
+                                                                regExp = new RegExp('(?<=artist=).+', 'gm');
+                                                                artistid = objItem.action['URI'].match(regExp)[0];
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey: `/ui/browseContext?service=LocalMusic&title=${artistid}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${encodeURIComponent(artistid)}`,
+                                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            } else if (objItem.action.resultType == 'Album') {
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.playAction.URI}`
+                                                                            : `${objItem.playAction.URI}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            } else if (objItem.action.resultType == 'Composer') {
+                                                                regExp = new RegExp('(?<=composer=).+', 'gm');
+                                                                composer = objItem.action['URI'].match(regExp)[0];
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey: `/ui/browseContext?service=LocalMusic&title=${composer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(composer)}`,
+                                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            } else {
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.action.URI}`
+                                                                            : `${objItem.action.URI}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        }
                                                     }
                                                 } else {
                                                     entry = {
