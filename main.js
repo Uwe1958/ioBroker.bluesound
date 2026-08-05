@@ -858,6 +858,8 @@ class Bluesound extends utils.Adapter {
             browseKey = '/ui/browseMenuGroup?service=Qobuz';
         } else if (key === 'RadioParadise') {
             browseKey = '/ui/browseMenuGroup?service=RadioParadise';
+        } else if (key === 'Tidal') {
+            browseKey = '/ui/browseMenuGroup?service=Tidal';
         } else {
             browseKey = `${key}`;
         }
@@ -1538,8 +1540,7 @@ class Bluesound extends utils.Adapter {
                                                                     myArr.push(entry);
                                                                 } else if (objItem.action.resultType == 'Composer') {
                                                                     regExp = new RegExp('(?<=composer=).+', 'gm');
-                                                                    var composer =
-                                                                        objItem.action['URI'].match(regExp)[0];
+                                                                    composer = objItem.action['URI'].match(regExp)[0];
                                                                     entry = {
                                                                         text: `${objItem.title}`,
                                                                         browseKey: `/ui/browseContext?service=LocalMusic&title=${composer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(composer)}`,
@@ -2428,6 +2429,339 @@ class Bluesound extends utils.Adapter {
                                                     }
                                                 }
                                                 break;
+                                            case 'screen-Tidal':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    switch (objRow.title) {
+                                                        case 'Recent Favourites':
+                                                            for (const objLTN of objRow.largeThumbnail) {
+                                                                entry = {
+                                                                    text: `${objLTN.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objLTN.playAction['URI']}`
+                                                                            : `${objLTN.playAction['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objLTN.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        default:
+                                                            entry = {
+                                                                text: `${objRow.title}`,
+                                                                browseKey: `${objRow.action['URI']}`,
+                                                                headerTitle: `${objRow.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                    }
+                                                }
+                                                break;
+
+                                            case 'screen-Tidal-Recommendations':
+                                            case 'screen-Tidal-TIDAL Rising':
+                                            case 'screen-Tidal-New':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    switch (objRow.title) {
+                                                        case 'Songs':
+                                                        case 'New Songs':
+                                                        case 'Recommended Songs':
+                                                            if ('menuAction' in objRow) {
+                                                                entry = {
+                                                                    text: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                    browseKey: `${objRow.menuAction.action['URI']}`,
+                                                                    headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                };
+                                                            }
+                                                            myArr.push(entry);
+                                                            for (const objItem of objRow.list.item) {
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.action['URI']}`
+                                                                            : `${objItem.action['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${result.screen.navigationTitle} ${objItem.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case 'New Albums':
+                                                        case 'Albums':
+                                                        case 'Recommended Albums':
+                                                            if ('menuAction' in objRow) {
+                                                                entry = {
+                                                                    text: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                    browseKey: `${objRow.menuAction.action['URI']}`,
+                                                                    headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            if (Array.isArray(objRow.largeThumbnail)) {
+                                                                for (const objLTN of objRow.largeThumbnail) {
+                                                                    entry = {
+                                                                        text: `${objLTN.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objLTN.playAction['URI']}`
+                                                                                : `${objLTN.playAction['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${result.screen.navigationTitle} ${objLTN.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            } else {
+                                                                const objLTN = objRow.largeThumbnail;
+                                                                entry = {
+                                                                    text: `${objLTN.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objLTN.playAction['URI']}`
+                                                                            : `${objLTN.playAction['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${result.screen.navigationTitle} ${objLTN.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case 'Recommended Playlists':
+                                                        case 'New Playlists':
+                                                            if ('menuAction' in objRow) {
+                                                                entry = {
+                                                                    text: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                    browseKey: `${objRow.menuAction.action['URI']}`,
+                                                                    headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            if (Array.isArray(objRow.largeThumbnail)) {
+                                                                for (const objLTN of objRow.largeThumbnail) {
+                                                                    regExp = new RegExp('(?<=id=).+', 'gm');
+                                                                    playlistID = objLTN.action.URI.match(regExp)[0];
+                                                                    entry = {
+                                                                        text: `${objLTN.action.title}`,
+                                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                                        headerTitle: `${objLTN.action.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            } else {
+                                                                const objLTN = objRow.largeThumbnail;
+                                                                regExp = new RegExp('(?<=id=).+', 'gm');
+                                                                playlistID = objLTN.action.URI.match(regExp)[0];
+                                                                entry = {
+                                                                    text: `${objLTN.action.title}`,
+                                                                    browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                                    headerTitle: `${objLTN.action.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        default:
+                                                            this.log.debug(`Unknown Row: ${objRow.title}`);
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Tidal-Recommendations-0':
+                                            case 'screen-Tidal-New-0':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if (Array.isArray(result.screen.list.item)) {
+                                                    for (const objItem of result.screen.list.item) {
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.action['URI']}`
+                                                                    : `${objItem.action['URI']}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = result.screen.list.item;
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objItem.action['URI']}`
+                                                                : `${objItem.action['URI']}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Tidal-Recommendations-1':
+                                            case 'screen-Tidal-New-1':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if (Array.isArray(result.screen.list.item)) {
+                                                    for (const objItem of result.screen.list.item) {
+                                                        regExp = new RegExp('(?<=id=).+', 'gm');
+                                                        playlistID = objItem.action.URI.match(regExp)[0];
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                            headerTitle: `${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = result.screen.list.item;
+                                                    regExp = new RegExp('(?<=id=).+', 'gm');
+                                                    playlistID = objItem.action.URI.match(regExp)[0];
+                                                    entry = {
+                                                        text: `${objItem.action.title}`,
+                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                        headerTitle: `${objItem.action.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Tidal-TIDAL Rising-0':
+                                            case 'screen-Tidal-New-2':
+                                            case 'screen-Tidal-Recommendations-2':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if (Array.isArray(result.screen.list.item)) {
+                                                    for (const objItem of result.screen.list.item) {
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.playAction['URI']}`
+                                                                    : `${objItem.playAction['URI']}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = result.screen.list.item;
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objItem.playAction['URI']}`
+                                                                : `${objItem.playAction['URI']}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Tidal-TIDAL Rising-1':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if (Array.isArray(result.screen.list.item)) {
+                                                    for (const objItem of result.screen.list.item) {
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.action['URI']}`
+                                                                    : `${objItem.action['URI']}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = result.screen.list.item;
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objItem.action['URI']}`
+                                                                : `${objItem.action['URI']}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
                                             default:
                                                 if (
                                                     result.screen.id.substring(0, 35) ===
@@ -2643,6 +2977,7 @@ class Bluesound extends utils.Adapter {
                                                 case 'Album':
                                                     if (
                                                         result.list.item[0].action['URI'].indexOf('Deezer') == -1 &&
+                                                        result.list.item[0].action['URI'].indexOf('Tidal') == -1 &&
                                                         result.list.item[0].action['URI'].indexOf('Qobuz') == -1
                                                     ) {
                                                         lstCommand = headers[headers.length - 1];
@@ -2760,6 +3095,27 @@ class Bluesound extends utils.Adapter {
                                                         myArr.push(entry);
                                                     }
                                                     break;
+                                                case 'Playlist':
+                                                    this.log.debug('hier');
+                                                    for (const objItem of result.list.item) {
+                                                        regExp = new RegExp('(?<=id=).+', 'gm');
+                                                        playlistID = objItem.playAction.URI.match(regExp)[0];
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                            headerTitle: `${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    break;
                                                 default:
                                                     this.log.info('hhh');
                                             }
@@ -2849,6 +3205,12 @@ class Bluesound extends utils.Adapter {
             text: 'Radio Paradise',
             browseKey: 'RadioParadise',
             headerTitle: 'Radio Paradise',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Tidal',
+            browseKey: 'Tidal',
+            headerTitle: 'Tidal',
         };
         myArr.push(entry);
         var templist = JSON.stringify(myArr);
