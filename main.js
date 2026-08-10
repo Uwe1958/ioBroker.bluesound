@@ -43,7 +43,6 @@ class Bluesound extends utils.Adapter {
             ...options,
             name: 'bluesound',
         });
-        //        this.apiClient = null;
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
@@ -91,7 +90,7 @@ class Bluesound extends utils.Adapter {
             return;
         }
         apiClient.defaults.baseURL = `http://${ip}:11000`;
-        //        apiClient.defaults.timeout = timeOUT;
+        apiClient.defaults.timeout = 30000;
         apiClient.defaults.responseEncoding = 'utf8';
 
         axiosRetry(apiClient, {
