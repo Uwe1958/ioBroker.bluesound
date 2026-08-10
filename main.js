@@ -18,7 +18,7 @@ var headers = [];
 var headerTitle;
 var playlistToggle;
 
-const axios = require(`axios`).default;
+const axios = require(`axios`);
 const { parseString } = require('xml2js');
 const apiClient = axios.create();
 const strPlus = '%2B';
@@ -42,7 +42,6 @@ class Bluesound extends utils.Adapter {
             ...options,
             name: 'bluesound',
         });
-        //        this.apiClient = null;
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
@@ -90,7 +89,7 @@ class Bluesound extends utils.Adapter {
             return;
         }
         apiClient.defaults.baseURL = `http://${ip}:11000`;
-        apiClient.defaults.timeout = timeOUT;
+        apiClient.defaults.timeout = 30000;
         apiClient.defaults.responseEncoding = 'utf8';
 
         // set Info
@@ -755,11 +754,14 @@ class Bluesound extends utils.Adapter {
     async readPlaylist() {
         try {
             var curTitle;
-            /*            var curObjTitle = await this.getStateAsync('info.title1');
-            this.log.debug(`curObjTitle: ${curObjTitle.val}`);
-            if (curObjTitle || curObjTitle.val) {
-                curTitle = curObjTitle.val;
-            }*/
+            try {
+                const getTitle = await this.getStateAsync(`info.title1`);
+                if (getTitle) {
+                    curTitle = getTitle.val;
+                }
+            } catch (err) {
+                this.log.error(`Error reading 'info.title1': ${err}`);
+            }
             const response = await apiClient.get('/Playlist');
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
@@ -772,7 +774,7 @@ class Bluesound extends utils.Adapter {
                         myHtml = `<body><div><table id="playlist">`;
                         if (Array.isArray(result.playlist.song)) {
                             for (const objSong of result.playlist.song) {
-                                //                                this.log.info(`Playlist: ${objSong.title}, CurTitle: ${curTitle}`);
+                                this.log.info(`Playlist: ${objSong.title}, CurTitle: ${curTitle}`);
                                 entry = {
                                     id: `${objSong.title == curTitle ? -1 : parseInt(objSong.id)}`,
                                     title: `${objSong.title}`,
@@ -843,660 +845,425 @@ class Bluesound extends utils.Adapter {
             browseKey = '/ui/browseMenuGroup?service=Airable';
         } else if (key === 'Amazon') {
             browseKey = '/ui/browseMenuGroup?service=Amazon';
+        } else if (key === 'TuneIn') {
+            browseKey = '/ui/browseMenuGroup?service=TuneIn';
+        } else if (key === 'CalmRadio') {
+            browseKey = '/ui/browseMenuGroup?service=CalmRadio';
+        } else if (key === 'Deezer') {
+            browseKey = '/ui/browseMenuGroup?service=Deezer';
+        } else if (key === 'NYA') {
+            browseKey = '/ui/browseMenuGroup?service=NYA';
+        } else if (key === 'Qobuz') {
+            browseKey = '/ui/browseMenuGroup?service=Qobuz';
+        } else if (key === 'RadioParadise') {
+            browseKey = '/ui/browseMenuGroup?service=RadioParadise';
+        } else if (key === 'Tidal') {
+            browseKey = '/ui/browseMenuGroup?service=Tidal';
         } else {
             browseKey = `${key}`;
         }
         this.log.info(`Browsekey: ${browseKey}`);
         try {
-            const response = await apiClient.get(browseKey);
-            if (response.status === 200) {
-                parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
-                    var myArr = [];
-                    if (err) {
-                        this.log.error(`Error parsing Browse XML: ${err}`);
-                    } else {
-                        //                        this.setForeignState('0_userdata.0.browseKey', JSON.stringify(result), true);
-                        const switchKey = Object.keys(result).toString();
-                        this.log.info(`Root: ${switchKey}`);
-                        var entry;
-                        switch (switchKey) {
-                            case 'screen':
-                                this.log.info(`Id: ${result.screen.id}`);
-                                switch (result.screen.id) {
-                                    case 'screen-LocalMusic':
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            headerTitle: 'Main Menu',
-                                        };
-                                        myArr.push(entry);
-                                        for (const objRow of result.screen.row) {
-                                            entry = {
-                                                text: `${objRow.action.title}`,
-                                                browseKey:
-                                                    playlistToggle == 1
-                                                        ? `${objRow.action.URI}`
-                                                        : `${objRow.action.URI}`.replace('playnow=1', 'playnow=0'),
-                                                headerTitle: `${objRow.action.title}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-0':
-                                        // Artists alphabetical list
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            headerTitle: 'Local Music',
-                                        };
-                                        myArr.push(entry);
-                                        for (const objItem of result.screen.list.index.item) {
-                                            entry = {
-                                                text: `${objItem.key}   ->`,
-                                                browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
-                                                headerTitle: `Artists -> ${objItem.key}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-Artist':
-                                        if ('row' in result.screen) {
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 2]}`,
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.row[0].largeThumbnail)) {
-                                                for (const objItem of result.screen.row[0].largeThumbnail) {
+            await apiClient
+                .get(browseKey)
+                .then(result => {
+                    if (result.status === 200) {
+                        parseString(result.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
+                            var myArr = [];
+                            if (err) {
+                                this.log.error(`Error parsing Browse XML: ${err}`);
+                            } else {
+                                //                        this.setForeignState('0_userdata.0.browseKey', JSON.stringify(result), true);
+                                const switchKey = Object.keys(result).toString();
+                                this.log.info(`Root: ${switchKey}`);
+                                var entry;
+                                switch (switchKey) {
+                                    case 'screen':
+                                        this.log.info(`Id: ${result.screen.id}`);
+                                        switch (result.screen.id) {
+                                            case 'screen-LocalMusic':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    entry = {
+                                                        text: `${objRow.action.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objRow.action.URI}`
+                                                                : `${objRow.action.URI}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${objRow.action.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-LocalMusic-0':
+                                                // Artists alphabetical list
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Local Music',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.index.item) {
+                                                    entry = {
+                                                        text: `${objItem.key}   ->`,
+                                                        browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
+                                                        headerTitle: `Artists -> ${objItem.key}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-LocalMusic-Artist':
+                                                if ('row' in result.screen) {
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.row[0].largeThumbnail)) {
+                                                        for (const objItem of result.screen.row[0].largeThumbnail) {
+                                                            entry = {
+                                                                text: `${objItem.action.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.playAction.URI}`
+                                                                        : `${objItem.playAction.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `${result.screen.header.title} -> ${objItem.action.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.row[0].largeThumbnail;
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.playAction.URI}`
+                                                                    : `${objItem.playAction.URI}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `Artists -> ${result.screen.header.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    entry = {
+                                                        text: 'Empty result, ...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-LocalMusic-Favourites':
+                                                if ('list' in result.screen) {
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                browseKey: `${objItem.playAction.URI}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        entry = {
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                                            browseKey: `${objItem.playAction.URI}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    entry = {
+                                                        text: 'Empty result, ...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-LocalMusic-1':
+                                                // Albums alphabetical list
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Local Music',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.index.item) {
+                                                    entry = {
+                                                        text: `${objItem.key}   ->`,
+                                                        browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
+                                                        headerTitle: `Albums -> ${objItem.key}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-LocalMusic-2':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Local Music',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.index.item) {
+                                                    entry = {
+                                                        text: `${objItem.key}   ->`,
+                                                        browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
+                                                        headerTitle: `Songs -> ${objItem.key}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-LocalMusic-4':
+                                                // Playlists
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    //                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                    headerTitle: `Local Music`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.item) {
+                                                    var regExp = new RegExp('(?<=id=).+', 'gm');
+                                                    var playlistID = objItem.playAction.URI.match(regExp)[0];
                                                     entry = {
                                                         text: `${objItem.action.title}`,
-                                                        browseKey:
-                                                            playlistToggle == 1
-                                                                ? `${objItem.playAction.URI}`
-                                                                : `${objItem.playAction.URI}`.replace(
-                                                                      'playnow=1',
-                                                                      'playnow=0',
-                                                                  ),
-                                                        headerTitle: `${result.screen.header.title} -> ${objItem.action.title}`,
+                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=LocalMusic&shuffle=1`,
+                                                        headerTitle: `${objItem.action.title}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
-                                            } else {
-                                                const objItem = result.screen.row[0].largeThumbnail;
+                                                break;
+                                            case 'screen-LocalMusic-5':
                                                 entry = {
-                                                    text: `${objItem.action.title}`,
-                                                    browseKey:
-                                                        playlistToggle == 1
-                                                            ? `${objItem.playAction.URI}`
-                                                            : `${objItem.playAction.URI}`.replace(
-                                                                  'playnow=1',
-                                                                  'playnow=0',
-                                                              ),
-                                                    headerTitle: `Artists -> ${result.screen.header.title}`,
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    //                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                    headerTitle: `Local Music`,
                                                 };
                                                 myArr.push(entry);
-                                            }
-                                        } else {
-                                            entry = {
-                                                text: 'Empty result, ...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 2]}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-
-                                        break;
-                                    case 'screen-LocalMusic-Favourites':
-                                        if ('list' in result.screen) {
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 2]}`,
-                                            };
-                                            myArr.push(entry);
-                                            /*                                        if (Array.isArray(result.screen.list.item)) {
-                                            for (const objItem of result.screen.list.item) {
-                                                entry = {
-                                                    text: `${objItem.subTitle} - ${objItem.title}`,
-                                                    browseKey: `${objItem.playAction.URI}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                        } else {
-                                            const objItem = result.screen.list.item;
-                                            entry = {
-                                                text: `${objItem.subTitle} - ${objItem.title}`,
-                                                browseKey: `${objItem.playAction.URI}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        if ('nextLink' in result.screen.list) {
-                                            entry = {
-                                                text: 'NEXT',
-                                                browseKey: `${result.screen.list.nextLink}`,
-                                            };
-                                            myArr.push(entry);
-                                        }*/
-                                        } else {
-                                            entry = {
-                                                text: 'Empty result, ...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 1]}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-1':
-                                        // Albums alphabetical list
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            headerTitle: 'Local Music',
-                                        };
-                                        myArr.push(entry);
-                                        for (const objItem of result.screen.list.index.item) {
-                                            entry = {
-                                                text: `${objItem.key}   ->`,
-                                                browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
-                                                headerTitle: `Albums -> ${objItem.key}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-2':
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            headerTitle: 'Local Music',
-                                        };
-                                        myArr.push(entry);
-                                        for (const objItem of result.screen.list.index.item) {
-                                            entry = {
-                                                text: `${objItem.key}   ->`,
-                                                browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
-                                                headerTitle: `Songs -> ${objItem.key}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-4':
-                                        // Playlists
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            //                                            headerTitle: `${headers[headers.length - 1]}`,
-                                            headerTitle: `Local Music`,
-                                        };
-                                        myArr.push(entry);
-                                        for (const objItem of result.screen.list.item) {
-                                            var regExp = new RegExp('(?<=id=).+', 'gm');
-                                            var playlistID = objItem.playAction.URI.match(regExp)[0];
-                                            entry = {
-                                                text: `${objItem.action.title}`,
-                                                browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=LocalMusic&shuffle=1`,
-                                                headerTitle: `${objItem.action.title}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-5':
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            //                                            headerTitle: `${headers[headers.length - 1]}`,
-                                            headerTitle: `Local Music`,
-                                        };
-                                        myArr.push(entry);
-                                        for (const objItem of result.screen.list.index.item) {
-                                            entry = {
-                                                text: `${objItem.key}   ->`,
-                                                browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
-                                                headerTitle: `Composers -> ${objItem.key}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-Genres':
-                                        // Genres list
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            headerTitle: `${headers[headers.length - 1]}`,
-                                        };
-                                        myArr.push(entry);
-                                        for (const objItem of result.screen.list.item) {
-                                            entry = {
-                                                text: `${objItem.title}`,
-                                                browseKey: `/ui/browseGrouped?browseIndex=2&menuGroupId=Genres&service=LocalMusic&title=Albums&type=Album&url=%2Flibrary%2Fv1%2FAlbums%3Fgenre%3D${objItem.title}%26service%3DLocalMusic`,
-                                                headerTitle: `Genre -> ${objItem.title}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-Genres-2':
-                                        // Genre
-                                        if ('list' in result.screen) {
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 2]}`,
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.list.item)) {
-                                                for (const objItem of result.screen.list.item) {
+                                                for (const objItem of result.screen.list.index.item) {
                                                     entry = {
-                                                        text: `${objItem.subTitle} - ${objItem.title}`,
-                                                        browseKey:
-                                                            playlistToggle == 1
-                                                                ? `${objItem.playAction.URI}`
-                                                                : `${objItem.playAction.URI}`.replace(
-                                                                      'playnow=1',
-                                                                      'playnow=0',
-                                                                  ),
-                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                        text: `${objItem.key}   ->`,
+                                                        browseKey: `${commands[commands.length - 1]}&offset=${objItem.offset}`,
+                                                        headerTitle: `Composers -> ${objItem.key}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
-                                            } else {
-                                                const objItem = result.screen.list.item;
+                                                break;
+                                            case 'screen-LocalMusic-Genres':
+                                                // Genres list
                                                 entry = {
-                                                    text: `${objItem.subTitle} - ${objItem.title}`,
-                                                    browseKey:
-                                                        playlistToggle == 1
-                                                            ? `${objItem.playAction.URI}`
-                                                            : `${objItem.playAction.URI}`.replace(
-                                                                  'playnow=1',
-                                                                  'playnow=0',
-                                                              ),
-                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                            if ('nextLink' in result.screen.list) {
-                                                entry = {
-                                                    text: 'NEXT',
-                                                    browseKey: `${result.screen.list.nextLink}`,
+                                                    text: '...',
+                                                    browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 1]}`,
                                                 };
                                                 myArr.push(entry);
-                                            }
-                                        } else {
-                                            entry = {
-                                                text: 'Empty result, ...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 2]}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-8':
-                                        // Genre
-                                        if ('list' in result.screen) {
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: 'Local Music',
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.list.item)) {
-                                                for (const objItem of result.screen.list.item) {
-                                                    entry = {
-                                                        text: `${objItem.subTitle} - ${objItem.title}`,
-                                                        browseKey:
-                                                            playlistToggle == 1
-                                                                ? `${objItem.playAction.URI}`
-                                                                : `${objItem.playAction.URI}`.replace(
-                                                                      'playnow=1',
-                                                                      'playnow=0',
-                                                                  ),
-                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
-                                                    };
-                                                    myArr.push(entry);
-                                                }
-                                            } else {
-                                                const objItem = result.screen.list.item;
-                                                entry = {
-                                                    text: `${objItem.subTitle} - ${objItem.title}`,
-                                                    browseKey:
-                                                        playlistToggle == 1
-                                                            ? `${objItem.playAction.URI}`
-                                                            : `${objItem.playAction.URI}`.replace(
-                                                                  'playnow=1',
-                                                                  'playnow=0',
-                                                              ),
-                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                            if ('nextLink' in result.screen.list) {
-                                                entry = {
-                                                    text: 'NEXT',
-                                                    browseKey: `${result.screen.list.nextLink}`,
-                                                    headerTitle: `${headers[headers.length - 1]}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                        } else {
-                                            entry = {
-                                                text: 'Empty result, ...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 2]}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-Genres-genre':
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            headerTitle: `${headers[headers.length - 2]}`,
-                                        };
-                                        myArr.push(entry);
-                                        if (Array.isArray(result.screen.row[2].largeThumbnail)) {
-                                            for (const objItem of result.screen.row[2].largeThumbnail) {
-                                                entry = {
-                                                    text: `${objItem.subTitle} - ${objItem.title}`,
-                                                    browseKey:
-                                                        playlistToggle == 1
-                                                            ? `${objItem.playAction.URI}`
-                                                            : `${objItem.playAction.URI}`.replace(
-                                                                  'playnow=1',
-                                                                  'playnow=0',
-                                                              ),
-                                                    headerTitle: `${headers[headers.length - 1]}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                        } else {
-                                            const objItem = result.screen.row[2].largeThumbnail;
-                                            entry = {
-                                                text: `${objItem.subTitle} - ${objItem.title}`,
-                                                browseKey:
-                                                    playlistToggle == 1
-                                                        ? `${objItem.playAction.URI}`
-                                                        : `${objItem.playAction.URI}`.replace('playnow=1', 'playnow=0'),
-                                                headerTitle: `${headers[headers.length - 1]}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-Composer':
-                                        // Composer result
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            headerTitle: `${headers[headers.length - 2]}`,
-                                        };
-                                        myArr.push(entry);
-                                        if (Array.isArray(result.screen.row[0].largeThumbnail)) {
-                                            for (const objItem of result.screen.row[0].largeThumbnail) {
-                                                entry = {
-                                                    text: `${objItem.subTitle} - ${objItem.title}`,
-                                                    browseKey:
-                                                        playlistToggle == 1
-                                                            ? `${objItem.playAction.URI}`
-                                                            : `${objItem.playAction.URI}`.replace(
-                                                                  'playnow=1',
-                                                                  'playnow=0',
-                                                              ),
-                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                        } else {
-                                            const objItem = result.screen.row[0].largeThumbnail;
-                                            entry = {
-                                                text: `${objItem.subTitle} - ${objItem.title}`,
-                                                browseKey:
-                                                    playlistToggle == 1
-                                                        ? `${objItem.playAction.URI}`
-                                                        : `${objItem.playAction.URI}`.replace('playnow=1', 'playnow=0'),
-                                                headerTitle: `${objItem.subTitle} - ${objItem.title}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-Folders':
-                                        if (result.screen.screenTitle === 'Folders') {
-                                            // Folders
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: 'Local Music',
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.list)) {
-                                                for (const objItem of result.screen.list) {
-                                                    entry = {
-                                                        text: `${objItem.item.title}`,
-                                                        browseKey:
-                                                            playlistToggle == 1
-                                                                ? `${objItem.item.action.URI}`
-                                                                : `${objItem.item.action.URI}`.replace(
-                                                                      'playnow=1',
-                                                                      'playnow=0',
-                                                                  ),
-                                                        headerTitle: `${objItem.item.title}`,
-                                                    };
-                                                    myArr.push(entry);
-                                                }
-                                            } else {
-                                                const objItem = result.screen.list;
-                                                entry = {
-                                                    text: `${objItem.item.title}`,
-                                                    browseKey:
-                                                        playlistToggle == 1
-                                                            ? `${objItem.item.action.URI}`
-                                                            : `${objItem.item.action.URI}`.replace(
-                                                                  'playnow=1',
-                                                                  'playnow=0',
-                                                              ),
-                                                    headerTitle: `${objItem.item.title}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                        } else if (result.screen.screenTitle.substring(0, 1) === '/') {
-                                            // Folders list
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 2]}`,
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.list.item)) {
                                                 for (const objItem of result.screen.list.item) {
                                                     entry = {
                                                         text: `${objItem.title}`,
-                                                        browseKey:
-                                                            playlistToggle == 1
-                                                                ? `${objItem.action.URI}`
-                                                                : `${objItem.action.URI}`.replace(
-                                                                      'playnow=1',
-                                                                      'playnow=0',
-                                                                  ),
-                                                        headerTitle: `Folders -> ${objItem.title}`,
+                                                        browseKey: `/ui/browseGrouped?browseIndex=2&menuGroupId=Genres&service=LocalMusic&title=Albums&type=Album&url=%2Flibrary%2Fv1%2FAlbums%3Fgenre%3D${objItem.title}%26service%3DLocalMusic`,
+                                                        headerTitle: `Genre -> ${objItem.title}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
-                                            } else {
-                                                const objItem = result.screen.list.item;
-                                                entry = {
-                                                    text: `${objItem.title}`,
-                                                    browseKey:
-                                                        playlistToggle == 1
-                                                            ? `${objItem.action.URI}`
-                                                            : `${objItem.action.URI}`.replace('playnow=1', 'playnow=0'),
-                                                    headerTitle: `Folders -> ${objItem.title}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                        } else {
-                                            // Folders list
-                                            var regPath = new RegExp('(?<=path%3D).+');
-                                            var regFile = new RegExp('(?<=file=).+');
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 2]}`,
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.list.item)) {
-                                                for (const objItem of result.screen.list.item) {
-                                                    if (objItem.action.URI.lastIndexOf('path%3D') != -1) {
-                                                        var myPath = objItem.action.URI.match(regPath)[0]
-                                                            .replace(regDblQuote, '%')
-                                                            .replace(regPlus, '+');
-                                                        entry = {
-                                                            text: `${objItem.title}`,
-                                                            browseKey: `/Add?playnow=${playlistToggle.toString()}&context=Folder&path=${myPath}`,
-                                                            headerTitle: `${headers[headers.length - 1]}/${objItem.title}`,
-                                                        };
-                                                        myArr.push(entry);
+                                                break;
+                                            case 'screen-Genres-0':
+                                            case 'screen-Genres-2':
+                                            case 'screen-Genres-3':
+                                            case 'screen-Qobuz-Favourites-1':
+                                            case 'screen-Qobuz-Favourites-4':
+                                                // Genre
+                                                if ('list' in result.screen) {
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            if ('playAction' in objItem) {
+                                                                entry = {
+                                                                    text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.playAction.URI}`
+                                                                            : `${objItem.playAction.URI}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                                };
+                                                            } else {
+                                                                entry = {
+                                                                    text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.action.URI}`
+                                                                            : `${objItem.action.URI}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                                };
+                                                            }
+                                                            myArr.push(entry);
+                                                        }
                                                     } else {
-                                                        myPath = objItem.action.URI.match(regFile)[0]
-                                                            .replace(regDblQuote, '%')
-                                                            .replace(regPlus, '+');
+                                                        const objItem = result.screen.list.item;
+                                                        if ('playAction' in objItem) {
+                                                            entry = {
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.playAction.URI}`
+                                                                        : `${objItem.playAction.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                            };
+                                                        } else {
+                                                            entry = {
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.action.URI}`
+                                                                        : `${objItem.action.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                            };
+                                                        }
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
                                                         entry = {
-                                                            text: `${objItem.title}`,
-                                                            browseKey: `/Add?playnow=${playlistToggle.toString()}&file=${myPath}`,
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
                                                             headerTitle: `${headers[headers.length - 1]}`,
                                                         };
                                                         myArr.push(entry);
                                                     }
-                                                }
-                                            } else {
-                                                const objItem = result.screen.list.item;
-                                                if (objItem.action.URI.lastIndexOf('path%3D') != -1) {
-                                                    myPath = objItem.action.URI.match(regPath)[0]
-                                                        .replace(regDblQuote, '%')
-                                                        .replace(regPlus, '+');
-                                                    entry = {
-                                                        text: `${objItem.title}`,
-                                                        browseKey: `/Add?playnow=${playlistToggle.toString()}&context=Folder&path=${myPath}`,
-                                                        headerTitle: `${headers[headers.length - 1]}`,
-                                                    };
-                                                    myArr.push(entry);
                                                 } else {
-                                                    myPath = objItem.action.URI.match(regFile)[0]
-                                                        .replace(regDblQuote, '%')
-                                                        .replace(regPlus, '+');
                                                     entry = {
-                                                        text: `${objItem.title}`,
-                                                        browseKey: `/Add?playnow=${playlistToggle.toString()}&file=${myPath}`,
-                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                        text: 'Empty result, ...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
-                                            }
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-Search':
-                                        if ('list' in result.screen) {
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                //                                            headerTitle: `Search(${result.screen.search.value})`,
-                                                headerTitle: 'Main Menu',
-                                            };
-                                            myArr.push(entry);
-                                            this.setState(
-                                                'info.listheader',
-                                                `Main Menu Search (${result.screen.search.value})`,
-                                                true,
-                                            );
-                                            if (Array.isArray(result.screen.list)) {
-                                                for (const objItem of result.screen.list) {
-                                                    var typeSingle = objItem.title.substring(
-                                                        0,
-                                                        objItem.title.length - 1,
-                                                    );
+                                                break;
+                                            case 'screen-LocalMusic-8':
+                                                // Genre
+                                                if ('list' in result.screen) {
                                                     entry = {
-                                                        text: `${objItem.title}`,
-                                                        browseKey: `/ui/BrowseObjects?browseIndex=0&menuGroupId=LocalMusic-search&service=LocalMusic&title=${objItem.title}&type=${typeSingle}&url=%2Flibrary%2Fv1%2F${objItem.title}%3Fexpr%3D${result.screen.search.value}%26service%3DLocalMusic`,
-                                                        headerTitle: `${objItem.title} Search (${result.screen.search.value})`,
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: 'Local Music',
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.playAction.URI}`
+                                                                        : `${objItem.playAction.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        entry = {
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.playAction.URI}`
+                                                                    : `${objItem.playAction.URI}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    entry = {
+                                                        text: 'Empty result, ...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
-                                            } else {
-                                                const objItem = result.screen.list;
-                                                typeSingle = objItem.title.substring(0, objItem.title.length - 1);
+                                                break;
+                                            case 'screen-LocalMusic-Genres-genre':
                                                 entry = {
-                                                    text: `${objItem.title}`,
-                                                    browseKey: `/ui/BrowseObjects?browseIndex=0&menuGroupId=LocalMusic-search&service=LocalMusic&title=${objItem.title}&type=${typeSingle}&url=%2Flibrary%2Fv1%2F${objItem.title}%3Fexpr%3D${result.screen.search.value}%26service%3DLocalMusic`,
-                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
                                                 };
                                                 myArr.push(entry);
-                                            }
-                                        } else {
-                                            entry = {
-                                                text: 'Empty Result, ...',
-                                                browseKey: 'BACK',
-                                                headerTitle: 'Main Menu',
-                                            };
-                                            myArr.push(entry);
-                                            this.setState(
-                                                'info.listheader',
-                                                `Main Menu Search (${result.screen.search.value})`,
-                                                true,
-                                            );
-                                        }
-                                        break;
-                                    case 'screen-LocalMusic-search-0':
-                                        if (result.screen.screenTitle == 'Artists') {
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 1]}`,
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.list.item)) {
-                                                for (const objItem of result.screen.list.item) {
-                                                    regExP = new RegExp(' ', 'g');
-                                                    let myTitle = `${objItem.title}`
-                                                        .replace(regPlusPlus, '%2B')
-                                                        .replace(regExP, '+')
-                                                        .replace(regComma, '%2C')
-                                                        .replace(regSemiColon, '%3B')
-                                                        .replace(regDblPt, '%3A')
-                                                        .replace(regAmp, '%26');
-                                                    let artist = encodeURIComponent(myTitle);
+                                                if (Array.isArray(result.screen.row[2].largeThumbnail)) {
+                                                    for (const objItem of result.screen.row[2].largeThumbnail) {
+                                                        entry = {
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.playAction.URI}`
+                                                                    : `${objItem.playAction.URI}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = result.screen.row[2].largeThumbnail;
                                                     entry = {
-                                                        text: `${objItem.action.title}`,
-                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${myTitle}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
-                                                        headerTitle: `Artist -> ${objItem.action.title}`,
-                                                    };
-                                                    myArr.push(entry);
-                                                }
-                                            } else {
-                                                const objItem = result.screen.list.item;
-                                                regExP = new RegExp(' ', 'g');
-                                                let myTitle = `${objItem.title}`
-                                                    .replace(regPlusPlus, '%2B')
-                                                    .replace(regExP, '+')
-                                                    .replace(regComma, '%2C')
-                                                    .replace(regSemiColon, '%3B')
-                                                    .replace(regDblPt, '%3A')
-                                                    .replace(regAmp, '%26');
-                                                let artist = encodeURIComponent(myTitle);
-                                                entry = {
-                                                    text: `${objItem.action.title}`,
-                                                    browseKey: `/ui/browseContext?service=LocalMusic&title=${myTitle}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
-                                                    headerTitle: `Artist -> ${objItem.action.title}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                        } else if (result.screen.screenTitle == 'Albums') {
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 1]}`,
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.list.item)) {
-                                                for (const objItem of result.screen.list.item) {
-                                                    entry = {
-                                                        text: `${objItem.action.title}`,
+                                                        text: `${objItem.subTitle} - ${objItem.title}`,
                                                         browseKey:
                                                             playlistToggle == 1
                                                                 ? `${objItem.playAction.URI}`
@@ -1504,143 +1271,557 @@ class Bluesound extends utils.Adapter {
                                                                       'playnow=1',
                                                                       'playnow=0',
                                                                   ),
-                                                        headerTitle: `Album -> ${objItem.action.title}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
-                                            } else {
-                                                const objItem = result.screen.list.item;
+                                                break;
+                                            case 'screen-LocalMusic-Composer':
+                                                // Composer result
                                                 entry = {
-                                                    text: `${objItem.action.title}`,
-                                                    browseKey:
-                                                        playlistToggle == 1
-                                                            ? `${objItem.playAction.URI}`
-                                                            : `${objItem.playAction.URI}`.replace(
-                                                                  'playnow=1',
-                                                                  'playnow=0',
-                                                              ),
-                                                    headerTitle: `Album -> ${objItem.action.title}`,
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
                                                 };
                                                 myArr.push(entry);
-                                            }
-                                        } else if (result.screen.screenTitle == 'Songs') {
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 1]}`,
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.list.item)) {
-                                                for (const objItem of result.screen.list.item) {
+                                                if (Array.isArray(result.screen.row[0].largeThumbnail)) {
+                                                    for (const objItem of result.screen.row[0].largeThumbnail) {
+                                                        entry = {
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.playAction.URI}`
+                                                                    : `${objItem.playAction.URI}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = result.screen.row[0].largeThumbnail;
                                                     entry = {
-                                                        text: `${objItem.title}`,
+                                                        text: `${objItem.subTitle} - ${objItem.title}`,
                                                         browseKey:
                                                             playlistToggle == 1
-                                                                ? `${objItem.action.URI}`
-                                                                : `${objItem.action.URI}`.replace(
+                                                                ? `${objItem.playAction.URI}`
+                                                                : `${objItem.playAction.URI}`.replace(
                                                                       'playnow=1',
                                                                       'playnow=0',
                                                                   ),
-                                                        headerTitle: `Album -> ${objItem.action.title}`,
+                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
-                                            } else {
-                                                const objItem = result.screen.list.item;
-                                                entry = {
-                                                    text: `${objItem.title}`,
-                                                    browseKey:
-                                                        playlistToggle == 1
-                                                            ? `${objItem.action.URI}`
-                                                            : `${objItem.action.URI}`.replace('playnow=1', 'playnow=0'),
-                                                    headerTitle: `Album -> ${objItem.action.title}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                        } else if (result.screen.screenTitle == 'Composers') {
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 1]}`,
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.list.item)) {
-                                                for (const objItem of result.screen.list.item) {
-                                                    regExP = new RegExp(' ', 'g');
-                                                    let artist = `${objItem.title}`.replace(regExP, strPlus);
+                                                break;
+                                            case 'screen-Folders':
+                                                if (result.screen.screenTitle === 'Folders') {
+                                                    // Folders
                                                     entry = {
-                                                        text: `${objItem.action.title}`,
-                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${artist}`,
-                                                        headerTitle: `Composer -> ${objItem.action.title}`,
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: 'Local Music',
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list)) {
+                                                        for (const objItem of result.screen.list) {
+                                                            entry = {
+                                                                text: `${objItem.item.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.item.action.URI}`
+                                                                        : `${objItem.item.action.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `${objItem.item.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list;
+                                                        entry = {
+                                                            text: `${objItem.item.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.item.action.URI}`
+                                                                    : `${objItem.item.action.URI}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objItem.item.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else if (result.screen.screenTitle.substring(0, 1) === '/') {
+                                                    // Folders list
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.action.URI}`
+                                                                        : `${objItem.action.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `Folders -> ${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.action.URI}`
+                                                                    : `${objItem.action.URI}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `Folders -> ${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    // Folders list
+                                                    var regPath = new RegExp('(?<=path%3D).+');
+                                                    var regFile = new RegExp('(?<=file=).+');
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            if (objItem.action.URI.lastIndexOf('path%3D') != -1) {
+                                                                var myPath = objItem.action.URI.match(regPath)[0]
+                                                                    .replace(regDblQuote, '%')
+                                                                    .replace(regPlus, '+');
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey: `/Add?playnow=${playlistToggle.toString()}&context=Folder&path=${myPath}`,
+                                                                    headerTitle: `${headers[headers.length - 1]}/${objItem.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            } else {
+                                                                myPath = objItem.action.URI.match(regFile)[0]
+                                                                    .replace(regDblQuote, '%')
+                                                                    .replace(regPlus, '+');
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey: `/Add?playnow=${playlistToggle.toString()}&file=${myPath}`,
+                                                                    headerTitle: `${headers[headers.length - 1]}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        if (objItem.action.URI.lastIndexOf('path%3D') != -1) {
+                                                            myPath = objItem.action.URI.match(regPath)[0]
+                                                                .replace(regDblQuote, '%')
+                                                                .replace(regPlus, '+');
+                                                            entry = {
+                                                                text: `${objItem.title}`,
+                                                                browseKey: `/Add?playnow=${playlistToggle.toString()}&context=Folder&path=${myPath}`,
+                                                                headerTitle: `${headers[headers.length - 1]}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        } else {
+                                                            myPath = objItem.action.URI.match(regFile)[0]
+                                                                .replace(regDblQuote, '%')
+                                                                .replace(regPlus, '+');
+                                                            entry = {
+                                                                text: `${objItem.title}`,
+                                                                browseKey: `/Add?playnow=${playlistToggle.toString()}&file=${myPath}`,
+                                                                headerTitle: `${headers[headers.length - 1]}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-LocalMusic-Search':
+                                                if ('list' in result.screen) {
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        //                                            headerTitle: `Search(${result.screen.search.value})`,
+                                                        headerTitle: 'Main Menu',
+                                                    };
+                                                    myArr.push(entry);
+                                                    this.setState(
+                                                        'info.listheader',
+                                                        `Main Menu Search (${result.screen.search.value})`,
+                                                        true,
+                                                    );
+                                                    if (Array.isArray(result.screen.list)) {
+                                                        for (const objList of result.screen.list) {
+                                                            if (Array.isArray(objList.item)) {
+                                                                for (const objItem of objList.item) {
+                                                                    if (objItem.action.resultType == 'Artist') {
+                                                                        regExp = new RegExp('(?<=artist=).+', 'gm');
+                                                                        artistid =
+                                                                            objItem.action['URI'].match(regExp)[0];
+                                                                        entry = {
+                                                                            text: `${objItem.title}`,
+                                                                            browseKey: `/ui/browseContext?service=LocalMusic&title=${artistid}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${encodeURIComponent(artistid)}`,
+                                                                            headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    } else if (objItem.action.resultType == 'Album') {
+                                                                        entry = {
+                                                                            text: `${objItem.title}`,
+                                                                            browseKey: `${objItem.playAction['URI']}`,
+                                                                            headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    } else if (
+                                                                        objItem.action.resultType == 'Composer'
+                                                                    ) {
+                                                                        regExp = new RegExp('(?<=composer=).+', 'gm');
+                                                                        var composer =
+                                                                            objItem.action['URI'].match(regExp)[0];
+                                                                        entry = {
+                                                                            text: `${objItem.title}`,
+                                                                            browseKey: `/ui/browseContext?service=LocalMusic&title=${composer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(composer)}`,
+                                                                            headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    } else {
+                                                                        entry = {
+                                                                            text: `${objItem.title}`,
+                                                                            browseKey: `${objItem.action['URI']}`,
+                                                                            headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                const objItem = objList.item;
+                                                                if (objItem.action.resultType == 'Artist') {
+                                                                    regExp = new RegExp('(?<=artist=).+', 'gm');
+                                                                    artistid = objItem.action['URI'].match(regExp)[0];
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${artistid}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${encodeURIComponent(artistid)}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else if (objItem.action.resultType == 'Album') {
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `${objItem.playAction['URI']}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else if (objItem.action.resultType == 'Composer') {
+                                                                    regExp = new RegExp('(?<=composer=).+', 'gm');
+                                                                    composer = objItem.action['URI'].match(regExp)[0];
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${composer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(composer)}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else {
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `${objItem.action['URI']}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            }
+                                                        }
+                                                    } else {
+                                                        const objList = result.screen.list;
+                                                        if (Array.isArray(objList.item)) {
+                                                            for (const objItem of objList.item) {
+                                                                if (objItem.action.resultType == 'Artist') {
+                                                                    regExp = new RegExp('(?<=artist=).+', 'gm');
+                                                                    artistid = objItem.action['URI'].match(regExp)[0];
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${artistid}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${encodeURIComponent(artistid)}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else if (objItem.action.resultType == 'Album') {
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `${objItem.playAction['URI']}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else if (objItem.action.resultType == 'Composer') {
+                                                                    regExp = new RegExp('(?<=composer=).+', 'gm');
+                                                                    composer = objItem.action['URI'].match(regExp)[0];
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `/ui/browseContext?service=LocalMusic&title=${composer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(composer)}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                } else {
+                                                                    entry = {
+                                                                        text: `${objItem.title}`,
+                                                                        browseKey: `${objItem.action['URI']}`,
+                                                                        headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            }
+                                                        } else {
+                                                            const objItem = objList.item;
+                                                            if (objItem.action.resultType == 'Artist') {
+                                                                regExp = new RegExp('(?<=artist=).+', 'gm');
+                                                                artistid = objItem.action['URI'].match(regExp)[0];
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey: `/ui/browseContext?service=LocalMusic&title=${artistid}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${encodeURIComponent(artistid)}`,
+                                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            } else if (objItem.action.resultType == 'Album') {
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.playAction.URI}`
+                                                                            : `${objItem.playAction.URI}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            } else if (objItem.action.resultType == 'Composer') {
+                                                                regExp = new RegExp('(?<=composer=).+', 'gm');
+                                                                composer = objItem.action['URI'].match(regExp)[0];
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey: `/ui/browseContext?service=LocalMusic&title=${composer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(composer)}`,
+                                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            } else {
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.action.URI}`
+                                                                            : `${objItem.action.URI}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objItem.title} Search(${result.screen.search.value})`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        }
+                                                    }
+                                                } else {
+                                                    entry = {
+                                                        text: 'Empty Result, ...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: 'Main Menu',
+                                                    };
+                                                    myArr.push(entry);
+                                                    this.setState(
+                                                        'info.listheader',
+                                                        `Main Menu Search (${result.screen.search.value})`,
+                                                        true,
+                                                    );
+                                                }
+                                                break;
+                                            case 'screen-LocalMusic-search-0':
+                                                if (result.screen.screenTitle == 'Artists') {
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            regExP = new RegExp(' ', 'g');
+                                                            let myTitle = `${objItem.title}`
+                                                                .replace(regPlusPlus, '%2B')
+                                                                .replace(regExP, '+')
+                                                                .replace(regComma, '%2C')
+                                                                .replace(regSemiColon, '%3B')
+                                                                .replace(regDblPt, '%3A')
+                                                                .replace(regAmp, '%26');
+                                                            let artist = encodeURIComponent(myTitle);
+                                                            entry = {
+                                                                text: `${objItem.action.title}`,
+                                                                browseKey: `/ui/browseContext?service=LocalMusic&title=${myTitle}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
+                                                                headerTitle: `Artist -> ${objItem.action.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        regExP = new RegExp(' ', 'g');
+                                                        let myTitle = `${objItem.title}`
+                                                            .replace(regPlusPlus, '%2B')
+                                                            .replace(regExP, '+')
+                                                            .replace(regComma, '%2C')
+                                                            .replace(regSemiColon, '%3B')
+                                                            .replace(regDblPt, '%3A')
+                                                            .replace(regAmp, '%26');
+                                                        let artist = encodeURIComponent(myTitle);
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey: `/ui/browseContext?service=LocalMusic&title=${myTitle}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
+                                                            headerTitle: `Artist -> ${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else if (result.screen.screenTitle == 'Albums') {
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.action.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.playAction.URI}`
+                                                                        : `${objItem.playAction.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `Album -> ${objItem.action.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.playAction.URI}`
+                                                                    : `${objItem.playAction.URI}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `Album -> ${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else if (result.screen.screenTitle == 'Songs') {
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.action.URI}`
+                                                                        : `${objItem.action.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `Album -> ${objItem.action.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.action.URI}`
+                                                                    : `${objItem.action.URI}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `Album -> ${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else if (result.screen.screenTitle == 'Composers') {
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            regExP = new RegExp(' ', 'g');
+                                                            let artist = `${objItem.title}`.replace(regExP, strPlus);
+                                                            entry = {
+                                                                text: `${objItem.action.title}`,
+                                                                browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${artist}`,
+                                                                headerTitle: `Composer -> ${objItem.action.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        regExP = new RegExp(' ', 'g');
+                                                        let artist = `${objItem.title}`.replace(regExP, strPlus);
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${artist}`,
+                                                            headerTitle: `Composer -> ${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Airable':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.item) {
+                                                    entry = {
+                                                        text: `${objItem.action['title']}`,
+                                                        browseKey: `${objItem.action['URI']}`,
+                                                        headerTitle: `${objItem.action['title']}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
-                                            } else {
-                                                const objItem = result.screen.list.item;
-                                                regExP = new RegExp(' ', 'g');
-                                                let artist = `${objItem.title}`.replace(regExP, strPlus);
+                                                break;
+                                            case 'screen-Amazon':
                                                 entry = {
-                                                    text: `${objItem.action.title}`,
-                                                    browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${artist}`,
-                                                    headerTitle: `Composer -> ${objItem.action.title}`,
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
                                                 };
                                                 myArr.push(entry);
-                                            }
-                                        }
-                                        break;
-                                    case 'screen-Airable':
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            headerTitle: 'Main Menu',
-                                        };
-                                        myArr.push(entry);
-                                        for (const objItem of result.screen.list.item) {
-                                            entry = {
-                                                text: `${objItem.action['title']}`,
-                                                browseKey: `${objItem.action['URI']}`,
-                                                headerTitle: `${objItem.action['title']}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        break;
-                                    case 'screen-Amazon':
-                                        entry = {
-                                            text: '...',
-                                            browseKey: 'BACK',
-                                            headerTitle: 'Main Menu',
-                                        };
-                                        myArr.push(entry);
-                                        var i = 0;
-                                        for (const objItem of result.screen.list.item) {
-                                            if (i != 0) {
-                                                // Suppress first item (Amazon ad)
-                                                entry = {
-                                                    text: `${objItem.title}`,
-                                                    browseKey: `${objItem.action['URI']}`,
-                                                    headerTitle: `${objItem.title}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                            i++;
-                                        }
-                                        break;
-                                    default:
-                                        if (
-                                            result.screen.id.substring(0, 35) ===
-                                                'screen-/RadioBrowse?service=Airable' ||
-                                            result.screen.id.substring(0, 34) === 'screen-/RadioBrowse?service=Amazon'
-                                        ) {
-                                            entry = {
-                                                text: '...',
-                                                browseKey: 'BACK',
-                                                headerTitle: `${headers[headers.length - 2]}`,
-                                            };
-                                            myArr.push(entry);
-                                            if (Array.isArray(result.screen.list.item)) {
+                                                var i = 0;
                                                 for (const objItem of result.screen.list.item) {
-                                                    if (objItem.action['URI'].toString().indexOf('purchased') == -1) {
-                                                        // Suppress purchased entry
+                                                    if (i != 0) {
+                                                        // Suppress first item (Amazon ad)
                                                         entry = {
                                                             text: `${objItem.title}`,
                                                             browseKey: `${objItem.action['URI']}`,
@@ -1648,240 +1829,1410 @@ class Bluesound extends utils.Adapter {
                                                         };
                                                         myArr.push(entry);
                                                     }
+                                                    i++;
+                                                }
+                                                break;
+                                            case 'screen-CalmRadio':
+                                            case 'screen-TuneIn':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.item) {
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey: `${objItem.action['URI']}`,
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Deezer':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.row) {
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey: `${objItem.action['URI']}`,
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case "screen-Deezer-What's Hot":
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    switch (objRow.id) {
+                                                        case `Deezer-What's Hot-0`:
+                                                            for (const objThumb of objRow.largeThumbnail) {
+                                                                var newKey = objThumb.action['URI'];
+                                                                if (newKey.indexOf('playlistid') == -1) {
+                                                                    newKey = objThumb.playAction['URI'];
+                                                                } else {
+                                                                    var playlistid = newKey.substring(
+                                                                        newKey.indexOf('playlistid') + 11,
+                                                                    );
+                                                                    newKey = `/Add?playlistid=${playlistid}&playnow=1&service=Deezer&shuffle=1`;
+                                                                    newKey =
+                                                                        playlistToggle == 1
+                                                                            ? `${newKey}`
+                                                                            : `${newKey}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              );
+                                                                }
+                                                                entry = {
+                                                                    text: `${objThumb.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${newKey}`
+                                                                            : `${newKey}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objThumb.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case `Deezer-What's Hot-1`:
+                                                            for (const objThumb of objRow.smallThumbnail) {
+                                                                newKey = objThumb.action['URI'];
+                                                                if (newKey.indexOf('artistid') == -1) {
+                                                                    this.log.debug(
+                                                                        `newKeyA: ${objThumb.action['URI']}`,
+                                                                    );
+                                                                } else {
+                                                                    var artistid = newKey.substring(
+                                                                        newKey.indexOf('artistid') + 9,
+                                                                    );
+                                                                    newKey = `/ui/browseContext?service=Deezer&type=Artist&url=%2FArtists%3Fservice%3DDeezer%26artistid%3D${artistid}`;
+                                                                }
+                                                                entry = {
+                                                                    text: `${objThumb.title}`,
+                                                                    browseKey: `${newKey}`,
+                                                                    headerTitle: `${objThumb.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case `Deezer-What's Hot-2`:
+                                                            for (const objThumb of objRow.largeThumbnail) {
+                                                                entry = {
+                                                                    text: `${objThumb.title}`,
+                                                                    browseKey: `${objThumb.playAction['URI']}`,
+                                                                    headerTitle: `${objThumb.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case `Deezer-What's Hot-3`:
+                                                            for (const objSong of objRow.list.item) {
+                                                                entry = {
+                                                                    text: `${objSong.title}`,
+                                                                    browseKey: `${objSong.action['URI']}`,
+                                                                    headerTitle: `${objSong.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        default:
+                                                            this.log.debug(
+                                                                `screen-Deezer-What's Hot, Unknown Row: ${objRow.id}`,
+                                                            );
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Deezer-Recommendations':
+                                            case 'screen-Deezer-Genres-genre':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.row) {
+                                                    if (Array.isArray(objItem.largeThumbnail)) {
+                                                        for (const objThumb of objItem.largeThumbnail) {
+                                                            newKey = objThumb.action['URI'];
+                                                            if (newKey.indexOf('playlistid') == -1) {
+                                                                newKey = objThumb.playAction['URI'];
+                                                            } else {
+                                                                playlistid = newKey.substring(
+                                                                    newKey.indexOf('playlistid') + 11,
+                                                                );
+                                                                newKey = `/Add?playlistid=${playlistid}&playnow=1&service=Deezer&shuffle=1`;
+                                                                newKey =
+                                                                    playlistToggle == 1
+                                                                        ? `${newKey}`
+                                                                        : `${newKey}`.replace('playnow=1', 'playnow=0');
+                                                            }
+                                                            entry = {
+                                                                text: `${objThumb.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${newKey}`
+                                                                        : `${newKey}`.replace('playnow=1', 'playnow=0'),
+                                                                headerTitle: `${objThumb.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else if (Array.isArray(objItem.smallThumbnail)) {
+                                                        for (const objThumb of objItem.smallThumbnail) {
+                                                            newKey = objThumb.action['URI'];
+                                                            if (newKey.indexOf('artistid') == -1) {
+                                                                this.log.debug(`newKeyA: ${objThumb.action['URI']}`);
+                                                            } else {
+                                                                artistid = newKey.substring(
+                                                                    newKey.indexOf('artistid') + 9,
+                                                                );
+                                                                newKey = `/ui/browseContext?service=Deezer&type=Artist&url=%2FArtists%3Fservice%3DDeezer%26artistid%3D${artistid}`;
+                                                            }
+                                                            entry = {
+                                                                text: `${objThumb.title}`,
+                                                                browseKey: `${newKey}`,
+                                                                headerTitle: `${objThumb.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        if (Array.isArray(objItem.list.item)) {
+                                                            for (const objSong of objItem.list.item) {
+                                                                entry = {
+                                                                    text: `${objSong.title}`,
+                                                                    browseKey: `${objSong.action['URI']}`,
+                                                                    headerTitle: `${objSong.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        } else {
+                                                            const objSong = objItem.list.item;
+                                                            entry = {
+                                                                text: `${objSong.title}`,
+                                                                browseKey: `${objSong.action['URI']}`,
+                                                                headerTitle: `${objSong.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Deezer-Artist':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if ('row' in result.screen) {
+                                                    for (const objItem of result.screen.row) {
+                                                        if (objItem.id == 'Deezer-Artist-0') {
+                                                            for (const objLTN of objItem.largeThumbnail) {
+                                                                entry = {
+                                                                    text: `${objLTN.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objLTN.playAction['URI']}`
+                                                                            : `${objLTN.playAction['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objLTN.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        } else if (objItem.id == 'Deezer-Artist-1') {
+                                                            if (Array.isArray(objItem.list.item)) {
+                                                                for (const objEntry of objItem.list.item) {
+                                                                    entry = {
+                                                                        text: `${objEntry.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objEntry.action['URI']}`
+                                                                                : `${objEntry.action['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${objEntry.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            } else {
+                                                                const objEntry = objItem.list.item;
+                                                                entry = {
+                                                                    text: `${objEntry.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objEntry.action['URI']}`
+                                                                            : `${objEntry.action['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objEntry.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        } else {
+                                                            for (const objSTN of objItem.smallThumbnail) {
+                                                                newKey = objSTN.action['URI'];
+                                                                artistid = newKey.substring(
+                                                                    newKey.indexOf('artistid') + 9,
+                                                                );
+                                                                newKey = `/ui/browseContext?service=Deezer&type=Artist&url=%2FArtists%3Fservice%3DDeezer%26artistid%3D${artistid}`;
+                                                                entry = {
+                                                                    text: `${objSTN.title}`,
+                                                                    browseKey: `${newKey}`,
+                                                                    headerTitle: `${objSTN.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        }
+                                                    }
+                                                } else {
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.playAction['URI']}`
+                                                                        : `${objItem.playAction['URI']}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.playAction['URI']}`
+                                                                    : `${objItem.playAction['URI']}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Deezer-Favourites':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    switch (objRow.id) {
+                                                        case 'Deezer-Favourites-0':
+                                                            for (const objItem of objRow.list.item) {
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.action['URI']}`
+                                                                            : `${objItem.action['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objItem.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case 'Deezer-Favourites-1':
+                                                            for (const objLTN of objRow.largeThumbnail) {
+                                                                regExp = new RegExp('(?<=id=).+', 'gm');
+                                                                playlistID = objLTN.action.URI.match(regExp)[0];
+                                                                entry = {
+                                                                    text: `${objLTN.action.title}`,
+                                                                    browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Deezer&shuffle=1`,
+                                                                    headerTitle: `${objLTN.action.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                                //this.log.debug(`LTN: ${objLTN.action['URI']}`);
+                                                            }
+                                                            break;
+                                                        case 'Deezer-Favourites-2':
+                                                            for (const objLTN of objRow.largeThumbnail) {
+                                                                entry = {
+                                                                    text: `${objLTN.action.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objLTN.playAction['URI']}`
+                                                                            : `${objLTN.playAction['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objLTN.action.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case 'Deezer-Favourites-3':
+                                                            for (const objSTN of objRow.smallThumbnail) {
+                                                                newKey = objSTN.action['URI'];
+                                                                artistid = newKey.substring(
+                                                                    newKey.indexOf('artistid') + 9,
+                                                                );
+                                                                newKey = `/ui/browseContext?service=Deezer&type=Artist&url=%2FArtists%3Fservice%3DDeezer%26artistid%3D${artistid}`;
+                                                                entry = {
+                                                                    text: `${objSTN.title}`,
+                                                                    browseKey: `${newKey}`,
+                                                                    headerTitle: `${objSTN.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        default:
+                                                            this.log.debug(`Row: ${objRow.id}`);
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-NYA':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    switch (objRow.id) {
+                                                        case 'NYA-0':
+                                                            if (Array.isArray(objRow.list.item)) {
+                                                                for (const objSong of objRow.list.item) {
+                                                                    entry = {
+                                                                        text: `${objSong.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objSong.action['URI']}`
+                                                                                : `${objSong.action['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${objSong.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            } else {
+                                                                const objSong = objRow.list.item;
+                                                                entry = {
+                                                                    text: `${objSong.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objSong.action['URI']}`
+                                                                            : `${objSong.action['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objSong.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        case 'NYA-1':
+                                                            if (Array.isArray(objRow.largeThumbnail)) {
+                                                                for (const objAlbum of objRow.largeThumbnail) {
+                                                                    entry = {
+                                                                        text: `${objAlbum.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objAlbum.playAction['URI']}`
+                                                                                : `${objAlbum.playAction['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${objAlbum.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            } else {
+                                                                const objAlbum = objRow.largeThumbnail;
+                                                                entry = {
+                                                                    text: `${objAlbum.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objAlbum.playAction['URI']}`
+                                                                            : `${objAlbum.playAction['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objAlbum.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        default:
+                                                            this.log.debug(`Unknown row (NYA): ${objRow.id}`);
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Qobuz':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    entry = {
+                                                        text: `${objRow.title}`,
+                                                        browseKey: `${objRow.action['URI']}`,
+                                                        headerTitle: `${objRow.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Qobuz-0':
+                                            case 'screen-Qobuz-1':
+                                            case 'screen-Qobuz-3':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Qobuz',
+                                                };
+                                                myArr.push(entry);
+                                                if (Array.isArray(result.screen.list.item)) {
+                                                    for (const objAlbum of result.screen.list.item) {
+                                                        entry = {
+                                                            text: `${objAlbum.subTitle} - ${objAlbum.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objAlbum.playAction['URI']}`
+                                                                    : `${objAlbum.playAction['URI']}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objAlbum.subTitle} - ${objAlbum.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objAlbum = result.screen.list.item;
+                                                    entry = {
+                                                        text: `${objAlbum.subTitle} - ${objAlbum.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objAlbum.playAction['URI']}`
+                                                                : `${objAlbum.playAction['URI']}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${objAlbum.subTitle} - ${objAlbum.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Genres-1':
+                                            case 'screen-Qobuz-2':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle:
+                                                        `${result.screen.service}` != 'Tidal'
+                                                            ? 'Qobuz'
+                                                            : `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.item) {
+                                                    regExp = new RegExp('(?<=id=).+', 'gm');
+                                                    playlistID = objItem.playAction.URI.match(regExp)[0];
+                                                    entry = {
+                                                        text: `${objItem.action.title}`,
+                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=${result.screen.service}&shuffle=1`,
+                                                        headerTitle: `${objItem.action.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Qobuz-Favourites':
+                                            case 'screen-Qobuz-Genres-genre':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    entry = {
+                                                        text: `${objRow.title}`,
+                                                        browseKey: `${objRow.action['URI']}`,
+                                                        headerTitle: `${objRow.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Qobuz-Favourites-0':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.item) {
+                                                    regExp = new RegExp('(?<=id=).+', 'gm');
+                                                    playlistID = objItem.playAction.URI.match(regExp)[0];
+                                                    entry = {
+                                                        text: `${objItem.action.title}`,
+                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Qobuz&shuffle=1`,
+                                                        headerTitle: `${objItem.action.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-RadioParadise':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objList of result.screen.list) {
+                                                    if (objList.id == 'RadioParadise-4') {
+                                                        if (Array.isArray(objList.item)) {
+                                                            for (const objItem of objList.item) {
+                                                                entry = {
+                                                                    text: `${objItem.title}`,
+                                                                    browseKey: `${objItem.action['URI']}`,
+                                                                    headerTitle: `${objItem.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        } else {
+                                                            const objItem = objList.item;
+                                                            entry = {
+                                                                text: `${objItem.title}`,
+                                                                browseKey: `${objItem.action['URI']}`,
+                                                                headerTitle: `${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Tidal':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: 'Main Menu',
+                                                };
+                                                myArr.push(entry);
+                                                for (const objRow of result.screen.row) {
+                                                    switch (objRow.title) {
+                                                        case 'Recent Favourites':
+                                                            for (const objLTN of objRow.largeThumbnail) {
+                                                                entry = {
+                                                                    text: `${objLTN.subTitle} - ${objLTN.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objLTN.playAction['URI']}`
+                                                                            : `${objLTN.playAction['URI']}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objLTN.subTitle} - ${objLTN.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                            break;
+                                                        default:
+                                                            entry = {
+                                                                text: `${objRow.title}`,
+                                                                browseKey: `${objRow.action['URI']}`,
+                                                                headerTitle: `${objRow.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Tidal-Recommendations':
+                                            case 'screen-Tidal-TIDAL Rising':
+                                            case 'screen-Tidal-New':
+                                            case 'screen-Tidal-Popular':
+                                            case 'screen-Tidal-Deutsch':
+                                            case 'screen-Tidal-Genres-genre':
+                                            case 'screen-Tidal-Favourites':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if ('row' in result.screen) {
+                                                    for (const objRow of result.screen.row) {
+                                                        switch (objRow.title) {
+                                                            case 'Songs':
+                                                            case 'New Songs':
+                                                            case 'Recommended Songs':
+                                                            case 'Popular Songs':
+                                                                if ('menuAction' in objRow) {
+                                                                    entry = {
+                                                                        text: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                        browseKey: `${objRow.menuAction.action['URI']}`,
+                                                                        headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                    };
+                                                                }
+                                                                myArr.push(entry);
+                                                                for (const objItem of objRow.list.item) {
+                                                                    entry = {
+                                                                        text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objItem.action['URI']}`
+                                                                                : `${objItem.action['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                                break;
+                                                            case 'New Albums':
+                                                            case 'Albums':
+                                                            case 'Recommended Albums':
+                                                            case 'Popular Albums':
+                                                                if ('menuAction' in objRow) {
+                                                                    entry = {
+                                                                        text: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                        browseKey: `${objRow.menuAction.action['URI']}`,
+                                                                        headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                                if (Array.isArray(objRow.largeThumbnail)) {
+                                                                    for (const objLTN of objRow.largeThumbnail) {
+                                                                        entry = {
+                                                                            text: `${objLTN.subTitle} - ${objLTN.title}`,
+                                                                            browseKey:
+                                                                                playlistToggle == 1
+                                                                                    ? `${objLTN.playAction['URI']}`
+                                                                                    : `${objLTN.playAction['URI']}`.replace(
+                                                                                          'playnow=1',
+                                                                                          'playnow=0',
+                                                                                      ),
+                                                                            headerTitle: `${objLTN.subTitle} - ${objLTN.title}`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    }
+                                                                } else {
+                                                                    const objLTN = objRow.largeThumbnail;
+                                                                    entry = {
+                                                                        text: `${objLTN.subTitle} - ${objLTN.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objLTN.playAction['URI']}`
+                                                                                : `${objLTN.playAction['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${objLTN.subTitle} - ${objLTN.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                                break;
+                                                            case 'Recommended Playlists':
+                                                            case 'New Playlists':
+                                                            case 'Playlists':
+                                                            case 'My Mix':
+                                                            case 'My Playlists':
+                                                                if ('menuAction' in objRow) {
+                                                                    entry = {
+                                                                        text: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                        browseKey: `${objRow.menuAction.action['URI']}`,
+                                                                        headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                                if (Array.isArray(objRow.largeThumbnail)) {
+                                                                    for (const objLTN of objRow.largeThumbnail) {
+                                                                        regExp = new RegExp('(?<=id=).+', 'gm');
+                                                                        playlistID = objLTN.action.URI.match(regExp)[0];
+                                                                        entry = {
+                                                                            text: `${objLTN.action.title}`,
+                                                                            browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                                            headerTitle: `${objLTN.action.title}`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    }
+                                                                } else {
+                                                                    const objLTN = objRow.largeThumbnail;
+                                                                    regExp = new RegExp('(?<=id=).+', 'gm');
+                                                                    playlistID = objLTN.action.URI.match(regExp)[0];
+                                                                    entry = {
+                                                                        text: `${objLTN.action.title}`,
+                                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                                        headerTitle: `${objLTN.action.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                                break;
+                                                            default:
+                                                                this.log.debug(`Unknown Row: ${objRow.title}`);
+                                                        }
+                                                    }
+                                                } else {
+                                                    for (const objItem of result.screen.list.item) {
+                                                        regExp = new RegExp('(?<=id=).+', 'gm');
+                                                        playlistID = objItem.action.URI.match(regExp)[0];
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                            headerTitle: `${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                }
+                                                break;
+                                            case 'screen-Tidal-Recommendations-0':
+                                            case 'screen-Tidal-New-0':
+                                            case 'screen-Tidal-Popular-0':
+                                            case 'screen-Tidal-Deutsch-0':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if (Array.isArray(result.screen.list.item)) {
+                                                    for (const objItem of result.screen.list.item) {
+                                                        entry = {
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.action['URI']}`
+                                                                    : `${objItem.action['URI']}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = result.screen.list.item;
+                                                    entry = {
+                                                        text: `${objItem.subTitle} - ${objItem.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objItem.action['URI']}`
+                                                                : `${objItem.action['URI']}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Tidal-Recommendations-1':
+                                            case 'screen-Tidal-New-1':
+                                            case 'screen-Tidal-Deutsch-1':
+                                            case 'screen-Tidal-Moods-genre':
+                                            case 'screen-Tidal-Favourites-0':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if (Array.isArray(result.screen.list.item)) {
+                                                    this.log.debug('hier');
+                                                    for (const objItem of result.screen.list.item) {
+                                                        regExp = new RegExp('(?<=id=).+', 'gm');
+                                                        playlistID = objItem.action.URI.match(regExp)[0];
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                            headerTitle: `${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = result.screen.list.item;
+                                                    regExp = new RegExp('(?<=id=).+', 'gm');
+                                                    playlistID = objItem.action.URI.match(regExp)[0];
+                                                    entry = {
+                                                        text: `${objItem.action.title}`,
+                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                        headerTitle: `${objItem.action.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Tidal-TIDAL Rising-0':
+                                            case 'screen-Tidal-New-2':
+                                            case 'screen-Tidal-Recommendations-2':
+                                            case 'screen-Tidal-Popular-1':
+                                            case 'screen-Tidal-Deutsch-2':
+                                            case 'screen-Tidal-Favourites-5':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if (Array.isArray(result.screen.list.item)) {
+                                                    for (const objItem of result.screen.list.item) {
+                                                        entry = {
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.playAction['URI']}`
+                                                                    : `${objItem.playAction['URI']}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = result.screen.list.item;
+                                                    entry = {
+                                                        text: `${objItem.subTitle} - ${objItem.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objItem.playAction['URI']}`
+                                                                : `${objItem.playAction['URI']}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Tidal-TIDAL Rising-1':
+                                            case 'screen-Tidal-Favourites-1':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                if (Array.isArray(result.screen.list.item)) {
+                                                    for (const objItem of result.screen.list.item) {
+                                                        entry = {
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                                            browseKey:
+                                                                playlistToggle == 1
+                                                                    ? `${objItem.action['URI']}`
+                                                                    : `${objItem.action['URI']}`.replace(
+                                                                          'playnow=1',
+                                                                          'playnow=0',
+                                                                      ),
+                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else {
+                                                    const objItem = result.screen.list.item;
+                                                    entry = {
+                                                        text: `${objItem.subTitle} - ${objItem.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objItem.action['URI']}`
+                                                                : `${objItem.action['URI']}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.screen.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.screen.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Tidal-Moods':
+                                            case 'screen-Tidal-Genres':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.item) {
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey: `${objItem.action['URI']}`,
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            default:
+                                                if (
+                                                    result.screen.id.substring(0, 35) ===
+                                                        'screen-/RadioBrowse?service=Airable' ||
+                                                    result.screen.id.substring(0, 34) ===
+                                                        'screen-/RadioBrowse?service=Amazon' ||
+                                                    result.screen.id.substring(0, 37) ===
+                                                        'screen-/RadioBrowse?service=CalmRadio' ||
+                                                    result.screen.id === 'screen-Deezer-0' ||
+                                                    result.screen.id === 'screen-Deezer-Genres' ||
+                                                    result.screen.id === 'screen-Qobuz-Genres'
+                                                ) {
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list.item)) {
+                                                        for (const objItem of result.screen.list.item) {
+                                                            entry = {
+                                                                text:
+                                                                    'subTitle' in objItem
+                                                                        ? `${objItem.subTitle} - ${objItem.title}`
+                                                                        : `${objItem.title}`,
+                                                                browseKey: `${objItem.action['URI']}`,
+                                                                headerTitle: `${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        entry = {
+                                                            text:
+                                                                'subTitle' in objItem
+                                                                    ? `${objItem.subTitle} - ${objItem.title}`
+                                                                    : `${objItem.title}`,
+                                                            browseKey: `${objItem.action['URI']}`,
+                                                            headerTitle: `${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                } else if (
+                                                    result.screen.id.substring(0, 34) ===
+                                                    'screen-/RadioBrowse?service=TuneIn'
+                                                ) {
+                                                    entry = {
+                                                        text: '...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    if (Array.isArray(result.screen.list)) {
+                                                        for (const objList of result.screen.list) {
+                                                            if (Array.isArray(objList.item)) {
+                                                                for (const objItem of objList.item) {
+                                                                    entry = {
+                                                                        text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                        browseKey: `${objItem.action['URI']}`,
+                                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                            } else {
+                                                                const objItem = objList.item;
+                                                                entry = {
+                                                                    text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                    browseKey: `${objItem.action['URI']}`,
+                                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        const objList = result.screen.list;
+                                                        if (Array.isArray(objList.item)) {
+                                                            for (const objItem of objList.item) {
+                                                                entry = {
+                                                                    text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                    browseKey: `${objItem.action['URI']}`,
+                                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                                };
+                                                                myArr.push(entry);
+                                                            }
+                                                        } else {
+                                                            const objItem = objList.item;
+                                                            entry = {
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                browseKey: `${objItem.action['URI']}`,
+                                                                headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    }
+                                                } else {
+                                                    this.log.debug(`resultNO: =${JSON.stringify(result)}`);
+                                                    entry = {
+                                                        text: 'No result, ...',
+                                                        browseKey: 'BACK',
+                                                        headerTitle: `${headers[headers.length - 2]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                        }
+                                        break;
+                                    case 'list':
+                                        entry = {
+                                            text: '...',
+                                            browseKey: 'BACK',
+                                            headerTitle: `${headers[headers.length - 2]}`,
+                                        };
+                                        myArr.push(entry);
+                                        var maxOffset = 0;
+                                        if (!('resultType' in result.list.item[0].action)) {
+                                            if (!('offset' in result.list)) {
+                                                for (const objItem of result.list.item) {
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey: `${objItem.action.URI}`,
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                if ('nextLink' in result.list) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${result.list.nextLink}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
                                                 }
                                             } else {
-                                                const objItem = result.screen.list.item;
-                                                entry = {
-                                                    text: `${objItem.title}`,
-                                                    browseKey: `${objItem.action['URI']}`,
-                                                    headerTitle: `${objItem.title}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                            if ('nextLink' in result.screen.list) {
-                                                entry = {
-                                                    text: 'NEXT',
-                                                    browseKey: `${result.screen.list.nextLink}`,
-                                                    headerTitle: `${headers[headers.length - 1]}`,
-                                                };
-                                                myArr.push(entry);
+                                                var regExP = new RegExp('(?<=offset=)\\d*');
+                                                var curOffset = parseInt(result.list.offset);
+                                                var newOffset = curOffset + 30;
+                                                let newCmd = commands[commands.length - 1].replace(
+                                                    regExP,
+                                                    `${newOffset}`,
+                                                );
+                                                var lstCommand = headers[headers.length - 1];
+                                                var searchKey = lstCommand.substring(lstCommand.length - 1);
+                                                for (const objKey of result.list.index.item) {
+                                                    if (objKey.key == searchKey) {
+                                                        maxOffset = parseInt(objKey.offset) + parseInt(objKey.length);
+                                                        break;
+                                                    }
+                                                }
+                                                for (const objItem of result.list.item) {
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey:
+                                                            playlistToggle == 1
+                                                                ? `${objItem.action.URI}`
+                                                                : `${objItem.action.URI}`.replace(
+                                                                      'playnow=1',
+                                                                      'playnow=0',
+                                                                  ),
+                                                        headerTitle: `${objItem.title}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                    curOffset++;
+                                                    if (curOffset > maxOffset - 1) {
+                                                        break;
+                                                    }
+                                                }
+                                                if (curOffset < maxOffset) {
+                                                    entry = {
+                                                        text: 'NEXT',
+                                                        browseKey: `${newCmd}`,
+                                                        headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
                                             }
                                         } else {
-                                            this.log.debug(`resultNO: =${JSON.stringify(result)}`);
+                                            switch (result.list.item[0].action.resultType) {
+                                                case 'Artist':
+                                                    lstCommand = headers[headers.length - 1];
+                                                    searchKey = lstCommand.substring(lstCommand.length - 1);
+                                                    curOffset = parseInt(result.list.offset);
+                                                    for (const objKey of result.list.index.item) {
+                                                        if (objKey.key == searchKey) {
+                                                            maxOffset =
+                                                                parseInt(objKey.offset) + parseInt(objKey.length);
+                                                            break;
+                                                        }
+                                                    }
+                                                    for (const objItem of result.list.item) {
+                                                        regExP = new RegExp(' ', 'g');
+                                                        let artist = `${objItem.title}`.replace(regExP, strPlus);
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
+                                                            headerTitle: `Artist -> ${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                        curOffset++;
+                                                        if (curOffset > maxOffset - 1) {
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (curOffset < maxOffset && 'nextLink' in result.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    break;
+                                                case 'Album':
+                                                    if (
+                                                        result.list.item[0].action['URI'].indexOf('Deezer') == -1 &&
+                                                        result.list.item[0].action['URI'].indexOf('Tidal') == -1 &&
+                                                        result.list.item[0].action['URI'].indexOf('Qobuz') == -1
+                                                    ) {
+                                                        lstCommand = headers[headers.length - 1];
+                                                        searchKey = lstCommand.substring(lstCommand.length - 1);
+                                                        maxOffset;
+                                                        curOffset = parseInt(result.list.offset);
+                                                        for (const objKey of result.list.index.item) {
+                                                            if (objKey.key == searchKey) {
+                                                                maxOffset =
+                                                                    parseInt(objKey.offset) + parseInt(objKey.length);
+                                                                break;
+                                                            }
+                                                        }
+                                                        for (const objItem of result.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.title} - ${objItem.subTitle}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.playAction.URI}`
+                                                                        : `${objItem.playAction.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `${objItem.title} - ${objItem.subTitle}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                            curOffset++;
+                                                            if (curOffset > maxOffset - 1) {
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (curOffset < maxOffset && 'nextLink' in result.list) {
+                                                            entry = {
+                                                                text: 'NEXT',
+                                                                browseKey: `${result.list.nextLink}`,
+                                                                headerTitle: `${headers[headers.length - 1]}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        for (const objItem of result.list.item) {
+                                                            entry = {
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.playAction['URI']}`
+                                                                        : `${objItem.playAction['URI']}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                        if ('nextLink' in result.list) {
+                                                            entry = {
+                                                                text: 'NEXT',
+                                                                browseKey: `${result.list.nextLink}`,
+                                                                headerTitle: `${headers[headers.length - 1]}`,
+                                                            };
+                                                            myArr.push(entry);
+                                                        }
+                                                    }
+                                                    break;
+                                                case 'Composer':
+                                                    lstCommand = headers[headers.length - 1];
+                                                    searchKey = lstCommand.substring(lstCommand.length - 1);
+                                                    maxOffset;
+                                                    curOffset = parseInt(result.list.offset);
+                                                    for (const objKey of result.list.index.item) {
+                                                        if (objKey.key == searchKey) {
+                                                            maxOffset =
+                                                                parseInt(objKey.offset) + parseInt(objKey.length);
+                                                            break;
+                                                        }
+                                                    }
+                                                    for (const objItem of result.list.item) {
+                                                        regExP = new RegExp('(?<=composer=).+');
+                                                        var myComposer = objItem.action.URI.match(regExP)[0];
+                                                        entry = {
+                                                            text: `${objItem.title}`,
+                                                            browseKey: `/ui/browseContext?service=LocalMusic&title=${myComposer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(myComposer)}`,
+                                                            headerTitle: `${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                        curOffset++;
+                                                        if (curOffset > maxOffset - 1) {
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (curOffset < maxOffset && 'nextLink' in result.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    break;
+                                                case 'screen':
+                                                    for (const objItem of result.list.item) {
+                                                        entry = {
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
+                                                            browseKey: objItem.action.URI,
+                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    break;
+                                                case 'Playlist':
+                                                    this.log.debug('hier');
+                                                    for (const objItem of result.list.item) {
+                                                        regExp = new RegExp('(?<=id=).+', 'gm');
+                                                        playlistID = objItem.playAction.URI.match(regExp)[0];
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                            headerTitle: `${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    break;
+                                                default:
+                                                    this.log.info('hhh');
+                                            }
                                         }
+                                        break;
+                                    case 'playlist':
+                                    case 'state':
+                                        entry = {
+                                            text: 'Content added, ... ',
+                                            browseKey: 'BACK',
+                                            headerTitle: `${headers[headers.length - 2]}`,
+                                        };
+                                        myArr.push(entry);
+                                        break;
+                                    default:
+                                        this.log.info(result);
                                 }
-                                break;
-                            case 'list':
-                                entry = {
-                                    text: '...',
-                                    browseKey: 'BACK',
-                                    headerTitle: `${headers[headers.length - 2]}`,
-                                };
-                                myArr.push(entry);
-                                var maxOffset = 0;
-                                if (!('resultType' in result.list.item[0].action)) {
-                                    if (!('offset' in result.list)) {
-                                        for (const objItem of result.list.item) {
-                                            entry = {
-                                                text: `${objItem.title}`,
-                                                browseKey: `${objItem.action.URI}`,
-                                                headerTitle: `${objItem.title}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                        if ('nextLink' in result.list) {
-                                            entry = {
-                                                text: 'NEXT',
-                                                browseKey: `${result.list.nextLink}`,
-                                                headerTitle: `${headers[headers.length - 1]}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                    } else {
-                                        var regExP = new RegExp('(?<=offset=)\\d*');
-                                        var curOffset = parseInt(result.list.offset);
-                                        var newOffset = curOffset + 30;
-                                        let newCmd = commands[commands.length - 1].replace(regExP, `${newOffset}`);
-                                        var lstCommand = headers[headers.length - 1];
-                                        var searchKey = lstCommand.substring(lstCommand.length - 1);
-                                        for (const objKey of result.list.index.item) {
-                                            if (objKey.key == searchKey) {
-                                                maxOffset = parseInt(objKey.offset) + parseInt(objKey.length);
-                                                break;
-                                            }
-                                        }
-                                        for (const objItem of result.list.item) {
-                                            entry = {
-                                                text: `${objItem.title}`,
-                                                browseKey:
-                                                    playlistToggle == 1
-                                                        ? `${objItem.action.URI}`
-                                                        : `${objItem.action.URI}`.replace('playnow=1', 'playnow=0'),
-                                                headerTitle: `${objItem.title}`,
-                                            };
-                                            myArr.push(entry);
-                                            curOffset++;
-                                            if (curOffset > maxOffset - 1) {
-                                                break;
-                                            }
-                                        }
-                                        if (curOffset < maxOffset) {
-                                            entry = {
-                                                text: 'NEXT',
-                                                browseKey: `${newCmd}`,
-                                                headerTitle: `${headers[headers.length - 1]}`,
-                                            };
-                                            myArr.push(entry);
-                                        }
-                                    }
-                                } else {
-                                    switch (result.list.item[0].action.resultType) {
-                                        case 'Artist':
-                                            lstCommand = headers[headers.length - 1];
-                                            searchKey = lstCommand.substring(lstCommand.length - 1);
-                                            curOffset = parseInt(result.list.offset);
-                                            for (const objKey of result.list.index.item) {
-                                                if (objKey.key == searchKey) {
-                                                    maxOffset = parseInt(objKey.offset) + parseInt(objKey.length);
-                                                    break;
-                                                }
-                                            }
-                                            for (const objItem of result.list.item) {
-                                                regExP = new RegExp(' ', 'g');
-                                                let artist = `${objItem.title}`.replace(regExP, strPlus);
-                                                entry = {
-                                                    text: `${objItem.action.title}`,
-                                                    browseKey: `/ui/browseContext?service=LocalMusic&title=${artist}&type=Artist&url=%2FArtists%3Fservice%3DLocalMusic%26artist%3D${artist}`,
-                                                    headerTitle: `Artist -> ${objItem.action.title}`,
-                                                };
-                                                myArr.push(entry);
-                                                curOffset++;
-                                                if (curOffset > maxOffset - 1) {
-                                                    break;
-                                                }
-                                            }
-                                            if (curOffset < maxOffset && 'nextLink' in result.list) {
-                                                entry = {
-                                                    text: 'NEXT',
-                                                    browseKey: `${result.list.nextLink}`,
-                                                    headerTitle: `${headers[headers.length - 1]}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                            break;
-                                        case 'Album':
-                                            lstCommand = headers[headers.length - 1];
-                                            searchKey = lstCommand.substring(lstCommand.length - 1);
-                                            maxOffset;
-                                            curOffset = parseInt(result.list.offset);
-                                            for (const objKey of result.list.index.item) {
-                                                if (objKey.key == searchKey) {
-                                                    maxOffset = parseInt(objKey.offset) + parseInt(objKey.length);
-                                                    break;
-                                                }
-                                            }
-                                            for (const objItem of result.list.item) {
-                                                entry = {
-                                                    text: `${objItem.title} - ${objItem.subTitle}`,
-                                                    browseKey:
-                                                        playlistToggle == 1
-                                                            ? `${objItem.playAction.URI}`
-                                                            : `${objItem.playAction.URI}`.replace(
-                                                                  'playnow=1',
-                                                                  'playnow=0',
-                                                              ),
-                                                    headerTitle: `${objItem.title} - ${objItem.subTitle}`,
-                                                };
-                                                myArr.push(entry);
-                                                curOffset++;
-                                                if (curOffset > maxOffset - 1) {
-                                                    break;
-                                                }
-                                            }
-                                            if (curOffset < maxOffset && 'nextLink' in result.list) {
-                                                entry = {
-                                                    text: 'NEXT',
-                                                    browseKey: `${result.list.nextLink}`,
-                                                    headerTitle: `${headers[headers.length - 1]}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                            break;
-                                        case 'Composer':
-                                            lstCommand = headers[headers.length - 1];
-                                            searchKey = lstCommand.substring(lstCommand.length - 1);
-                                            maxOffset;
-                                            curOffset = parseInt(result.list.offset);
-                                            for (const objKey of result.list.index.item) {
-                                                if (objKey.key == searchKey) {
-                                                    maxOffset = parseInt(objKey.offset) + parseInt(objKey.length);
-                                                    break;
-                                                }
-                                            }
-                                            for (const objItem of result.list.item) {
-                                                regExP = new RegExp('(?<=composer=).+');
-                                                var myComposer = objItem.action.URI.match(regExP)[0];
-                                                entry = {
-                                                    text: `${objItem.title}`,
-                                                    browseKey: `/ui/browseContext?service=LocalMusic&title=${myComposer}&type=Composer&url=%2FComposers%3Fservice%3DLocalMusic%26composer%3D${encodeURIComponent(myComposer)}`,
-                                                    headerTitle: `${objItem.title}`,
-                                                };
-                                                myArr.push(entry);
-                                                curOffset++;
-                                                if (curOffset > maxOffset - 1) {
-                                                    break;
-                                                }
-                                            }
-                                            if (curOffset < maxOffset && 'nextLink' in result.list) {
-                                                entry = {
-                                                    text: 'NEXT',
-                                                    browseKey: `${result.list.nextLink}`,
-                                                    headerTitle: `${headers[headers.length - 1]}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                            break;
-                                        case 'screen':
-                                            for (const objItem of result.list.item) {
-                                                entry = {
-                                                    text: objItem.title,
-                                                    browseKey: objItem.action.URI,
-                                                    headerTitle: objItem.title,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                            if ('nextLink' in result.list) {
-                                                entry = {
-                                                    text: 'NEXT',
-                                                    browseKey: `${result.list.nextLink}`,
-                                                    headerTitle: `${headers[headers.length - 1]}`,
-                                                };
-                                                myArr.push(entry);
-                                            }
-                                            break;
-                                        default:
-                                            this.log.info('hhh');
-                                    }
-                                }
-                                break;
-                            case 'playlist':
-                            case 'state':
-                                entry = {
-                                    text: 'Content added, ... ',
-                                    browseKey: 'BACK',
-                                    headerTitle: `${headers[headers.length - 2]}`,
-                                };
-                                myArr.push(entry);
-                                break;
-                            default:
-                                this.log.info(result);
-                        }
+                            }
+                            res = JSON.stringify(myArr);
+                        });
+                    } else {
+                        this.log.error(`Could not retrieve Browse data, Status code ${result.status}`);
                     }
-                    res = JSON.stringify(myArr);
-                });
-            } else {
-                this.log.error(`Could not retrieve Browse data, Status code ${response.status}`);
-            }
+                })
+                .catch(error => this.log.error(error));
             await this.readPlayerStatus();
             await this.readPlaylist();
             return res;
@@ -1910,6 +3261,48 @@ class Bluesound extends utils.Adapter {
             text: 'Amazon Music',
             browseKey: 'Amazon',
             headerTitle: 'Amazon Music',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'TuneIn',
+            browseKey: 'TuneIn',
+            headerTitle: 'TuneIn',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Calm Radio',
+            browseKey: 'CalmRadio',
+            headerTitle: 'Calm Radio',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Deezer',
+            browseKey: 'Deezer',
+            headerTitle: 'Deezer',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Neil Young Archives',
+            browseKey: 'NYA',
+            headerTitle: 'Neil Young Archives',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Qobuz',
+            browseKey: 'Qobuz',
+            headerTitle: 'Qobuz',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Radio Paradise',
+            browseKey: 'RadioParadise',
+            headerTitle: 'Radio Paradise',
+        };
+        myArr.push(entry);
+        entry = {
+            text: 'Tidal',
+            browseKey: 'Tidal',
+            headerTitle: 'Tidal',
         };
         myArr.push(entry);
         var templist = JSON.stringify(myArr);
