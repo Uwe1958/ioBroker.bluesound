@@ -1,4 +1,13 @@
 # Older changes
+## 1.2.0 (2025-07-24)
+
+- (Uwe Nagel) Logic added to shift playlist forward/backward
+- (Uwe Nagel) State roles updated
+- (Uwe Nagel) Logic added to shuffle playlist
+- (Uwe Nagel) Translated using Weblate (Dutch)
+- (Uwe Nagel) Update test-and.release.yml to node 24.x
+- (Uwe Nagel) Update testing to minimum node.js version 20
+
 ## 1.1.5 (2025-03-10)
 
 - (Uwe Nagel) Create version 1.1.5

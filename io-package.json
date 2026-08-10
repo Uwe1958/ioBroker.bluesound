@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "bluesound",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "news": {
+      "1.5.0": {
+        "en": "Amazon service added\nTuneIn service added\nDeezer service added\nNYA service added\nQobuz service added\nRadioParadise service added\nTidal service added",
+        "de": "Amazon Service hinzugefügt\nTuneIn Service hinzugefügt\nDeezer Service hinzugefügt\nNYA Service hinzugefügt\nQobuz-Service hinzugefügt\nRadioParadise Service hinzugefügt\nTidal Service hinzugefügt",
+        "ru": "Сервис Amazon добавлен\nДобавлен сервис TuneIn\nДобавлен сервис Deezer\nСервис NYA добавлен\nСервис Qobuz добавлен\nДобавлен сервис RadioParadis\nДобавлен сервис Tidal",
+        "pt": "Serviço Amazon adicionado\nServiço TuneIn adicionado\nServiço Deezer adicionado\nServiço NYA adicionado\nServiço Qobuz adicionado\nServiço de RadioParadise adicionado\nServiço Tidal adicionado",
+        "nl": "Amazon-service toegevoegd\nTuneIn dienst toegevoegd\nDeezer-service toegevoegd\nNYA-dienst toegevoegd\nQobuz-service toegevoegd\nRadioParadise-service toegevoegd\nGetijdendienst toegevoegd",
+        "fr": "Service Amazon ajouté\nTuneIn service ajouté\nService Deezer ajouté\nService NYA ajouté\nService Qobuz ajouté\nService RadioParadise ajouté\nService de marée ajouté",
+        "it": "Servizio Amazon aggiunto\nTuneIn servizio aggiunto\nServizio Deezer aggiunto\nServizio NYA aggiunto\nServizio di Qobuz aggiunto\nServizio RadioParadise aggiunto\nServizio marea aggiunto",
+        "es": "Amazon servicio añadido\nTuneIn service added\nServicio de Deezer añadido\nServicio de NYA añadido\nServicio Qobuz añadido\nRadioParadise service added\nServicio técnico añadido",
+        "pl": "Amazon service added\nTuneIn service added\nUsługa deezer dodana\nNYA usługi dodane\nDodano usługę Qobuz\nRadioParadise service added\nUsługa Tidal dodana",
+        "uk": "Додано послугу Amazon\nДодана послуга TuneIn\nДодана послуга Deezer\nДодана послуга НЯ\nСервіс Qobuz додано\nРадіоПарадіза додано\nДодана послуга Tidal",
+        "zh-cn": "亚马逊服务已添加\n添加TuneIn服务\n添加 Deezer 服务\n添加了NYA服务\n增加了Qobuz服务\n添加无线电Paradise服务\n增加了潮汐服务"
+      },
       "1.4.0": {
         "en": "Fixes @types/node version\nCorrected translation files\nBump @iobroker/adapter-core from 3.3.2 to 3.4.1\nTranslation converted to short format\nBump @iobroker/eslint-config from 2.2.0 to 2.3.4\nBump axios from 1.16.0 to 1.16.1\nBump @types/node from 25.6.0 to 25.9.1\nRadio stations added",
         "de": "Fixes @types/Node Version\nBerichtigte Übersetzungsdateien\nBump @iobroker/adapter-core von 3.3.2 bis 3.4.1\nÜbersetzung in Kurzformat konvertiert\nBump @iobroker/eslint-config von 2.2.0 bis 2.3.4\nBump Axios von 1.16.0 bis 1.16.1\nBump @types/node von 25.6.0 bis 25.9.1\nRadiosender hinzugefügt",
@@ -80,19 +93,6 @@
         "pl": "Utwórz wersję 1.1.5\nAktualizuj regularne połączenia info.connection\nAktualizacja zależności admin do > = 7.4.10\nAktualizacja @ iobroker / adapter- dev do 1.3.0\nRozwiązanie problemów z działaniem testowym\nBump mocha od 11.0.1 do 11.1.0\nBump eslint- config- pretier od 9.1.0 do 10.0.1\nBump chai i @ types / chai\nEslint bump od 9.16.0 do 9.19.0\nTłumaczenie poprawione (de, pl)\nAktualizacja @ iobroker / adapter- core do 3.2.3\nAktualizacja @ iobroker / testowanie do 5.0.0",
         "uk": "Створити версію 1.1.5\nОновлення інформації\nОновлення залежності адміністратора до >=7.4.10\nОновлення @iobroker/adapter-dev до 1.3.0\nВиправлення проблем тестової дії\nBump mocha від 11.0.1 до 11.1.0\nBump eslint-config-prettier від 9.1.0 до 10.0.1\nBump chai і @types/chai\nBump eslint від 9.16.0 до 9.19.0\nВиправлені переклади (de,pl)\nОновлення @iobroker/adapter-core до 3.2.3\nОновлення @iobroker/testing до 5.0.0",
         "zh-cn": "创建 1.1.5 版本\n定期更新信息.连接\n将管理员依赖性更新到 QQ7.4.10\n将 @iobrocco/adapter-dev 更新为 1.3. 0\n解决测试动作问题\n从11.0.1到11.1.0\nBump eslint-config- prettier 从9.1.0 到 10.0.1\nBump chai 和 @ types/ chai\n从9.16.0到9.19.0\n更正的译文(德,pl)\n将 @iobrocco/ adapter- core 更新为 3.2.3\n更新 @ iobus/ testing 到 5. 0.0"
-      },
-      "1.1.4": {
-        "en": "common.news corrected",
-        "de": "common.news korrigiert",
-        "ru": "common.news Исправный",
-        "pt": "common.news corrigido",
-        "nl": "common.news gecorrigeerd",
-        "fr": "common.news correcté",
-        "it": "common.news corretto",
-        "es": "common.news corregido",
-        "pl": "common.news skorygowane",
-        "uk": "Корисний загальний.news",
-        "zh-cn": "正确的普通新闻"
       }
     },
     "titleLang": {

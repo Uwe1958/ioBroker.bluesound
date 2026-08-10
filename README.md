@@ -99,8 +99,7 @@ The contents of the current playlist is available in the object _'info.playlist'
 ```
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 1.5.0 (2026-08-10)
 
 - (Uwe Nagel) Amazon service added
 - (Uwe Nagel) TuneIn service added
@@ -161,15 +160,6 @@ The contents of the current playlist is available in the object _'info.playlist'
 - (Uwe Nagel) Further code cleaning (apiclient, getStateAsync)
 - (Uwe Nagel) @types/xml2js added
 - (Uwe Nagel) Move to eslint 9 and fix subsequent issues
-
-### 1.2.0 (2025-07-24)
-
-- (Uwe Nagel) Logic added to shift playlist forward/backward
-- (Uwe Nagel) State roles updated
-- (Uwe Nagel) Logic added to shuffle playlist
-- (Uwe Nagel) Translated using Weblate (Dutch)
-- (Uwe Nagel) Update test-and.release.yml to node 24.x
-- (Uwe Nagel) Update testing to minimum node.js version 20
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
