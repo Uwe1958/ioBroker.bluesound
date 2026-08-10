@@ -763,6 +763,14 @@ class Bluesound extends utils.Adapter {
     async readPlaylist() {
         try {
             var curTitle;
+            try {
+                const getTitle = await this.getStateAsync(`info.title1`);
+                if (getTitle) {
+                    curTitle = getTitle.val;
+                }
+            } catch (err) {
+                this.log.error(`Error reading 'info.title1': ${err}`);
+            }
             const response = await apiClient.get('/Playlist');
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
@@ -775,7 +783,7 @@ class Bluesound extends utils.Adapter {
                         myHtml = `<body><div><table id="playlist">`;
                         if (Array.isArray(result.playlist.song)) {
                             for (const objSong of result.playlist.song) {
-                                //                                this.log.info(`Playlist: ${objSong.title}, CurTitle: ${curTitle}`);
+                                this.log.info(`Playlist: ${objSong.title}, CurTitle: ${curTitle}`);
                                 entry = {
                                     id: `${objSong.title == curTitle ? -1 : parseInt(objSong.id)}`,
                                     title: `${objSong.title}`,
@@ -1110,6 +1118,36 @@ class Bluesound extends utils.Adapter {
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
                                                         for (const objItem of result.screen.list.item) {
+                                                            if ('playAction' in objItem) {
+                                                                entry = {
+                                                                    text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.playAction.URI}`
+                                                                            : `${objItem.playAction.URI}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                                };
+                                                            } else {
+                                                                entry = {
+                                                                    text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                    browseKey:
+                                                                        playlistToggle == 1
+                                                                            ? `${objItem.action.URI}`
+                                                                            : `${objItem.action.URI}`.replace(
+                                                                                  'playnow=1',
+                                                                                  'playnow=0',
+                                                                              ),
+                                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                                };
+                                                            }
+                                                            myArr.push(entry);
+                                                        }
+                                                    } else {
+                                                        const objItem = result.screen.list.item;
+                                                        if ('playAction' in objItem) {
                                                             entry = {
                                                                 text: `${objItem.subTitle} - ${objItem.title}`,
                                                                 browseKey:
@@ -1121,21 +1159,19 @@ class Bluesound extends utils.Adapter {
                                                                           ),
                                                                 headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                             };
-                                                            myArr.push(entry);
+                                                        } else {
+                                                            entry = {
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                browseKey:
+                                                                    playlistToggle == 1
+                                                                        ? `${objItem.action.URI}`
+                                                                        : `${objItem.action.URI}`.replace(
+                                                                              'playnow=1',
+                                                                              'playnow=0',
+                                                                          ),
+                                                                headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                            };
                                                         }
-                                                    } else {
-                                                        const objItem = result.screen.list.item;
-                                                        entry = {
-                                                            text: `${objItem.subTitle} - ${objItem.title}`,
-                                                            browseKey:
-                                                                playlistToggle == 1
-                                                                    ? `${objItem.playAction.URI}`
-                                                                    : `${objItem.playAction.URI}`.replace(
-                                                                          'playnow=1',
-                                                                          'playnow=0',
-                                                                      ),
-                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
-                                                        };
                                                         myArr.push(entry);
                                                     }
                                                     if ('nextLink' in result.screen.list) {
@@ -2334,7 +2370,10 @@ class Bluesound extends utils.Adapter {
                                                 entry = {
                                                     text: '...',
                                                     browseKey: 'BACK',
-                                                    headerTitle: 'Qobuz',
+                                                    headerTitle:
+                                                        `${result.screen.service}` != 'Tidal'
+                                                            ? 'Qobuz'
+                                                            : `${headers[headers.length - 2]}`,
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.item) {
@@ -2342,7 +2381,7 @@ class Bluesound extends utils.Adapter {
                                                     playlistID = objItem.playAction.URI.match(regExp)[0];
                                                     entry = {
                                                         text: `${objItem.action.title}`,
-                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Qobuz&shuffle=1`,
+                                                        browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=${result.screen.service}&shuffle=1`,
                                                         headerTitle: `${objItem.action.title}`,
                                                     };
                                                     myArr.push(entry);
@@ -2441,7 +2480,7 @@ class Bluesound extends utils.Adapter {
                                                         case 'Recent Favourites':
                                                             for (const objLTN of objRow.largeThumbnail) {
                                                                 entry = {
-                                                                    text: `${objLTN.title}`,
+                                                                    text: `${objLTN.subTitle} - ${objLTN.title}`,
                                                                     browseKey:
                                                                         playlistToggle == 1
                                                                             ? `${objLTN.playAction['URI']}`
@@ -2449,7 +2488,7 @@ class Bluesound extends utils.Adapter {
                                                                                   'playnow=1',
                                                                                   'playnow=0',
                                                                               ),
-                                                                    headerTitle: `${objLTN.title}`,
+                                                                    headerTitle: `${objLTN.subTitle} - ${objLTN.title}`,
                                                                 };
                                                                 myArr.push(entry);
                                                             }
@@ -2464,59 +2503,80 @@ class Bluesound extends utils.Adapter {
                                                     }
                                                 }
                                                 break;
-
                                             case 'screen-Tidal-Recommendations':
                                             case 'screen-Tidal-TIDAL Rising':
                                             case 'screen-Tidal-New':
+                                            case 'screen-Tidal-Popular':
+                                            case 'screen-Tidal-Deutsch':
+                                            case 'screen-Tidal-Genres-genre':
+                                            case 'screen-Tidal-Favourites':
                                                 entry = {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
                                                 };
                                                 myArr.push(entry);
-                                                for (const objRow of result.screen.row) {
-                                                    switch (objRow.title) {
-                                                        case 'Songs':
-                                                        case 'New Songs':
-                                                        case 'Recommended Songs':
-                                                            if ('menuAction' in objRow) {
-                                                                entry = {
-                                                                    text: `${objRow.menuAction.text} ${objRow.title}`,
-                                                                    browseKey: `${objRow.menuAction.action['URI']}`,
-                                                                    headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
-                                                                };
-                                                            }
-                                                            myArr.push(entry);
-                                                            for (const objItem of objRow.list.item) {
-                                                                entry = {
-                                                                    text: `${objItem.title}`,
-                                                                    browseKey:
-                                                                        playlistToggle == 1
-                                                                            ? `${objItem.action['URI']}`
-                                                                            : `${objItem.action['URI']}`.replace(
-                                                                                  'playnow=1',
-                                                                                  'playnow=0',
-                                                                              ),
-                                                                    headerTitle: `${result.screen.navigationTitle} ${objItem.title}`,
-                                                                };
-                                                                myArr.push(entry);
-                                                            }
-                                                            break;
-                                                        case 'New Albums':
-                                                        case 'Albums':
-                                                        case 'Recommended Albums':
-                                                            if ('menuAction' in objRow) {
-                                                                entry = {
-                                                                    text: `${objRow.menuAction.text} ${objRow.title}`,
-                                                                    browseKey: `${objRow.menuAction.action['URI']}`,
-                                                                    headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
-                                                                };
-                                                                myArr.push(entry);
-                                                            }
-                                                            if (Array.isArray(objRow.largeThumbnail)) {
-                                                                for (const objLTN of objRow.largeThumbnail) {
+                                                if ('row' in result.screen) {
+                                                    for (const objRow of result.screen.row) {
+                                                        switch (objRow.title) {
+                                                            case 'Songs':
+                                                            case 'New Songs':
+                                                            case 'Recommended Songs':
+                                                            case 'Popular Songs':
+                                                                if ('menuAction' in objRow) {
                                                                     entry = {
-                                                                        text: `${objLTN.title}`,
+                                                                        text: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                        browseKey: `${objRow.menuAction.action['URI']}`,
+                                                                        headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                    };
+                                                                }
+                                                                myArr.push(entry);
+                                                                for (const objItem of objRow.list.item) {
+                                                                    entry = {
+                                                                        text: `${objItem.subTitle} - ${objItem.title}`,
+                                                                        browseKey:
+                                                                            playlistToggle == 1
+                                                                                ? `${objItem.action['URI']}`
+                                                                                : `${objItem.action['URI']}`.replace(
+                                                                                      'playnow=1',
+                                                                                      'playnow=0',
+                                                                                  ),
+                                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                                break;
+                                                            case 'New Albums':
+                                                            case 'Albums':
+                                                            case 'Recommended Albums':
+                                                            case 'Popular Albums':
+                                                                if ('menuAction' in objRow) {
+                                                                    entry = {
+                                                                        text: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                        browseKey: `${objRow.menuAction.action['URI']}`,
+                                                                        headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                                if (Array.isArray(objRow.largeThumbnail)) {
+                                                                    for (const objLTN of objRow.largeThumbnail) {
+                                                                        entry = {
+                                                                            text: `${objLTN.subTitle} - ${objLTN.title}`,
+                                                                            browseKey:
+                                                                                playlistToggle == 1
+                                                                                    ? `${objLTN.playAction['URI']}`
+                                                                                    : `${objLTN.playAction['URI']}`.replace(
+                                                                                          'playnow=1',
+                                                                                          'playnow=0',
+                                                                                      ),
+                                                                            headerTitle: `${objLTN.subTitle} - ${objLTN.title}`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    }
+                                                                } else {
+                                                                    const objLTN = objRow.largeThumbnail;
+                                                                    entry = {
+                                                                        text: `${objLTN.subTitle} - ${objLTN.title}`,
                                                                         browseKey:
                                                                             playlistToggle == 1
                                                                                 ? `${objLTN.playAction['URI']}`
@@ -2524,38 +2584,37 @@ class Bluesound extends utils.Adapter {
                                                                                       'playnow=1',
                                                                                       'playnow=0',
                                                                                   ),
-                                                                        headerTitle: `${result.screen.navigationTitle} ${objLTN.title}`,
+                                                                        headerTitle: `${objLTN.subTitle} - ${objLTN.title}`,
                                                                     };
                                                                     myArr.push(entry);
                                                                 }
-                                                            } else {
-                                                                const objLTN = objRow.largeThumbnail;
-                                                                entry = {
-                                                                    text: `${objLTN.title}`,
-                                                                    browseKey:
-                                                                        playlistToggle == 1
-                                                                            ? `${objLTN.playAction['URI']}`
-                                                                            : `${objLTN.playAction['URI']}`.replace(
-                                                                                  'playnow=1',
-                                                                                  'playnow=0',
-                                                                              ),
-                                                                    headerTitle: `${result.screen.navigationTitle} ${objLTN.title}`,
-                                                                };
-                                                                myArr.push(entry);
-                                                            }
-                                                            break;
-                                                        case 'Recommended Playlists':
-                                                        case 'New Playlists':
-                                                            if ('menuAction' in objRow) {
-                                                                entry = {
-                                                                    text: `${objRow.menuAction.text} ${objRow.title}`,
-                                                                    browseKey: `${objRow.menuAction.action['URI']}`,
-                                                                    headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
-                                                                };
-                                                                myArr.push(entry);
-                                                            }
-                                                            if (Array.isArray(objRow.largeThumbnail)) {
-                                                                for (const objLTN of objRow.largeThumbnail) {
+                                                                break;
+                                                            case 'Recommended Playlists':
+                                                            case 'New Playlists':
+                                                            case 'Playlists':
+                                                            case 'My Mix':
+                                                            case 'My Playlists':
+                                                                if ('menuAction' in objRow) {
+                                                                    entry = {
+                                                                        text: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                        browseKey: `${objRow.menuAction.action['URI']}`,
+                                                                        headerTitle: `${objRow.menuAction.text} ${objRow.title}`,
+                                                                    };
+                                                                    myArr.push(entry);
+                                                                }
+                                                                if (Array.isArray(objRow.largeThumbnail)) {
+                                                                    for (const objLTN of objRow.largeThumbnail) {
+                                                                        regExp = new RegExp('(?<=id=).+', 'gm');
+                                                                        playlistID = objLTN.action.URI.match(regExp)[0];
+                                                                        entry = {
+                                                                            text: `${objLTN.action.title}`,
+                                                                            browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                                            headerTitle: `${objLTN.action.title}`,
+                                                                        };
+                                                                        myArr.push(entry);
+                                                                    }
+                                                                } else {
+                                                                    const objLTN = objRow.largeThumbnail;
                                                                     regExp = new RegExp('(?<=id=).+', 'gm');
                                                                     playlistID = objLTN.action.URI.match(regExp)[0];
                                                                     entry = {
@@ -2565,25 +2624,36 @@ class Bluesound extends utils.Adapter {
                                                                     };
                                                                     myArr.push(entry);
                                                                 }
-                                                            } else {
-                                                                const objLTN = objRow.largeThumbnail;
-                                                                regExp = new RegExp('(?<=id=).+', 'gm');
-                                                                playlistID = objLTN.action.URI.match(regExp)[0];
-                                                                entry = {
-                                                                    text: `${objLTN.action.title}`,
-                                                                    browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
-                                                                    headerTitle: `${objLTN.action.title}`,
-                                                                };
-                                                                myArr.push(entry);
-                                                            }
-                                                            break;
-                                                        default:
-                                                            this.log.debug(`Unknown Row: ${objRow.title}`);
+                                                                break;
+                                                            default:
+                                                                this.log.debug(`Unknown Row: ${objRow.title}`);
+                                                        }
+                                                    }
+                                                } else {
+                                                    for (const objItem of result.screen.list.item) {
+                                                        regExp = new RegExp('(?<=id=).+', 'gm');
+                                                        playlistID = objItem.action.URI.match(regExp)[0];
+                                                        entry = {
+                                                            text: `${objItem.action.title}`,
+                                                            browseKey: `/Add?playlistid=${playlistID}&playnow=${playlistToggle.toString()}&service=Tidal&shuffle=1`,
+                                                            headerTitle: `${objItem.action.title}`,
+                                                        };
+                                                        myArr.push(entry);
+                                                    }
+                                                    if ('nextLink' in result.screen.list) {
+                                                        entry = {
+                                                            text: 'NEXT',
+                                                            browseKey: `${result.screen.list.nextLink}`,
+                                                            headerTitle: `${headers[headers.length - 1]}`,
+                                                        };
+                                                        myArr.push(entry);
                                                     }
                                                 }
                                                 break;
                                             case 'screen-Tidal-Recommendations-0':
                                             case 'screen-Tidal-New-0':
+                                            case 'screen-Tidal-Popular-0':
+                                            case 'screen-Tidal-Deutsch-0':
                                                 entry = {
                                                     text: '...',
                                                     browseKey: 'BACK',
@@ -2593,7 +2663,7 @@ class Bluesound extends utils.Adapter {
                                                 if (Array.isArray(result.screen.list.item)) {
                                                     for (const objItem of result.screen.list.item) {
                                                         entry = {
-                                                            text: `${objItem.title}`,
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
                                                             browseKey:
                                                                 playlistToggle == 1
                                                                     ? `${objItem.action['URI']}`
@@ -2601,14 +2671,14 @@ class Bluesound extends utils.Adapter {
                                                                           'playnow=1',
                                                                           'playnow=0',
                                                                       ),
-                                                            headerTitle: `${objItem.title}`,
+                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                         };
                                                         myArr.push(entry);
                                                     }
                                                 } else {
                                                     const objItem = result.screen.list.item;
                                                     entry = {
-                                                        text: `${objItem.title}`,
+                                                        text: `${objItem.subTitle} - ${objItem.title}`,
                                                         browseKey:
                                                             playlistToggle == 1
                                                                 ? `${objItem.action['URI']}`
@@ -2616,7 +2686,7 @@ class Bluesound extends utils.Adapter {
                                                                       'playnow=1',
                                                                       'playnow=0',
                                                                   ),
-                                                        headerTitle: `${objItem.title}`,
+                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
@@ -2631,6 +2701,9 @@ class Bluesound extends utils.Adapter {
                                                 break;
                                             case 'screen-Tidal-Recommendations-1':
                                             case 'screen-Tidal-New-1':
+                                            case 'screen-Tidal-Deutsch-1':
+                                            case 'screen-Tidal-Moods-genre':
+                                            case 'screen-Tidal-Favourites-0':
                                                 entry = {
                                                     text: '...',
                                                     browseKey: 'BACK',
@@ -2638,6 +2711,7 @@ class Bluesound extends utils.Adapter {
                                                 };
                                                 myArr.push(entry);
                                                 if (Array.isArray(result.screen.list.item)) {
+                                                    this.log.debug('hier');
                                                     for (const objItem of result.screen.list.item) {
                                                         regExp = new RegExp('(?<=id=).+', 'gm');
                                                         playlistID = objItem.action.URI.match(regExp)[0];
@@ -2671,6 +2745,9 @@ class Bluesound extends utils.Adapter {
                                             case 'screen-Tidal-TIDAL Rising-0':
                                             case 'screen-Tidal-New-2':
                                             case 'screen-Tidal-Recommendations-2':
+                                            case 'screen-Tidal-Popular-1':
+                                            case 'screen-Tidal-Deutsch-2':
+                                            case 'screen-Tidal-Favourites-5':
                                                 entry = {
                                                     text: '...',
                                                     browseKey: 'BACK',
@@ -2680,7 +2757,7 @@ class Bluesound extends utils.Adapter {
                                                 if (Array.isArray(result.screen.list.item)) {
                                                     for (const objItem of result.screen.list.item) {
                                                         entry = {
-                                                            text: `${objItem.title}`,
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
                                                             browseKey:
                                                                 playlistToggle == 1
                                                                     ? `${objItem.playAction['URI']}`
@@ -2688,14 +2765,14 @@ class Bluesound extends utils.Adapter {
                                                                           'playnow=1',
                                                                           'playnow=0',
                                                                       ),
-                                                            headerTitle: `${objItem.title}`,
+                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                         };
                                                         myArr.push(entry);
                                                     }
                                                 } else {
                                                     const objItem = result.screen.list.item;
                                                     entry = {
-                                                        text: `${objItem.title}`,
+                                                        text: `${objItem.subTitle} - ${objItem.title}`,
                                                         browseKey:
                                                             playlistToggle == 1
                                                                 ? `${objItem.playAction['URI']}`
@@ -2703,7 +2780,7 @@ class Bluesound extends utils.Adapter {
                                                                       'playnow=1',
                                                                       'playnow=0',
                                                                   ),
-                                                        headerTitle: `${objItem.title}`,
+                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
@@ -2717,6 +2794,7 @@ class Bluesound extends utils.Adapter {
                                                 }
                                                 break;
                                             case 'screen-Tidal-TIDAL Rising-1':
+                                            case 'screen-Tidal-Favourites-1':
                                                 entry = {
                                                     text: '...',
                                                     browseKey: 'BACK',
@@ -2726,7 +2804,7 @@ class Bluesound extends utils.Adapter {
                                                 if (Array.isArray(result.screen.list.item)) {
                                                     for (const objItem of result.screen.list.item) {
                                                         entry = {
-                                                            text: `${objItem.title}`,
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
                                                             browseKey:
                                                                 playlistToggle == 1
                                                                     ? `${objItem.action['URI']}`
@@ -2734,14 +2812,14 @@ class Bluesound extends utils.Adapter {
                                                                           'playnow=1',
                                                                           'playnow=0',
                                                                       ),
-                                                            headerTitle: `${objItem.title}`,
+                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                         };
                                                         myArr.push(entry);
                                                     }
                                                 } else {
                                                     const objItem = result.screen.list.item;
                                                     entry = {
-                                                        text: `${objItem.title}`,
+                                                        text: `${objItem.subTitle} - ${objItem.title}`,
                                                         browseKey:
                                                             playlistToggle == 1
                                                                 ? `${objItem.action['URI']}`
@@ -2749,7 +2827,7 @@ class Bluesound extends utils.Adapter {
                                                                       'playnow=1',
                                                                       'playnow=0',
                                                                   ),
-                                                        headerTitle: `${objItem.title}`,
+                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
@@ -2758,6 +2836,23 @@ class Bluesound extends utils.Adapter {
                                                         text: 'NEXT',
                                                         browseKey: `${result.screen.list.nextLink}`,
                                                         headerTitle: `${headers[headers.length - 1]}`,
+                                                    };
+                                                    myArr.push(entry);
+                                                }
+                                                break;
+                                            case 'screen-Tidal-Moods':
+                                            case 'screen-Tidal-Genres':
+                                                entry = {
+                                                    text: '...',
+                                                    browseKey: 'BACK',
+                                                    headerTitle: `${headers[headers.length - 2]}`,
+                                                };
+                                                myArr.push(entry);
+                                                for (const objItem of result.screen.list.item) {
+                                                    entry = {
+                                                        text: `${objItem.title}`,
+                                                        browseKey: `${objItem.action['URI']}`,
+                                                        headerTitle: `${objItem.title}`,
                                                     };
                                                     myArr.push(entry);
                                                 }
@@ -2783,18 +2878,18 @@ class Bluesound extends utils.Adapter {
                                                     if (Array.isArray(result.screen.list.item)) {
                                                         for (const objItem of result.screen.list.item) {
                                                             entry = {
-                                                                text: `${objItem.title}`,
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
                                                                 browseKey: `${objItem.action['URI']}`,
-                                                                headerTitle: `${objItem.title}`,
+                                                                headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                             };
                                                             myArr.push(entry);
                                                         }
                                                     } else {
                                                         const objItem = result.screen.list.item;
                                                         entry = {
-                                                            text: `${objItem.title}`,
+                                                            text: `${objItem.subTitle} - ${objItem.title}`,
                                                             browseKey: `${objItem.action['URI']}`,
-                                                            headerTitle: `${objItem.title}`,
+                                                            headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                         };
                                                         myArr.push(entry);
                                                     }
@@ -2821,18 +2916,18 @@ class Bluesound extends utils.Adapter {
                                                             if (Array.isArray(objList.item)) {
                                                                 for (const objItem of objList.item) {
                                                                     entry = {
-                                                                        text: `${objItem.title}`,
+                                                                        text: `${objItem.subTitle} - ${objItem.title}`,
                                                                         browseKey: `${objItem.action['URI']}`,
-                                                                        headerTitle: `${objItem.title}`,
+                                                                        headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                                     };
                                                                     myArr.push(entry);
                                                                 }
                                                             } else {
                                                                 const objItem = objList.item;
                                                                 entry = {
-                                                                    text: `${objItem.title}`,
+                                                                    text: `${objItem.subTitle} - ${objItem.title}`,
                                                                     browseKey: `${objItem.action['URI']}`,
-                                                                    headerTitle: `${objItem.title}`,
+                                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                                 };
                                                                 myArr.push(entry);
                                                             }
@@ -2842,18 +2937,18 @@ class Bluesound extends utils.Adapter {
                                                         if (Array.isArray(objList.item)) {
                                                             for (const objItem of objList.item) {
                                                                 entry = {
-                                                                    text: `${objItem.title}`,
+                                                                    text: `${objItem.subTitle} - ${objItem.title}`,
                                                                     browseKey: `${objItem.action['URI']}`,
-                                                                    headerTitle: `${objItem.title}`,
+                                                                    headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                                 };
                                                                 myArr.push(entry);
                                                             }
                                                         } else {
                                                             const objItem = objList.item;
                                                             entry = {
-                                                                text: `${objItem.title}`,
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
                                                                 browseKey: `${objItem.action['URI']}`,
-                                                                headerTitle: `${objItem.title}`,
+                                                                headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                             };
                                                             myArr.push(entry);
                                                         }
@@ -3020,7 +3115,7 @@ class Bluesound extends utils.Adapter {
                                                     } else {
                                                         for (const objItem of result.list.item) {
                                                             entry = {
-                                                                text: objItem.title,
+                                                                text: `${objItem.subTitle} - ${objItem.title}`,
                                                                 browseKey:
                                                                     playlistToggle == 1
                                                                         ? `${objItem.playAction['URI']}`
@@ -3028,7 +3123,7 @@ class Bluesound extends utils.Adapter {
                                                                               'playnow=1',
                                                                               'playnow=0',
                                                                           ),
-                                                                headerTitle: objItem.title,
+                                                                headerTitle: `${objItem.subTitle} - ${objItem.title}`,
                                                             };
                                                             myArr.push(entry);
                                                         }
