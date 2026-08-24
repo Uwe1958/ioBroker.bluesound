@@ -636,7 +636,7 @@
                 "type": "string",
                 "role": "html",
                 "read": true,
-                "write": false
+                "write": true
             },
             "native": {}
         },
@@ -660,7 +660,7 @@
                 "type": "string",
                 "role": "txt",
                 "read": true,
-                "write": false
+                "write": true
             },
             "native": {}
         },

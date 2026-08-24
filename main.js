@@ -15,6 +15,7 @@ let polling;
 let pollingTime;
 var commands = [];
 var headers = [];
+var myArr = [];
 var headerTitle;
 var playlistToggle;
 
@@ -765,7 +766,7 @@ class Bluesound extends utils.Adapter {
             const response = await apiClient.get('/Playlist');
             if (response.status === 200) {
                 parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
-                    var myArr = [];
+                    var myPlArr = [];
                     var entry;
                     var myHtml = '';
                     if (err) {
@@ -781,7 +782,7 @@ class Bluesound extends utils.Adapter {
                                     artist: `${objSong.art}`,
                                     image: `${objSong.image}`,
                                 };
-                                myArr.push(entry);
+                                myPlArr.push(entry);
                                 myHtml += `<tr><td rowspan="2"><img src="http://${ip}:11000${objSong.image}"</td>`;
                                 if (parseInt(entry.id) == -1) {
                                     myHtml += `<td class="current">${objSong.title}</td>`;
@@ -800,7 +801,7 @@ class Bluesound extends utils.Adapter {
                                 artist: `${objSong.art}`,
                                 image: `${objSong.image}`,
                             };
-                            myArr.push(entry);
+                            myPlArr.push(entry);
                             myHtml += `<tr><td rowspan="2"><img src="http://${ip}:11000${objSong.image}"</td>`;
                             if (parseInt(entry.id) == -1) {
                                 myHtml += `<td class="current">${objSong.title}</td>`;
@@ -812,7 +813,7 @@ class Bluesound extends utils.Adapter {
                             myHtml += '</table></div></body>';
                         }
                     }
-                    this.setState('info.playlist', JSON.stringify(myArr), true);
+                    this.setState('info.playlist', JSON.stringify(myPlArr), true);
                     this.setState('info.playlisthtml', myHtml, true);
                 });
             } else {
@@ -869,11 +870,10 @@ class Bluesound extends utils.Adapter {
                 .then(result => {
                     if (result.status === 200) {
                         parseString(result.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
-                            var myArr = [];
+                            myArr.length = 0;
                             if (err) {
                                 this.log.error(`Error parsing Browse XML: ${err}`);
                             } else {
-                                //                        this.setForeignState('0_userdata.0.browseKey', JSON.stringify(result), true);
                                 const switchKey = Object.keys(result).toString();
                                 this.log.info(`Root: ${switchKey}`);
                                 var entry;
@@ -886,6 +886,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Main Menu',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objRow of result.screen.row) {
@@ -899,6 +900,7 @@ class Bluesound extends utils.Adapter {
                                                                       'playnow=0',
                                                                   ),
                                                         headerTitle: `${objRow.action.title}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                 }
@@ -909,6 +911,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Local Music',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.index.item) {
@@ -926,6 +929,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.row[0].largeThumbnail)) {
@@ -963,6 +967,7 @@ class Bluesound extends utils.Adapter {
                                                         text: 'Empty result, ...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                 }
@@ -973,6 +978,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
@@ -1003,6 +1009,7 @@ class Bluesound extends utils.Adapter {
                                                         text: 'Empty result, ...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 1]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                 }
@@ -1013,6 +1020,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Local Music',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.index.item) {
@@ -1029,6 +1037,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Local Music',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.index.item) {
@@ -1047,6 +1056,7 @@ class Bluesound extends utils.Adapter {
                                                     browseKey: 'BACK',
                                                     //                                            headerTitle: `${headers[headers.length - 1]}`,
                                                     headerTitle: `Local Music`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.item) {
@@ -1066,6 +1076,7 @@ class Bluesound extends utils.Adapter {
                                                     browseKey: 'BACK',
                                                     //                                            headerTitle: `${headers[headers.length - 1]}`,
                                                     headerTitle: `Local Music`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.index.item) {
@@ -1083,6 +1094,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 1]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.item) {
@@ -1105,6 +1117,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
@@ -1178,6 +1191,7 @@ class Bluesound extends utils.Adapter {
                                                         text: 'Empty result, ...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                 }
@@ -1189,6 +1203,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: 'Local Music',
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
@@ -1234,6 +1249,7 @@ class Bluesound extends utils.Adapter {
                                                         text: 'Empty result, ...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                 }
@@ -1243,6 +1259,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 if (Array.isArray(result.screen.row[2].largeThumbnail)) {
@@ -1282,6 +1299,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 if (Array.isArray(result.screen.row[0].largeThumbnail)) {
@@ -1322,6 +1340,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: 'Local Music',
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list)) {
@@ -1360,6 +1379,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
@@ -1400,6 +1420,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
@@ -1459,6 +1480,7 @@ class Bluesound extends utils.Adapter {
                                                         browseKey: 'BACK',
                                                         //                                            headerTitle: `Search(${result.screen.search.value})`,
                                                         headerTitle: 'Main Menu',
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     this.setState(
@@ -1637,6 +1659,7 @@ class Bluesound extends utils.Adapter {
                                                         text: 'Empty Result, ...',
                                                         browseKey: 'BACK',
                                                         headerTitle: 'Main Menu',
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     this.setState(
@@ -1652,6 +1675,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 1]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
@@ -1695,6 +1719,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 1]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
@@ -1732,6 +1757,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 1]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
@@ -1769,6 +1795,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 1]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
@@ -1800,6 +1827,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Main Menu',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.item) {
@@ -1816,6 +1844,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Main Menu',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 var i = 0;
@@ -1838,6 +1867,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Main Menu',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.item) {
@@ -1854,6 +1884,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Main Menu',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.row) {
@@ -1870,6 +1901,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objRow of result.screen.row) {
@@ -1960,6 +1992,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.row) {
@@ -2033,6 +2066,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 if ('row' in result.screen) {
@@ -2145,6 +2179,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objRow of result.screen.row) {
@@ -2219,6 +2254,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Main Menu',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objRow of result.screen.row) {
@@ -2297,6 +2333,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Main Menu',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objRow of result.screen.row) {
@@ -2315,6 +2352,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Qobuz',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 if (Array.isArray(result.screen.list.item)) {
@@ -2365,6 +2403,7 @@ class Bluesound extends utils.Adapter {
                                                         `${result.screen.service}` != 'Tidal'
                                                             ? 'Qobuz'
                                                             : `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.item) {
@@ -2392,6 +2431,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objRow of result.screen.row) {
@@ -2408,6 +2448,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.item) {
@@ -2434,6 +2475,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Main Menu',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objList of result.screen.list) {
@@ -2464,6 +2506,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: 'Main Menu',
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objRow of result.screen.row) {
@@ -2505,6 +2548,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 if ('row' in result.screen) {
@@ -2649,6 +2693,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 if (Array.isArray(result.screen.list.item)) {
@@ -2699,6 +2744,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 if (Array.isArray(result.screen.list.item)) {
@@ -2743,6 +2789,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 if (Array.isArray(result.screen.list.item)) {
@@ -2790,6 +2837,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 if (Array.isArray(result.screen.list.item)) {
@@ -2837,6 +2885,7 @@ class Bluesound extends utils.Adapter {
                                                     text: '...',
                                                     browseKey: 'BACK',
                                                     headerTitle: `${headers[headers.length - 2]}`,
+                                                    type: 'menu-item',
                                                 };
                                                 myArr.push(entry);
                                                 for (const objItem of result.screen.list.item) {
@@ -2864,6 +2913,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list.item)) {
@@ -2906,6 +2956,7 @@ class Bluesound extends utils.Adapter {
                                                         text: '...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                     if (Array.isArray(result.screen.list)) {
@@ -2956,6 +3007,7 @@ class Bluesound extends utils.Adapter {
                                                         text: 'No result, ...',
                                                         browseKey: 'BACK',
                                                         headerTitle: `${headers[headers.length - 2]}`,
+                                                        type: 'menu-item',
                                                     };
                                                     myArr.push(entry);
                                                 }
@@ -2966,6 +3018,7 @@ class Bluesound extends utils.Adapter {
                                             text: '...',
                                             browseKey: 'BACK',
                                             headerTitle: `${headers[headers.length - 2]}`,
+                                            type: 'menu-item',
                                         };
                                         myArr.push(entry);
                                         var maxOffset = 0;
@@ -3219,6 +3272,7 @@ class Bluesound extends utils.Adapter {
                                             text: 'Content added, ... ',
                                             browseKey: 'BACK',
                                             headerTitle: `${headers[headers.length - 2]}`,
+                                            type: 'menu-item',
                                         };
                                         myArr.push(entry);
                                         break;
@@ -3235,6 +3289,7 @@ class Bluesound extends utils.Adapter {
                 .catch(error => this.log.error(error));
             await this.readPlayerStatus();
             await this.readPlaylist();
+            await this.createMenuList();
             return res;
         } catch (e) {
             this.log.error(`Could not retrieve Browse data: ${e}`);
@@ -3243,74 +3298,108 @@ class Bluesound extends utils.Adapter {
     }
     async initMenu() {
         //        var templist = await this.readBrowseData(); // Top level menu
-        var myArr = [];
+        myArr.length = 0;
         var entry;
         entry = {
             text: 'Local Music',
             browseKey: 'LOCAL',
             headerTitle: 'Local Music',
+            type: 'menu-item',
         };
         myArr.push(entry);
         entry = {
             text: 'Radio Stations',
             browseKey: 'RADIO',
             headerTitle: 'Radio Stations',
+            type: 'menu-item',
         };
         myArr.push(entry);
         entry = {
             text: 'Amazon Music',
             browseKey: 'Amazon',
             headerTitle: 'Amazon Music',
+            type: 'menu-item',
         };
         myArr.push(entry);
         entry = {
             text: 'TuneIn',
             browseKey: 'TuneIn',
             headerTitle: 'TuneIn',
+            type: 'menu-item',
         };
         myArr.push(entry);
         entry = {
             text: 'Calm Radio',
             browseKey: 'CalmRadio',
             headerTitle: 'Calm Radio',
+            type: 'menu-item',
         };
         myArr.push(entry);
         entry = {
             text: 'Deezer',
             browseKey: 'Deezer',
             headerTitle: 'Deezer',
+            type: 'menu-item',
         };
         myArr.push(entry);
         entry = {
             text: 'Neil Young Archives',
             browseKey: 'NYA',
             headerTitle: 'Neil Young Archives',
+            type: 'menu-item',
         };
         myArr.push(entry);
         entry = {
             text: 'Qobuz',
             browseKey: 'Qobuz',
             headerTitle: 'Qobuz',
+            type: 'menu-item',
         };
         myArr.push(entry);
         entry = {
             text: 'Radio Paradise',
             browseKey: 'RadioParadise',
             headerTitle: 'Radio Paradise',
+            type: 'menu-item',
         };
         myArr.push(entry);
         entry = {
             text: 'Tidal',
             browseKey: 'Tidal',
             headerTitle: 'Tidal',
+            type: 'menu-item',
         };
         myArr.push(entry);
         var templist = JSON.stringify(myArr);
         this.setState('info.list', templist, true);
         this.setState('info.listheader', 'Main Menu', true);
+        this.createMenuList();
+    }
+    async createMenuList() {
+        var myHtml = `<table id="tbl1" class="menulist" style="width:100%">
+            <tbody>`;
+        for (let entry of myArr) {
+            switch (entry.type) {
+                case 'menu-item':
+                    var browseKey = entry.browseKey;
+                    var title = entry.text;
+                    var headerTitle = entry.headerTitle;
+                    myHtml += `<tr class="menuitem">
+                        <td class="browseKey">${browseKey}</td>
+                        <td colspan="2" class="menu-title">${title}</td>
+                        <td class="header">${headerTitle}</td>
+                        </tr>`;
+
+                    break;
+                default:
+            }
+        }
+        myHtml += `</tbody>
+            </table>`;
+        //        this.log.debug(`myHtml: ${myHtml}`);
+        this.setState('info.menulisthtml', myHtml, true);
     }
 }
-
 if (require.main !== module) {
     // Export the constructor in compact mode
     /**
