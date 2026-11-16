@@ -121,13 +121,8 @@
             "uk": "Адаптер для управління пристроями Bluesound",
             "zh-cn": "用于控制 Bluesound 设备的适配器"
         },
-        "authors": [
-            "Uwe Nagel <uwenagel@kabelmail.de>"
-        ],
-        "keywords": [
-            "multimedia",
-            "control"
-        ],
+        "authors": ["Uwe Nagel <uwenagel@kabelmail.de>"],
+        "keywords": ["multimedia", "control"],
         "licenseInformation": {
             "type": "free",
             "license": "MIT"
@@ -490,11 +485,11 @@
                     "uk": "Шафл Стан",
                     "zh-cn": "摇摆状态"
                 },
-                "type": "number",
+                "type": "boolean",
                 "role": "media.mode.shuffle",
                 "read": false,
                 "write": true,
-                "def": 0
+                "def": false
             },
             "native": {}
         },
@@ -697,7 +692,7 @@
             "type": "state",
             "common": {
                 "name": "Shuffle",
-                "type": "number",
+                "type": "boolean",
                 "role": "media.mode.shuffle",
                 "read": false,
                 "write": true,

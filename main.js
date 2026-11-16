@@ -131,9 +131,6 @@ class Bluesound extends utils.Adapter {
         // state = ""
         sNameTag = 'control.state';
         this.setState(sNameTag, '', true);
-        // shuffle = false
-        sNameTag = 'control.shuffle';
-        this.setState(sNameTag, 0, true);
         sNameTag = 'control.forward';
         this.setState(sNameTag, false, true);
         sNameTag = 'control.backward';
@@ -161,6 +158,24 @@ class Bluesound extends utils.Adapter {
         } catch (e) {
             this.log.error(`Could not retrieve Volume data: ${e}`);
         }
+
+        // Shuffle
+
+        await apiClient
+            .get('/Shuffle')
+            .then(response => {
+                parseString(response.data, { mergeAttrs: true, explicitArray: false }, (err, result) => {
+                    if (err) {
+                        console.log(`Error parsing Shuffle XML:${err}`);
+                        return;
+                    }
+                    sNameTag = 'control.shuffle';
+                    this.setState(sNameTag, parseInt(result.playlist.shuffle) == 0 ? false : true, true);
+                });
+            })
+            .catch(err => {
+                console.log(`Error reading Shuffle XML:${err}`);
+            });
 
         // Presets
 
@@ -380,15 +395,11 @@ class Bluesound extends utils.Adapter {
                         const sShuffleTag = 'info.shuffle';
                         try {
                             const valShuffle = await this.getStateAsync(sShuffleTag);
-                            var val;
-                            if (valShuffle) {
-                                val = valShuffle.val;
-                            } else {
-                                val = 0;
-                            }
-                            val = val == 0 ? 1 : 0;
+                            // @ts-expect-error Possible undefined
+                            var val = valShuffle.val;
+                            val = !val;
                             apiClient
-                                .get(`/Shuffle?state=${val}`)
+                                .get(`/Shuffle?state=${Number(val)}`)
                                 .then(() => {
                                     this.setState(sShuffleTag, val, true);
                                     this.setState(id, state.val, true);
@@ -620,7 +631,7 @@ class Bluesound extends utils.Adapter {
                     pState = result.status.state[0];
                     this.log.debug(`pState: ${pState}`);
 
-                    varShuffle = result.status.shuffle[0] == 0 ? 0 : 1;
+                    varShuffle = result.status.shuffle[0] == 0 ? false : true;
                     this.log.debug(`varShuffle: ${varShuffle}`);
                 });
 
@@ -641,6 +652,7 @@ class Bluesound extends utils.Adapter {
                     if (sShuffleOld) {
                         if (varShuffle != sShuffleOld.val) {
                             await this.setState(sShuffleTag, { val: varShuffle, ack: true });
+                            await this.setState('control.shuffle', { val: varShuffle, ack: true });
                         }
                     }
                 } catch (err) {
@@ -2702,7 +2714,6 @@ class Bluesound extends utils.Adapter {
                                                 };
                                                 myArr.push(entry);
                                                 if (Array.isArray(result.screen.list.item)) {
-                                                    this.log.debug('hier');
                                                     for (const objItem of result.screen.list.item) {
                                                         regExp = new RegExp('(?<=id=).+', 'gm');
                                                         playlistID = objItem.action.URI.match(regExp)[0];
@@ -3188,7 +3199,6 @@ class Bluesound extends utils.Adapter {
                                                     }
                                                     break;
                                                 case 'Playlist':
-                                                    this.log.debug('hier');
                                                     for (const objItem of result.list.item) {
                                                         regExp = new RegExp('(?<=id=).+', 'gm');
                                                         playlistID = objItem.playAction.URI.match(regExp)[0];
